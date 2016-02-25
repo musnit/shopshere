@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, Link, RouteHandler } from 'react-router';
 import { connect } from 'react-redux';
+import { Router, Route, browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux';
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-import { syncReduxAndRouter } from 'redux-simple-router'
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import App from './App';
 
@@ -12,8 +11,7 @@ class RouteContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { history: createBrowserHistory() };
-    syncReduxAndRouter(this.state.history, this.props.store);
+    this.state = { history: syncHistoryWithStore(browserHistory, this.props.store) };
   }
 
   render() {
