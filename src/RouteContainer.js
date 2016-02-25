@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Router, Route, browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import App from './App';
