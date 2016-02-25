@@ -11,7 +11,7 @@ open http://localhost:3000
 
 ## Deploy to Heroku
 ```bash
-./deploy
+just push, Heroku should do it.
 ```
 
 Info:
