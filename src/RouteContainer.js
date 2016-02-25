@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import App from './App';
+import Login from './Login';
 
 class RouteContainer extends Component {
 
@@ -17,6 +18,9 @@ class RouteContainer extends Component {
     return (
       <Router ref="router" history={this.state.history}>
         <Route path="/" component={App}>
+          
+        </Route>
+        <Route path="/login" component={Login}>
         </Route>
       </Router>
     );
