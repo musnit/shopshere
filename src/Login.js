@@ -8,7 +8,7 @@ class Login extends Component {
       <div class="container">
 
       <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+        <h2 class="form-signin-heading">Please sign in to ShopSphere</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
         <label for="inputPassword" class="sr-only">Password</label>
@@ -28,3 +28,13 @@ class Login extends Component {
 }
 
 export default Login;
+
+
+var userdata  = [{
+	email: 'friedland.micah@gmail.com',
+	password: 'password'
+},
+{
+	email: 'musnit@gmail.com',
+	password: 'password'
+}];
