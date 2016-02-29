@@ -3,38 +3,21 @@ import { connect } from 'react-redux';
 
 class Login extends Component {
 
+
   render() {
     return (
       <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in to ShopSphere</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required /> 
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me" /> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div>
-
+        <form class="form-signin">
+          <h2 class="form-signin-heading">Please sign in to ShopSphere</h2>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required />
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+      </div>
     );
   }
 }
 
 export default Login;
-
-
-var userdata  = [{
-	email: 'friedland.micah@gmail.com',
-	password: 'password'
-},
-{
-	email: 'musnit@gmail.com',
-	password: 'password'
-}];

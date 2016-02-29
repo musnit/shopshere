@@ -6,6 +6,8 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import App from './App';
 import Login from './Login';
+import Example from './components/Example';
+import ExampleTwo from './components/ExampleTwo';
 
 class RouteContainer extends Component {
 
@@ -18,9 +20,12 @@ class RouteContainer extends Component {
     return (
       <Router ref="router" history={this.state.history}>
         <Route path="/" component={App}>
-          
         </Route>
         <Route path="/login" component={Login}>
+        </Route>
+        <Route path="/example" component={Example}>
+        </Route>
+        <Route path="/exampletwo" component={ExampleTwo}>
         </Route>
       </Router>
     );

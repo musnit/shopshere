@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import * as types from '../constants/ActionTypes';
 
 ///////////////////  USERS  ///////////////////
 
@@ -19,7 +20,7 @@ const user = (state, action) => {
       if (state.userid !== action.userid) {
 				return state;
 			}
-			var cloneObject = Object.assign({},state);
+			var cloneObject = Object.assign({}, state);
 			cloneObject.shops.push(action.shopid)
 			return cloneObject;
     case 'TOGGLE_LOGGED_IN':
@@ -64,7 +65,7 @@ const users = (state=[], action) => {
 
 const shop = (state,action) => {
 	switch (action.type) {
-	    case 'ADD_SHOP':
+      case types.ADD_SHOP:
 	      return {
 					shopid:action.shopid,
 					name:action.name,
@@ -74,7 +75,6 @@ const shop = (state,action) => {
       if (state.shopid !== action.shopid) {
 				return state;
 			}
-
 			var cloneObject = Object.assign({},state);
 			cloneObject.views.push(action.viewid)
 			return cloneObject;
@@ -85,7 +85,9 @@ const shop = (state,action) => {
 
 const shops = (state=[], action) => {
 	switch (action.type) {
-		case 'ADD_SHOP':
+    case types.FETCH_SHOPS_FULFILLED:
+      return action.payload;
+		case types.ADD_SHOP:
 			return [
               ...state,
               shop(undefined, action)
