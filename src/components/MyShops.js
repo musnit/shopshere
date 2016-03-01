@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from '../helpers/componentHelpers';
 import { bindActionCreators } from 'redux';
-import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from './helpers/componentHelpers';
 import { Input, ButtonInput } from 'react-bootstrap';
-import Navbar from './Navbar.js';
+import Navbar from '../Navbar.js';
 
-
-class App extends Component {
+class MyShops extends Component {
 
   render() {
     
@@ -31,12 +30,7 @@ class App extends Component {
       <Navbar> </Navbar>
     
 	<div>
-      <div> <h1> Welcome to ShopSphere!</h1></div>
-      <hr> </hr>
-      <div>
 
-      </div>
-      
       
         
       <div>
@@ -62,8 +56,8 @@ class App extends Component {
     )}
            
         </ul>
-         <button>Logout</button>
-              <hr> </hr>
+
+
       </div>
          </div>
          </div>
@@ -82,4 +76,4 @@ function mapStateToProps(state) {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(MyShops);

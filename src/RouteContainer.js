@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { Router, Route, browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-
 import App from './App';
 import Login from './Login';
 import Example from './components/Example';
 import ExampleTwo from './components/ExampleTwo';
 import Viewer from './components/Viewer';
+import MyShops from './components/MyShops';
 
 class RouteContainer extends Component {
 
@@ -30,6 +30,8 @@ class RouteContainer extends Component {
         </Route>
         <Route path="/viewer" component={Viewer}>
         </Route>
+        <Route path="/myshops" component={MyShops}>
+        </Route>        
       </Router>
     );
   }

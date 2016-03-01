@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Input, ButtonInput } from 'react-bootstrap';
+import Navbar from './Navbar.js';
+
 
 class Login extends Component {
 
 
   render() {
     return (
+
+      <div>
+
+      <Navbar> </Navbar>
+
       <div className="container">
         <form className="form-signin">
           <h2 className="form-signin-heading">Please sign in to ShopSphere</h2>
@@ -16,6 +23,7 @@ class Login extends Component {
           <Input type="password" id="inputPassword" className="form-control" placeholder="Password" required />
           <ButtonInput type="submit" bsStyle="primary" bsSize="large" block >Sign in</ButtonInput>
         </form>
+      </div>
       </div>
     );
   }

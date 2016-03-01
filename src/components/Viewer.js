@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
+import Navbar from '../Navbar.js';
 
 
 
@@ -121,14 +122,15 @@ class Viewer extends Component {
 
   render() {
     return (
-
+<div>
+      <Navbar> </Navbar>
       <div>
 
-      <h1> Viewer </h1>
+      	<h1> Viewer </h1>
 
       </div>
 
-
+      </div>
     );
   }
   	
