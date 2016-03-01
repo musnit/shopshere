@@ -86,15 +86,15 @@ const shop = (state,action) => {
 const shops = (state=[], action) => {
 	switch (action.type) {
     case types.FETCH_SHOPS_FULFILLED:
-      return action.payload;
-		case types.ADD_SHOP:
-			return [
-              ...state,
-              shop(undefined, action)
-              ];
-		case 'ADD_VIEW_TO_SHOP':
+        return action.payload;
+	case types.ADD_SHOP:
+		return [
+          ...state,
+          shop(undefined, action)
+          ];
+	case 'ADD_VIEW_TO_SHOP':
 			return state.map(t => shop(t, action));
-		default:
+	default:
 			return state;
 	}
 };
