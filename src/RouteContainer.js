@@ -8,6 +8,7 @@ import App from './App';
 import Login from './Login';
 import Example from './components/Example';
 import ExampleTwo from './components/ExampleTwo';
+import Viewer from './components/Viewer';
 
 class RouteContainer extends Component {
 
@@ -26,6 +27,8 @@ class RouteContainer extends Component {
         <Route path="/example" component={Example}>
         </Route>
         <Route path="/exampletwo" component={ExampleTwo}>
+        </Route>
+        <Route path="/viewer" component={Viewer}>
         </Route>
       </Router>
     );

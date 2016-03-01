@@ -1,77 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router'
-
-const getCurrentUserId = (users) => {
-    
-    let outputId = undefined;
-    
-  
-    for (let i = 0; i < users.length; i++){
-    
-
-    if (users[i].isCurrentUser)
-      {
-        outputId = users[i].userid;
-      }
-    
-    return outputId;
-  };
-};
-
-const getCurrentShopIds = (users) => {
-  
-  let output = [];
-  
-  let currentUId = getCurrentUserId(users);
-  
-  for (let i = 0; i < users.length; i++){
-    if (users[i].userid === currentUId)
-      {
-        output = users[i].shops;
-      }
-  };
-  
-  return output;
-};
-
-
-
-const getMyShops = (users, shops) => {
-  
-  let output = [];
-  
-  let shopIds = getCurrentShopIds(users);
-
-
-
-  
-  for (let  i = 0; i < shops.length; i++) {
-    if (shopIds.includes(shops[i].shopid))
-      {
-        output.push(shops[i])
-      }
-    };
-  return output;
-};
-
-
-const getUser = (users) =>{
-    
-    let outputUser = undefined;
-    
-  
-    for (let i = 0; i < users.length; i++){
-    
-
-    if (users[i].isCurrentUser)
-      {
-        outputUser = users[i];
-      }
-    
-    return outputUser;
-  };
-};
+import { Link } from 'react-router';
+import { bindActionCreators } from 'redux';
+import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from './helpers/componentHelpers';
+import { Input, ButtonInput } from 'react-bootstrap';
 
 
 class App extends Component {
@@ -101,19 +33,17 @@ class App extends Component {
       <div>
       
       <h3> Login </h3>
-      <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in to ShopSphere</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required /> 
-
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div>
+      <div className="container">
+        <form className="form-signin">
+          <h2 className="form-signin-heading">Please sign in to ShopSphere</h2>
+          <label htmlFor="inputEmail" className="sr-only">Email address</label>
+          <Input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus />
+          <label htmlFor="inputPassword" className="sr-only">Password</label>
+          <Input type="password" id="inputPassword" className="form-control" placeholder="Password" required />
+          <ButtonInput type="submit" bsStyle="primary" bsSize="large" block >Sign in</ButtonInput>
+        </form>
+      </div>
+    );
 
       <hr> </hr>
       </div>
@@ -151,4 +81,15 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  const users = state.users;
+  const shops = state.shops;
+  const views = state.views;
+  return { 
+    users, 
+    shops, 
+    views 
+  };
+};
+
+export default connect(mapStateToProps)(App);
