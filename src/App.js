@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from './helpers/componentHelpers';
-import { Input, ButtonInput } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Navbar from './Navbar.js';
 
 
@@ -32,38 +32,17 @@ class App extends Component {
     
 	<div>
       <div> <h1> Welcome to ShopSphere!</h1></div>
-      <hr> </hr>
-      <div>
 
+      <div>
+      <p> Your landing page here... </p>
       </div>
       
       
         
       <div>
       
-      <h1> Welcome <em>{user.username}</em></h1>
-      
-      
-       <h2> Add a new shop: </h2>
-      
-      <label for="inputShopName" class="sr-only">Shop Name</label>
-        
-      <input type="ShopName" placeholder="Shop Name..." required />
-      
-      <button>Add a shop</button>
-      
-      <h2> List of your shops: </h2>
-      <ul>
-      {myShops.map(shop => 
-          <li>
-        {shop.name}
-      </li>
-    
-    )}
-           
-        </ul>
-         <button>Logout</button>
-              <hr> </hr>
+        <Button type="submit" bsStyle="info" bsSize="medium" >Logout</Button>
+
       </div>
          </div>
          </div>

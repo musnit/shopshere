@@ -42,9 +42,9 @@ class MyShops extends Component {
       
       <label for="inputShopName" class="sr-only">Shop Name</label>
         
-      <input type="ShopName" placeholder="Shop Name..." required />
+      <Input type="ShopName" placeholder="Shop Name..." required />
       
-      <button>Add a shop</button>
+      <ButtonInput type="submit" bsStyle="primary" bsSize="large" >Add a shop</ButtonInput>
       
       <h2> List of your shops: </h2>
       <ul>

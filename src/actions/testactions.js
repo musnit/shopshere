@@ -9,7 +9,7 @@ export function testActions(store) {
   store.dispatch({
       type: 'ADD_USER',
       userid: 0,
-      username: 'micahzev',
+      username: 'user_name',
       email: 'friedland.micah@gmail.com',
       password: 'password'
     });
@@ -22,7 +22,7 @@ export function testActions(store) {
   store.dispatch({
       type: 'ADD_SHOP',
       shopid: 0,
-      name: 'Micah Shop',
+      name: 'One stop shop 360 degree',
     });
 
   console.log('Current state:');
@@ -33,7 +33,7 @@ export function testActions(store) {
   store.dispatch({
       type: 'ADD_SHOP',
       shopid: 2,
-      name: 'Micahs 2nd Shop',
+      name: '360 shopping',
     });
 
   console.log('Current state:');
