@@ -13,12 +13,16 @@ let savedY;
 let savedLongitude;
 let savedLatitude;
 
+//let image1 = "http://blog.360cities.net/wp-content/uploads/2012/05/5225.jpg";
+//let image2 = "https://www.marchebacchus.com/wp-content/themes/MB-Template/images/wine-shop-360degree.jpg";
+let image3 = "https://c1.staticflickr.com/1/155/331606921_19fe851c12_b.jpg";
+
 // panoramas background
-let panoramasArray = ["./images/360_shop_1.jpg","./images/360_shop_2.jpg","./images/360_shop_3.jpg"];
+let panoramasArray = [image3];
 let panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 // setting up the renderer
-renderer = new THREE.WebGLRenderer();
+let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -35,7 +39,10 @@ sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 // creation of the sphere material
 let sphereMaterial = new THREE.MeshBasicMaterial();
-sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
+
+let loader = new THREE.TextureLoader();
+loader.crossOrigin = "anonymous";
+sphereMaterial.map = loader.load(panoramasArray[panoramaNumber]);
 
 // geometry + material = mesh (actual object)
 let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
@@ -102,15 +109,25 @@ function onDocumentMouseUp(event){
 
 }
 
-// pressing a key (actually releasing it) changes the texture map
-document.onkeyup = function(event){
 
-	panoramaNumber = (panoramaNumber + 1) % panoramasArray.length
-	sphereMaterial.map = THREE.ImageUtils.loadTexture(panoramasArray[panoramaNumber])
 
-	}
 
 class Viewer extends Component {
 
+  render() {
+    return (
+
+      <div>
+
+      <h1> Viewer! </h1>
+
+      </div>
+
+
+    );
+  }
   	
 };
+
+
+export default Viewer;
