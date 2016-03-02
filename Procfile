@@ -1,2 +1,2 @@
-web: node devServer.js
+web: npm run build:webpack && node prodServer.js
 
