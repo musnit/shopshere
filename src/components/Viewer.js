@@ -25,6 +25,9 @@ class Viewer extends Component {
 		//let image1 = "http://blog.360cities.net/wp-content/uploads/2012/05/5225.jpg";
 		//let image2 = "https://www.marchebacchus.com/wp-content/themes/MB-Template/images/wine-shop-360degree.jpg";
 		let image3 = "https://c1.staticflickr.com/1/155/331606921_19fe851c12_b.jpg";
+		let image4 = "http://www.yurukaze.com/wp-content/uploads/2014/09/Suzunoya-Kimono-Shop-360-degree.jpg";
+		let image5 = "https://upload.wikimedia.org/wikipedia/commons/7/71/Piccadilly_Arcade_360,_London_-_June_2009.jpg";
+		let image6 = "https://i.ytimg.com/vi/4bhCnXOlRbg/maxresdefault.jpg";
 
 		// panoramas background
 		let panoramasArray = [image3];
