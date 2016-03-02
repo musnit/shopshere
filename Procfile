@@ -1,2 +1,2 @@
-web: npm run build:webpack && sudo node prodServer.js
+web: npm run build:webpack && node prodServer.js
 
