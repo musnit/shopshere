@@ -2,6 +2,12 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import * as types from '../constants/ActionTypes';
 
+/* DONT:
+> mutate reducer functions arguments
+> perform side effects like API calls and routing transitions
+> call non-pure functions
+*/
+
 ///////////////////  USERS  ///////////////////
 
 const user = (state, action) => {
@@ -61,7 +67,7 @@ const users = (state=[], action) => {
 	}
 };
 
-///////////////////  SHOPS  ///////////////////
+///////////////////  SHOPS REDUCERS ///////////////////
 
 const shop = (state,action) => {
 	switch (action.type) {

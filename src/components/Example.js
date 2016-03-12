@@ -7,6 +7,7 @@ import { addShop } from '~/src/actions/shops';
 class Example extends Component {
 
   addShop() {
+
     this.props.addShop({
       name: this.refs.nameBox.value,
       key: this.refs.keyBox.value
@@ -31,6 +32,7 @@ class Example extends Component {
           onClick = {this.addShop.bind(this)} >
           add shop!
         </button><br/>
+
         <Link to={'/exampletwo'}>link to example2</Link>
       </div>
     );
@@ -42,7 +44,7 @@ function mapStateToProps(state) {
   return { shops };
 }
 
-
+//binds action creator to dispatch
 function mapDispatchToProps(dispatch) {
   return {
     addShop: bindActionCreators(addShop, dispatch),

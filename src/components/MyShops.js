@@ -5,8 +5,18 @@ import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from '../helpe
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
 import Navbar from '../Navbar.js';
+import { addShop } from '~/src/actions/shops';
 
 class MyShops extends Component {
+
+  addShop() {
+    this.props.addShop({
+      name: this.refs.nameBox.value,
+      key: this.refs.keyBox.value
+    });
+    this.refs.nameBox.value = '';
+    this.refs.keyBox.value = '';
+  }
 
   render() {
     
@@ -42,9 +52,13 @@ class MyShops extends Component {
       
       <label for="inputShopName" class="sr-only">Shop Name</label>
         
-      <Input type="ShopName" placeholder="Shop Name..." required />
+      <Input type="ShopName" ref='nameBox' placeholder="Shop Name..." required />
+
+
+      <label for="inputShopKey" class="sr-only">Shop Key</label>
+      <Input type="ShopKey" ref='keyBox' placeholder="Shop Key..." />
       
-      <ButtonInput type="submit" bsStyle="primary" bsSize="large" >Add a shop</ButtonInput>
+      <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.addShop.bind(this)} >Add a shop</ButtonInput>
       
       <h2> List of your shops: </h2>
       <ul>
@@ -65,6 +79,8 @@ class MyShops extends Component {
   }
 }
 
+
+
 function mapStateToProps(state) {
   const users = state.users;
   const shops = state.shops;
@@ -76,4 +92,11 @@ function mapStateToProps(state) {
   };
 };
 
-export default connect(mapStateToProps)(MyShops);
+function mapDispatchToProps(dispatch) {
+  return {
+    addShop: bindActionCreators(addShop, dispatch),
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(MyShops);
