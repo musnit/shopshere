@@ -11,8 +11,6 @@ injectTapEventPlugin();
 
 const store = configureStore();
 
-testActions(store);
-
 render(
   <Provider store={store}>
     <RouteContainer store={store} />
