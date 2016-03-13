@@ -9,12 +9,8 @@ export function addShop(data) {
 
   //const request = superagent;
   request.post('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/shop/')
-    .set('Access-Control-Allow-Header', '*')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('Access-Control-Allow-Methods', '*')
-    .set('Access-Control-Allow-Credentials', true)
-    .set('Content-Type', 'text/plain')
-    .send(data.name)
+    .set('Content-Type', 'application/json')
+    .send(data)
     .end(function(err, res){
      if (err || !res.ok) {
        alert('Oh no! error');
@@ -40,7 +36,7 @@ export function fetchShops(options) {
 
 
 function settingsSet(dataName) {
-  return {    
+  return {
   "async": true,
   "crossDomain": true,
   "url": "https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/shop/",
