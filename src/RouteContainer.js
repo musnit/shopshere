@@ -9,6 +9,7 @@ import Example from './components/Example';
 import ExampleTwo from './components/ExampleTwo';
 import Viewer from './components/Viewer';
 import MyShops from './components/MyShops';
+import MyShopsFetchShops from './components/MyShopsFetchShops';
 
 class RouteContainer extends Component {
 
@@ -32,6 +33,8 @@ class RouteContainer extends Component {
         </Route>
         <Route path="/myshops" component={MyShops}>
         </Route>        
+        <Route path="/myshopsfetchshops" component={MyShopsFetchShops}>
+        </Route>  
       </Router>
     );
   }

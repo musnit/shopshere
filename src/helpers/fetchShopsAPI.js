@@ -1,4 +1,3 @@
-import shopsFixture from './shopsFixture';
 import request from 'superagent';
 
 export default () => {
@@ -9,11 +8,11 @@ export default () => {
 			    .set('Content-Type', 'application/json')
 			    .end(function(err, res){
 				     if (err || !res.ok) {
-				       alert('Oh no! error');
+				       console.log('Oh no! error' + JSON.stringify(err));
 				     } 
 
 				     else {
-				       alert('yay got ' + JSON.stringify(res.body));		
+				       console.log('yay got ' + JSON.stringify(res.body));		
 				       resolve(res.body["Items"]);		       
 				     }
 			    })

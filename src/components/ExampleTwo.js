@@ -14,8 +14,8 @@ class ExampleTwo extends Component {
         when this route loads, loading data from the API and showing it once loaded<br/>
         Shops:
         <div>
-          {this.props.shops.map((shop) => <div key={shop.id}>
-            Shop - name: {shop.name}
+          {this.props.shops.map((shop, index) => <div key={shop.key}>
+            Shop - name: {index} {shop.name}
           </div>)}
         </div>
         <Link to={'/example'}>link to example 1</Link>

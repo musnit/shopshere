@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
 import Navbar from '../Navbar.js';
 import { addShop } from '~/src/actions/shops';
+import { fetchShops } from '~/src/actions/shops';
+import fetch from '~/src/components/fetch';
+import MyShopsFetchShops from '~/src/components/MyShopsFetchShops';
 
 class MyShops extends Component {
 
@@ -40,12 +43,14 @@ class MyShops extends Component {
       <Navbar> </Navbar>
 
 	<div>
+       <h1> Welcome!</h1>
 
 
+<br></br>
 
       <div>
 
-      <h1> Welcome <em>{user.username}</em></h1>
+      <MyShopsFetchShops> </MyShopsFetchShops>
 
 
        <h2> Add a new shop: </h2>
@@ -79,6 +84,9 @@ class MyShops extends Component {
   }
 }
 
+const FetchedShops = fetch(MyShops, {
+  actions: [fetchShops]
+});
 
 
 function mapStateToProps(state) {
@@ -99,4 +107,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(MyShops);
+export default connect(mapStateToProps,mapDispatchToProps)(FetchedShops);
