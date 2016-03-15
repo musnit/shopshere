@@ -11,7 +11,7 @@ class MyShops extends Component {
       <div>
           <Navbar> </Navbar>
           <div>
-              <h1> Welcome!</h1>
+              <h1> My Shops</h1>
               <br></br>
               <div>
                   <MyShopsAddShop> </MyShopsAddShop>

@@ -9,6 +9,7 @@ import Example from './components/Example';
 import ExampleTwo from './components/ExampleTwo';
 import Viewer from './components/Viewer';
 import MyShops from './components/MyShops';
+import Shop from './components/Shop'; 
 
 class RouteContainer extends Component {
 
@@ -31,7 +32,9 @@ class RouteContainer extends Component {
         <Route path="/viewer" component={Viewer}>
         </Route>
         <Route path="/myshops" component={MyShops}>
-        </Route>        
+        </Route>   
+        <Route path="/myshops/:name" component={Shop}>
+        </Route>    
       </Router>
     );
   }

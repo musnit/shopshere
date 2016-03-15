@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fakeShopsAPI from '~/src/tests/fakeShopsAPI';
 import fetchShopsAPI from '~/src/helpers/fetchShopsAPI';
+import fetchOneShopAPI from '~/src/helpers/fetchOneShopAPI';
 import { apiClient } from '../services/ApiClient.js';
 import request from 'superagent';
 import config from '../config';
@@ -33,6 +33,16 @@ export function fetchShops(options) {
     type: types.FETCH_SHOPS,
     payload: {
       promise: fetchShopsAPI()
+    }
+  }
+};
+
+export function fetchOneShop(name) {
+  const nameForFetch = name.params["name"];
+  return {
+    type: types.FETCH_SHOPS,
+    payload: {
+      promise: fetchOneShopAPI(nameForFetch)
     }
   }
 };

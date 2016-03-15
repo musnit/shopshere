@@ -14,8 +14,8 @@ class MyShopsFetchShops extends Component {
           <h2> List of your Shops: </h2>
           <div>
               {this.props.shops.map((shop, index) => 
-              <div key={shop.id}>
-                  Shop {index}: {shop.name}
+              <div key={shop.key}>
+                  Shop {index}: <Link to={`/myshops/${shop.name}`}> {shop.name} </Link>
               </div>
               )}
           </div>
