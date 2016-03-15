@@ -6,13 +6,12 @@ import { bindActionCreators } from 'redux';
 import { fetchShops } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
 
-
 class MyShopsFetchShops extends Component {
   render() {
     return (
       <div className="container">
           <br></br>
-          <h2> Your Shops: </h2>
+          <h2> List of your Shops: </h2>
           <div>
               {this.props.shops.map((shop, index) => 
               <div key={shop.id}>
