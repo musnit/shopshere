@@ -71,12 +71,8 @@ const users = (state=[], action) => {
 
 const shop = (state,action) => {
 	switch (action.type) {
-      case types.ADD_SHOP:
-	      return {
-					shopid:action.shopid,
-					name:action.name,
-					views:[]
-				};
+      case types.ADD_SHOP_FULFILLED:
+	      return action.payload;
     case 'ADD_VIEW_TO_SHOP':
       if (state.shopid !== action.shopid) {
 				return state;
@@ -93,7 +89,7 @@ const shops = (state=[], action) => {
 	switch (action.type) {
     case types.FETCH_SHOPS_FULFILLED:
         return action.payload;
-	case types.ADD_SHOP:
+	case types.ADD_SHOP_FULFILLED:
 		return [
           ...state,
           shop(undefined, action)
