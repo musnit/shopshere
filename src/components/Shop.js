@@ -12,6 +12,7 @@ class Shop extends Component {
   	const name = this.props.params.name
 
   	console.log("NAME: " + name)
+    console.log(this.props.params)
   }
 
   render() {
@@ -19,7 +20,12 @@ class Shop extends Component {
       <div>
           <Navbar> </Navbar>
           <div>
-              <h1> PAGE FOR SHOP</h1>
+              {this.props.shops.map((shop) => 
+              <div key={shop.key}>
+                <h1> PAGE FOR <b>{shop.name}</b></h1>
+                <h2> KEY: <i>{shop.key}</i></h2>
+              </div>
+              )}
               <br></br>
           </div>
       </div>

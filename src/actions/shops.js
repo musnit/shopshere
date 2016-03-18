@@ -6,6 +6,9 @@ import { apiClient } from '../services/ApiClient.js';
 import request from 'superagent';
 import config from '../config';
 
+//remove when API is fixed
+import fakeOneShopAPI from '~/src/tests/fakeOneShopAPI';
+
 //action creators:
 export function addShop(data) {
   return {
@@ -30,7 +33,9 @@ export function fetchOneShop(name) {
   return {
     type: types.FETCH_SHOPS,
     payload: {
-      promise: fetchOneShopAPI(nameForFetch)
+      //change to this line below when API is fixed CORS blah blah
+      //promise: fetchOneShopAPI(nameForFetch)
+      promise: fakeOneShopAPI()
     }
   }
 };
