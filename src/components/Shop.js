@@ -5,6 +5,7 @@ import Navbar from '../Navbar.js';
 import { bindActionCreators } from 'redux';
 import { fetchOneShop } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
+import MyViewpoints from '~/src/components/MyViewpoints';
 
 class Shop extends Component {
 
@@ -19,7 +20,7 @@ class Shop extends Component {
     return (
       <div>
           <Navbar> </Navbar>
-          <div>
+          <div> 
               {this.props.shops.map((shop) => 
               <div key={shop.key}>
                 <h1> PAGE FOR <b>{shop.name}</b></h1>
@@ -28,6 +29,8 @@ class Shop extends Component {
               )}
               <br></br>
           </div>
+
+      <MyViewpoints></MyViewpoints>
       </div>
     );
   }
