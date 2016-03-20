@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
-import { addShop } from '~/src/actions/shops';
+import { unboundAddshop } from '~/src/actions/shops';
 import MyShopsFetchShops from '~/src/components/MyShopsFetchShops';
 
 class MyShopsAddShop extends Component {
 
-  addShop() {
-    this.props.addShop({
+  clickedAddShop() {
+    this.props.boundAddShop({
       name: this.refs.nameBox.getValue(),
       key: this.refs.keyBox.getValue()
     });
@@ -26,7 +26,7 @@ class MyShopsAddShop extends Component {
           <Input type="ShopName" ref='nameBox' placeholder="Shop Name..." required />
           <label htmlFor="inputShopKey" className="sr-only">Shop Key</label>
           <Input type="ShopKey" ref='keyBox' placeholder="Shop Key..." />
-          <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.addShop.bind(this)} >Add a shop</ButtonInput>
+          <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.clickedAddShop.bind(this)} >Add a shop</ButtonInput>
           <br></br>
       </div>
     );
@@ -42,7 +42,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addShop: bindActionCreators(addShop, dispatch),
+    boundAddShop: bindActionCreators(unboundAddShop, dispatch),
   };
 };
 
