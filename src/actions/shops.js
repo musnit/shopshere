@@ -10,7 +10,7 @@ import config from '../config';
 import fakeOneShopAPI from '~/src/tests/fakeOneShopAPI';
 
 //action creators:
-export function addShop(data) {
+export function unboundAddShop(data) {
   return {
     type: types.ADD_SHOP,
     payload: {
