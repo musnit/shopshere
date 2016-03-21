@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
-import { addShop } from '~/src/actions/shops';
+import { unboundAddShop } from '~/src/actions/shops';
 
 class MyViewpointsAddViewpoint extends Component {
 
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addShop: bindActionCreators(addShop, dispatch),
+    addShop: bindActionCreators(unboundAddShop, dispatch),
   };
 };
 
