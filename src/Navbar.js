@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addShop } from '~/src/actions/shops';
 import { Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 class Navbar extends Component {
   render() {
     return (
 	  <Nav bsStyle="pills">
-	    <NavItem eventKey={1} href="/"> Home </NavItem>
-	    <NavItem eventKey={2} href="/login"> Login </NavItem>
-	    <NavItem eventKey={3} href="/myshops"> My Shops</NavItem>
-	    <NavItem eventKey={3} href="/viewer"> Viewer </NavItem>
+	    <LinkContainer to={{ pathname: '/' }}><NavItem> Home </NavItem></LinkContainer>
+	    <LinkContainer to={{ pathname: '/myshops' }}><NavItem> My Shops</NavItem></LinkContainer>
+	    <LinkContainer to={{ pathname: '/viewer' }}><NavItem> Viewer </NavItem></LinkContainer>
 	  </Nav>
 	)
   }
