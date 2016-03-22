@@ -9,19 +9,27 @@ import MyViewpoints from '~/src/components/MyViewpoints';
 
 class Shop extends Component {
 
-  componentDidMount() {
-  	const name = this.props.params.name
+   componentWillMount() {
 
-  	console.log("NAME: " + name)
-    console.log(this.props.params)
+  	console.log("Here");
+
+    console.log(this.props.shop);
   }
+
+  componentDidMount() {
+    
+    console.log("Here");
+
+    console.log(this.props.shop);
+  }
+
 
   render() {
     return (
       <div>
           <Navbar> </Navbar>
           <div> 
-              {this.props.shops.map((shop) => 
+              {this.props.shop.map((shop) => 
               <div key={shop.key}>
                 <h1> PAGE FOR <b>{shop.name}</b></h1>
                 <h2> KEY: <i>{shop.key}</i></h2>
@@ -42,8 +50,8 @@ const FetchOneShop = fetch(Shop, {
 
 
 function mapStateToProps(state) {
-  const shops = state.shops;
-  return { shops };
+  const shop = state.shops;
+  return { shop };
 }
 
 
