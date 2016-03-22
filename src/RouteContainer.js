@@ -23,8 +23,6 @@ class RouteContainer extends Component {
       <Router ref="router" history={this.state.history}>
         <Route path="/" component={App}>
         </Route>
-        <Route path="/login" component={Login}>
-        </Route>
         <Route path="/example" component={Example}>
         </Route>
         <Route path="/exampletwo" component={ExampleTwo}>
