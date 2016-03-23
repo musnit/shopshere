@@ -9,21 +9,6 @@ import MyViewpoints from '~/src/components/MyViewpoints';
 
 class Shop extends Component {
 
-   componentWillMount() {
-
-  	console.log("Here");
-
-    console.log(this.props.shop);
-  }
-
-  componentDidMount() {
-    
-    console.log("Here");
-
-    console.log(this.props.shop);
-  }
-
-
   render() {
     return (
       <div>

@@ -12,7 +12,7 @@ export default () => {
 				     } 
 
 				     else {
-				       console.log('yay got ' + JSON.stringify(res.body));		
+				       //console.log('yay got ' + JSON.stringify(res.body));		
 				       resolve(res.body["Items"]);		       
 				     }
 			    })
