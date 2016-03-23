@@ -28,9 +28,10 @@ class Viewer extends Component {
 		let image4 = "http://www.yurukaze.com/wp-content/uploads/2014/09/Suzunoya-Kimono-Shop-360-degree.jpg";
 		let image5 = "https://upload.wikimedia.org/wikipedia/commons/7/71/Piccadilly_Arcade_360,_London_-_June_2009.jpg";
 		let image6 = "https://i.ytimg.com/vi/4bhCnXOlRbg/maxresdefault.jpg";
+		let image7 = "https://z-1-scontent-lax3-1.xx.fbcdn.net/hphotos-xfp1/v/t35.0-12/12675270_10154611510406102_593114028_o.jpg?oh=32848a29ee1a44305146b6f8da3ac4de&oe=56F43AE4";
 
 		// panoramas background
-		let panoramasArray = [image3];
+		let panoramasArray = [image7];
 		let panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 		// setting up the renderer
@@ -50,7 +51,7 @@ class Viewer extends Component {
 
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
-		let sphere = new THREE.SphereGeometry(100, 100, 100);
+		let sphere = new THREE.SphereGeometry(200, 100, 100);
 		sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 		// creation of the sphere material
