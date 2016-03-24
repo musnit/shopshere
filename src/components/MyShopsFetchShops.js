@@ -5,6 +5,7 @@ import {getCurrentUserId, getCurrentShopIds, getMyShops, getUser} from '../helpe
 import { bindActionCreators } from 'redux';
 import { fetchShops } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
+import ListItemWrapper from '~/src/components/ListItemWrapper';
 
 class MyShopsFetchShops extends Component {
   render() {
@@ -13,11 +14,11 @@ class MyShopsFetchShops extends Component {
           <br></br>
           <h2> List of your Shops: </h2>
           <div>
+            <ul>
               {this.props.shops.map((shop, index) => 
-              <div key={shop.key}>
-                  Shop {index}: <Link to={`/myshops/${shop.name}`}> {shop.name} </Link>
-              </div>
+                <ListItemWrapper key={index} data={shop}/>
               )}
+            </ul>
           </div>
           <br></br>
       </div>
