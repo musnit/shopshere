@@ -30,7 +30,7 @@ class Shop extends Component {
               <br></br>
           </div>
 
-      <MyViewpoints></MyViewpoints>
+      <MyViewpoints data={name}></MyViewpoints>
       </div>
     );
   }

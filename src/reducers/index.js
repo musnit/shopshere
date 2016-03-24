@@ -78,7 +78,7 @@ const shop = (state,action) => {
 				return state;
 			}
 			var cloneObject = Object.assign({},state);
-			cloneObject.views.push(action.viewid)
+			cloneObject.viewpoints.push(action.viewid)
 			return cloneObject;
 	    default:
 	      return state;
@@ -103,8 +103,10 @@ const shops = (state=[], action) => {
 
 ///////////////////  VIEWS  ///////////////////
 
-const view = (state, action) => {
+const viewpoint = (state, action) => {
 	switch (action.type) {
+		case types.ADD_VIEWPOINT_FULFILLED:
+	        return action.payload;
 		case 'ADD_VIEW':
 			return {
 				viewid:action.viewid,
@@ -115,13 +117,18 @@ const view = (state, action) => {
 	}
 };
 
-const views = (state=[], action) => {
+const viewpoints = (state=[], action) => {
 	switch (action.type) {
 		case 'ADD_VIEW':
 			return [
               ...state,
               view(undefined, action)
               ];
+        case types.ADD_VIEWPOINT_FULFILLED:
+			return [
+	          ...state,
+	          viewpoint(undefined, action)
+	          ];
     default:
       return state;
     }
@@ -131,7 +138,7 @@ const rootReducer = combineReducers({
   routing: routerReducer,
   users,
   shops,
-  views
+  viewpoints
 });
 
 export default rootReducer;

@@ -13,7 +13,7 @@ class MyViewpoints extends Component {
             <br></br>
             <div>
                 <MyViewpointsFetchViewpoints> </MyViewpointsFetchViewpoints>
-                <MyViewpointsAddViewpoint> </MyViewpointsAddViewpoint>            
+                <MyViewpointsAddViewpoint data={this.props.data}> </MyViewpointsAddViewpoint>            
             </div>
         </div>
     );

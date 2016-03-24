@@ -3,17 +3,20 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
-import { unboundAddShop } from '~/src/actions/shops';
+import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 
 class MyViewpointsAddViewpoint extends Component {
 
-  addShop() {
-    this.props.addShop({
+  clickedAddViewpoint() {
+    this.props.boundAddViewpoint({
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue()
+      key: this.refs.keyBox.getValue(),
+      shop: this.props.data,
+      imageFile: this.refs.imageFileBox.getValue()
     });
     this.refs.nameBox.value = '';
     this.refs.keyBox.value = '';
+    this.refs.imageFileBox.value = '';
   }
 
   render() {
@@ -27,7 +30,7 @@ class MyViewpointsAddViewpoint extends Component {
           <Input type="ViewpointKey" ref='keyBox' placeholder="Viewpoint Key..." />
           <label htmlFor="inputViewpointImageFile" className="sr-only">Viewpoint Image</label>
           <Input type="ViewpointImageFile" ref='imageFileBox' placeholder="Viewpoint Image..." />
-          <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.addShop.bind(this)} >Add viewpoint</ButtonInput>
+          <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.clickedAddViewpoint.bind(this)} >Add viewpoint</ButtonInput>
           <br></br>
       </div>
     );
@@ -35,15 +38,12 @@ class MyViewpointsAddViewpoint extends Component {
 }
 
 function mapStateToProps(state) {
-  const shops = state.shops;
-  return {
-    shops
-  };
+  return {};
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    addShop: bindActionCreators(unboundAddShop, dispatch),
+    boundAddViewpoint: bindActionCreators(unboundAddViewpoint, dispatch),
   };
 };
 

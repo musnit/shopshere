@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
 import { unboundAddShop } from '~/src/actions/shops';
-import MyShopsFetchShops from '~/src/components/MyShopsFetchShops';
 
 class MyShopsAddShop extends Component {
 
