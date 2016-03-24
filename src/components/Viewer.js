@@ -13,6 +13,12 @@ var OrbitControls = require('three-orbit-controls')(THREE);
 
 class Viewer extends Component {
 
+	disableOrbit(){
+		console.log("here");
+		console.log(this.props.temp.controls);
+		state.controls.enabled = !state.controls.enabled;
+	}
+
 	componentDidMount() {
 	    let manualControl = false;
 		let longitude = 0;
@@ -79,6 +85,7 @@ class Viewer extends Component {
 
 
         var controls = new OrbitControls( camera );
+        this.setState({controls: controls});
         //dont want to zoom out further than the radius of the sphere of our shopwindow
         controls.maxDistance = 100;
         //can only look down to 45 degrees ( dont wanna display floor)
@@ -90,9 +97,32 @@ class Viewer extends Component {
         //autorotation - can disable too
         controls.autoRotate = false;
 		controls.autoRotateSpeed = 0.5; 
+		
 
 		var raycaster = new THREE.Raycaster();
 		
+
+
+
+		//adding one default hotspot here:
+
+
+		var geometry1 = new THREE.SphereGeometry( 120, 70, 70, 0, 0.3, 1, 0.6 );
+		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff } );
+		var sphere1 = new THREE.Mesh( geometry1, material1 );
+		scene.add( sphere1 );
+
+
+		// var controls1 = new OrbitControls( sphere1 );
+
+		var geometry1 = new THREE.BoxGeometry( 1, 1, 1 );
+		var material1 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+		var cube = new THREE.Mesh( geometry1, material1 );
+		scene.add( cube );
+
+
+
 
   //       var map3 = new THREE.TextureLoader().load( "../images/circle.png" );
   //       var material3 = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
@@ -121,6 +151,7 @@ class Viewer extends Component {
 
 			if(event.target == renderer.domElement)
 			    {
+			    	isDragging = false;
 
 			    	var mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
 					var mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -130,22 +161,28 @@ class Viewer extends Component {
 			        
 			        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 			        var intersects = raycaster.intersectObjects( [sphereMesh] );
-			        console.log("intersects.length: " + intersects.length);
+			        // console.log("intersects.length: " + intersects.length);
 			        if ( intersects.length > 0 ) {
-			            console.log("intersected objects");
-			            console.log(intersects[0].point);
-			            console.log(intersects[0].point.x);
-			            console.log(intersects[0].point.y);
-			            console.log(intersects[0].point.z);
+			            // console.log("intersected objects");
+			            // console.log(intersects[0].point);
+			            // console.log(intersects[0].point.x);
+			            // console.log(intersects[0].point.y);
+			            // console.log(intersects[0].point.z);
 			            /* do stuff */
 			                
-			            var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
-  						var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
-  						var sprite2 = new THREE.Sprite( material2 );
-    					sprite2.position.setX(intersects[0].point.x);		
-    					sprite2.position.setY(intersects[0].point.y);	
-    					sprite2.position.setZ(intersects[0].point.z);		
-    					scene.add( sprite2 );	
+			     //        var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
+  						// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
+  						// var sprite2 = new THREE.Sprite( material2 );
+    				// 	sprite2.position.setX(intersects[0].point.x);		
+    				// 	sprite2.position.setY(intersects[0].point.y);	
+    				// 	sprite2.position.setZ(intersects[0].point.z);		
+    				// 	scene.add( sprite2 );	
+
+    					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
+
+    					
+
+
 			        }
 			    }
 			// calculate mouse position in normalized device coordinates
@@ -181,6 +218,75 @@ class Viewer extends Component {
 			renderer.render(scene, camera);
 			
 		}
+
+
+
+		let isDragging = false;
+		let previousMousePosition = {
+			x: 0,
+			y: 0
+		}
+
+
+		//MOUSEDOWN
+		function onDocumentMouseDown( event ) {
+
+			event.preventDefault();
+
+			if(event.target == renderer.domElement) {
+				isDragging = true;
+				console.log("successful mousedown");
+			}
+
+
+		};
+
+		document.addEventListener("mousedown", onDocumentMouseDown, false);
+
+
+		//MOUSEMOVE
+		function onDocumentMouseMove( event ) {
+
+			event.preventDefault();
+
+
+			var deltaMove = {
+		        x: event.clientX-previousMousePosition.x,
+		        y: event.clientY-previousMousePosition.y
+		    };
+
+			if(event.target == renderer.domElement && isDragging) {
+				var deltaRotationQuaternion = new THREE.Quaternion();
+				deltaRotationQuaternion.setFromEuler(new THREE.Euler(
+	                toRadians(deltaMove.y * 1),
+	                toRadians(deltaMove.x * 1),
+	                0,
+	                'XYZ'
+	            ));
+				// console.log(cube.quaternion);
+				// console.log(deltaRotationQuaternion);
+				// console.log(event.clientX);
+	            sphere1.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
+			}
+
+			previousMousePosition = {
+		        x: event.clientX,
+		        y: event.clientY
+		    };
+		}
+
+		document.addEventListener("mousemove", onDocumentMouseMove, false);
+
+
+		//HELPERS
+		function toRadians(angle) {
+			return angle * (Math.PI / 180);
+		}
+
+		function toDegrees(angle) {
+			return angle * (180 / Math.PI);
+		}
+
 
 		document.addEventListener("mouseup", onDocumentMouseUp, false);
 
@@ -297,7 +403,7 @@ class Viewer extends Component {
       	<button
           className = "btn btn-lg btn-primary btn-block"
           type = "submit"
-          onClick = {this.componentDidMount.controls} >
+          onClick = {this.disableOrbit.bind(this)} >
           Toggle Rotate
         </button><br/>
 
@@ -310,5 +416,10 @@ class Viewer extends Component {
 };
 
 
+function mapStateToProps(state) {
+  const temp = state;
+  return { temp };
+}
 
-export default Viewer;
+
+export default connect(mapStateToProps)(Viewer);
