@@ -6,15 +6,22 @@ import { bindActionCreators } from 'redux';
 import { fetchOneShop } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
 import MyViewpoints from '~/src/components/MyViewpoints';
+import { find } from 'lodash';
 
 class Shop extends Component {
 
   render() {
+
+    //this is to just filter out the one shop object we want
+    var props = this.props.shop;
+    var name = this.props.params.name;
+    var oneshop = [_.find(props, function(o) { return o.name == name; })];
+
     return (
       <div>
           <Navbar> </Navbar>
           <div> 
-              {this.props.shop.map((shop) => 
+              {oneshop.map((shop) => 
               <div key={shop.key}>
                 <h1> PAGE FOR <b>{shop.name}</b></h1>
                 <h2> KEY: <i>{shop.key}</i></h2>
