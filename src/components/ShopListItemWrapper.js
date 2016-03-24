@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 
 
-class ListItemWrapper extends Component {
+class ShopListItemWrapper extends Component {
   render() {
     return (
       <li>
@@ -13,4 +13,4 @@ class ListItemWrapper extends Component {
   }
 }
 
-export default ListItemWrapper;
+export default ShopListItemWrapper;
