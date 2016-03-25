@@ -21,8 +21,8 @@ class Shop extends Component {
       <div>
           <Navbar> </Navbar>
           <div> 
-              {oneshop.map((shop) => 
-              <div key={shop.key}>
+              {oneshop.map((shop, index) => 
+              <div key={index}>
                 <h1> PAGE FOR <b>{shop.name}</b></h1>
                 <h2> KEY: <i>{shop.key}</i></h2>
               </div>

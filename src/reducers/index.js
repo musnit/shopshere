@@ -129,6 +129,8 @@ const viewpoints = (state=[], action) => {
 	          ...state,
 	          viewpoint(undefined, action)
 	          ];
+	    case types.FETCH_VIEWPOINTS_FULFILLED:
+	        return action.payload;
     default:
       return state;
     }

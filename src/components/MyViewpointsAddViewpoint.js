@@ -23,7 +23,7 @@ class MyViewpointsAddViewpoint extends Component {
     return (
       <div className="container">
           <br></br>
-          <h2> Add a new viewpoint: </h2>
+          <h2> Add a new Viewpoint: </h2>
           <label htmlFor="inputViewpointName" className="sr-only">View Name</label>
           <Input type="ViewpointName" ref='nameBox' placeholder="Viewpoint Name..." required />
           <label htmlFor="inputViewpointKey" className="sr-only">View Key</label>
