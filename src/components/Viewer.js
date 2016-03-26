@@ -7,16 +7,17 @@ import { Input, ButtonInput, Button } from 'react-bootstrap';
 import Navbar from '../Navbar.js';
 
 var OrbitControls = require('three-orbit-controls')(THREE);
+var TransformControls = require('three-transformcontrols');
 
-
+var controls = {};
 
 
 class Viewer extends Component {
 
 	disableOrbit(){
 		console.log("here");
-		console.log(this.props.temp.controls);
-		state.controls.enabled = !state.controls.enabled;
+		console.log(controls);
+		controls.enabled = !controls.enabled;
 	}
 
 	componentDidMount() {
@@ -37,7 +38,7 @@ class Viewer extends Component {
 		let image7 = "https://z-1-scontent-lax3-1.xx.fbcdn.net/hphotos-xfp1/v/t35.0-12/12675270_10154611510406102_593114028_o.jpg?oh=32848a29ee1a44305146b6f8da3ac4de&oe=56F43AE4";
 
 		// panoramas background
-		let panoramasArray = [image7];
+		let panoramasArray = [image3];
 		let panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 		// setting up the renderer
@@ -52,12 +53,18 @@ class Viewer extends Component {
 		let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 		//camera.target = new THREE.Vector3(0, 0, 0);
 
+		//transform controls!!
+		let TControl = new TransformControls(camera, renderer.domElement);
+		TControl.addEventListener( 'change', render );
+
 		camera.position.z = -5;
+
+
 
 
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
-		let sphere = new THREE.SphereGeometry(200, 100, 100);
+		let sphere = new THREE.SphereGeometry(100, 70, 70);
 		sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 		// creation of the sphere material
@@ -84,8 +91,7 @@ class Viewer extends Component {
         sprite2.position.setX(2);
 
 
-        var controls = new OrbitControls( camera );
-        this.setState({controls: controls});
+        controls = new OrbitControls( camera );
         //dont want to zoom out further than the radius of the sphere of our shopwindow
         controls.maxDistance = 100;
         //can only look down to 45 degrees ( dont wanna display floor)
@@ -107,7 +113,7 @@ class Viewer extends Component {
 		//adding one default hotspot here:
 
 
-		var geometry1 = new THREE.SphereGeometry( 120, 70, 70, 0, 0.3, 1, 0.6 );
+		var geometry1 = new THREE.SphereGeometry( 90, 70, 70, 0, 0.3, 1, 0.6 );
 		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff } );
 		var sphere1 = new THREE.Mesh( geometry1, material1 );
@@ -116,13 +122,22 @@ class Viewer extends Component {
 
 		// var controls1 = new OrbitControls( sphere1 );
 
-		var geometry1 = new THREE.BoxGeometry( 1, 1, 1 );
-		var material1 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-		var cube = new THREE.Mesh( geometry1, material1 );
-		scene.add( cube );
+		//var geometry1 = new THREE.BoxGeometry( 1, 1, 1 );
+		//var material1 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+		//var cube = new THREE.Mesh( geometry1, material1 );
+		//scene.add( cube );
+
+
+		//transform controls!!
+
+		TControl.attach( sphere1 );
 
 
 
+		scene.add( TControl );
+
+
+		TControl.setMode( "rotate" );
 
   //       var map3 = new THREE.TextureLoader().load( "../images/circle.png" );
   //       var material3 = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
@@ -241,7 +256,7 @@ class Viewer extends Component {
 
 		};
 
-		document.addEventListener("mousedown", onDocumentMouseDown, false);
+		//document.addEventListener("mousedown", onDocumentMouseDown, false);
 
 
 		//MOUSEMOVE
@@ -266,7 +281,7 @@ class Viewer extends Component {
 				// console.log(cube.quaternion);
 				// console.log(deltaRotationQuaternion);
 				// console.log(event.clientX);
-	            sphere1.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
+	            //sphere1.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube.quaternion);
 			}
 
 			previousMousePosition = {
@@ -275,7 +290,7 @@ class Viewer extends Component {
 		    };
 		}
 
-		document.addEventListener("mousemove", onDocumentMouseMove, false);
+		//document.addEventListener("mousemove", onDocumentMouseMove, false);
 
 
 		//HELPERS
@@ -288,7 +303,7 @@ class Viewer extends Component {
 		}
 
 
-		document.addEventListener("mouseup", onDocumentMouseUp, false);
+		//document.addEventListener("mouseup", onDocumentMouseUp, false);
 
 
 		document.addEventListener( 'dragover', function ( event ) {
@@ -404,7 +419,7 @@ class Viewer extends Component {
           className = "btn btn-lg btn-primary btn-block"
           type = "submit"
           onClick = {this.disableOrbit.bind(this)} >
-          Toggle Rotate
+          Toggle Camera Controls
         </button><br/>
 
       </div>

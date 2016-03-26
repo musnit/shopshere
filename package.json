@@ -75,6 +75,7 @@
     "superagent": "^1.6.1",
     "three": "^0.74.0",
     "three-orbit-controls": "^72.0.0",
+    "three-transformcontrols": "0.0.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
