@@ -19,9 +19,6 @@ class App extends Component {
               <div>
                   <p> Your landing page here... </p>
               </div>
-              <div>
-                  <Button type="submit" bsStyle="info" bsSize="medium" >Logout</Button>
-              </div>
           </div>
       </div>
     );
