@@ -107,11 +107,6 @@ const viewpoint = (state, action) => {
 	switch (action.type) {
 		case types.ADD_VIEWPOINT_FULFILLED:
 	        return action.payload;
-		case 'ADD_VIEW':
-			return {
-				viewid:action.viewid,
-				imageURL:action.imageURL
-			};
     default:
       return state;
 	}
@@ -119,11 +114,6 @@ const viewpoint = (state, action) => {
 
 const viewpoints = (state=[], action) => {
 	switch (action.type) {
-		case 'ADD_VIEW':
-			return [
-              ...state,
-              view(undefined, action)
-              ];
         case types.ADD_VIEWPOINT_FULFILLED:
 			return [
 	          ...state,
@@ -131,6 +121,8 @@ const viewpoints = (state=[], action) => {
 	          ];
 	    case types.FETCH_VIEWPOINTS_FULFILLED:
 	        return action.payload;
+	    case types.CLEAR_VIEWPOINTS:
+	    	return [];
     default:
       return state;
     }

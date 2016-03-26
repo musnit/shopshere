@@ -27,12 +27,8 @@ export function fetchViewpoints(options) {
   }
 };
 
-// export function fetchOneShop(name) {
-//   const nameForFetch = name.params["name"];
-//   return {
-//     type: types.FETCH_SHOPS,
-//     payload: {
-//       promise: fetchOneShopAPI(nameForFetch)
-//     }
-//   }
-// };
+export function clearViewpoints() {
+  return {
+    type: types.CLEAR_VIEWPOINTS
+  }
+};

@@ -4,12 +4,14 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ViewpointListItemWrapper from '~/src/components/ViewpointListItemWrapper';
-import { fetchViewpoints } from '~/src/actions/viewpoints';
+import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
 
 
 class MyViewpointsFetchViewpoints extends Component {
 
-  
+  componentWillUnmount() {
+    this.props.clearViewpoints();
+  }
 
   render() {
 
@@ -42,6 +44,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchViewpoints: bindActionCreators(fetchViewpoints, dispatch),
+    clearViewpoints: bindActionCreators(clearViewpoints, dispatch)
   };
 }
 

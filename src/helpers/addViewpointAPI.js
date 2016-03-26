@@ -10,7 +10,7 @@ export default (data) => {
 	     if (err || !res.ok) {
 	       console.log('Oh no! error' + JSON.stringify(err));
 	     } else {
-	       console.log('yay posted ' + JSON.stringify(res.text));
+	       //console.log('yay posted ' + JSON.stringify(res.text));
 	       //console.log(res.text);
 	       resolve(JSON.parse(res.text)["Item"]);	
 	     }
