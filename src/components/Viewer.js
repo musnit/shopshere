@@ -64,7 +64,7 @@ class Viewer extends Component {
 
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
-		let sphere = new THREE.SphereGeometry(100, 70, 70);
+		let sphere = new THREE.SphereGeometry(100, 40, 40);
 		sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 		// creation of the sphere material
@@ -79,16 +79,16 @@ class Viewer extends Component {
 		scene.add(sphereMesh);
 
 		//testing add hotspot overlay
-		var map1 = new THREE.TextureLoader().load( "../images/sprite2.png" );
-        var material1 = new THREE.SpriteMaterial( { map: map1, color: 0xffffff, fog: true } );
-        var sprite1 = new THREE.Sprite( material1 );
-        sprite1.position.y = 100;
+		// var map1 = new THREE.TextureLoader().load( "../images/sprite2.png" );
+  //       var material1 = new THREE.SpriteMaterial( { map: map1, color: 0xffffff, fog: true } );
+  //       var sprite1 = new THREE.Sprite( material1 );
+  //       sprite1.position.y = 100;
 
 
-        var map2 = new THREE.TextureLoader().load( "../images/ball.png" );
-        var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
-        var sprite2 = new THREE.Sprite( material2 );
-        sprite2.position.setX(2);
+  //       var map2 = new THREE.TextureLoader().load( "../images/ball.png" );
+  //       var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
+  //       var sprite2 = new THREE.Sprite( material2 );
+  //       sprite2.position.setX(2);
 
 
         controls = new OrbitControls( camera );
@@ -113,9 +113,9 @@ class Viewer extends Component {
 		//adding one default hotspot here:
 
 
-		var geometry1 = new THREE.SphereGeometry( 90, 70, 70, 0, 0.3, 1, 0.6 );
+		var geometry1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.3, 1, 0.6 );
 		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff } );
+		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff, wireframe: true, vertexColors: THREE.FaceColors} );
 		var sphere1 = new THREE.Mesh( geometry1, material1 );
 		scene.add( sphere1 );
 
