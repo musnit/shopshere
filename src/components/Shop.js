@@ -13,9 +13,18 @@ class Shop extends Component {
   render() {
 
     //this is to just filter out the one shop object we want
-    var props = this.props.shop;
-    var name = this.props.params.name;
-    var oneshop = [_.find(props, function(o) { return o.name == name; })];
+    //sometimes the state is empty so this logic will deal with that case
+    
+
+    if (this.props.shop.length == 0) {
+      var name = this.props.params.name;
+      var oneshop = [{name: "Loading...", key: "Loading..."}];
+    }
+    else {
+      var props = this.props.shop;
+      var name = this.props.params.name;
+      var oneshop = [_.find(props, function(o) { return o.name == name; })];
+    }
 
     return (
       <div>
