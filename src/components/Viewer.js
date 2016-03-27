@@ -113,7 +113,7 @@ class Viewer extends Component {
 		//adding one default hotspot here:
 
 
-		var geometry1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.3, 1, 0.6 );
+		var geometry1 = new THREE.SphereGeometry( 90, 10, 10, 0, 1.3, 1, 0.6 );
 		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff, wireframe: true, vertexColors: THREE.FaceColors} );
 		var sphere1 = new THREE.Mesh( geometry1, material1 );
@@ -405,6 +405,12 @@ class Viewer extends Component {
 
 
     }
+
+
+  componentWillUnmount() {
+    let canvasElement = document.getElementsByTagName("canvas");
+    canvasElement[0].remove();
+  }
 
 
   render() {
