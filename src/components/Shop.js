@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { fetchOneShop } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
 import MyViewpoints from '~/src/components/MyViewpoints';
+import MyProducts from '~/src/components/MyProducts';
 import { find } from 'lodash';
 
 class Shop extends Component {
@@ -40,6 +41,10 @@ class Shop extends Component {
           </div>
 
       <MyViewpoints data={name}></MyViewpoints>
+
+      <br></br>
+
+      <MyProducts data={name}></MyProducts>
       </div>
     );
   }

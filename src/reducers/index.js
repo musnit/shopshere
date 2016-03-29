@@ -128,11 +128,41 @@ const viewpoints = (state=[], action) => {
     }
 };
 
+///////////////////  PRODUCTS  ///////////////////
+
+const product = (state, action) => {
+	switch (action.type) {
+		case types.ADD_PRODUCT_FULFILLED:
+	        return action.payload;
+    default:
+      return state;
+	}
+};
+
+const products = (state=[], action) => {
+	switch (action.type) {
+        case types.ADD_PRODUCT_FULFILLED:
+			return [
+	          ...state,
+	          product(undefined, action)
+	          ];
+	    case types.FETCH_PRODUCTS_FULFILLED:
+	        return action.payload;
+	    case types.CLEAR_PRODUCTS:
+	    	return [];
+    default:
+      return state;
+    }
+};
+
+///////////////////////////////////ROOT
+
 const rootReducer = combineReducers({
   routing: routerReducer,
   users,
   shops,
-  viewpoints
+  viewpoints,
+  products
 });
 
 export default rootReducer;
