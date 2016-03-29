@@ -50,9 +50,6 @@ class Viewer extends Component {
 
 		camera.position.z = -5;
 
-
-
-
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
 		let sphere = new THREE.SphereGeometry(100, 40, 40);
@@ -81,12 +78,8 @@ class Viewer extends Component {
         //autorotation - can disable too
         controls.autoRotate = false;
 		controls.autoRotateSpeed = 0.5; 
-		
 
 		var raycaster = new THREE.Raycaster();
-		
-
-
 
 		//adding one default hotspot here:
 
