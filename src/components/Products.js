@@ -8,12 +8,8 @@ class MyProducts extends Component {
   render() {
     return (
         <div>
-            <h1> My Shop's Products </h1>
-            <br></br>
-            <div>
-                <MyProductsFetchProducts data={this.props.data}> </MyProductsFetchProducts>
-                <MyProductsAddProduct data={this.props.data}> </MyProductsAddProduct>            
-            </div>
+          <MyProductsFetchProducts data={this.props.data}> </MyProductsFetchProducts>
+          <MyProductsAddProduct data={this.props.data}> </MyProductsAddProduct>
         </div>
     );
   }

@@ -7,12 +7,12 @@ import fetch from '~/src/components/fetch';
 import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-class MyShopsFetchShops extends Component {
+class ShopList extends Component {
   render() {
     return (
-      <Nav bsStyle="pills" stacked={true}>
+      <Nav className="shop-list" bsStyle="pills" stacked={true}>
         {this.props.shops.map((shop, index) =>
-          <LinkContainer key={index} to={{ pathname: `/myshops/${shop.name}` }}>
+          <LinkContainer key={index} to={{ pathname: `/shops/${shop.name}` }}>
             <NavItem>{shop.name}</NavItem>
           </LinkContainer>
         )}
@@ -20,7 +20,7 @@ class MyShopsFetchShops extends Component {
     );
   }
 }
-const FetchedShops = fetch(MyShopsFetchShops, {
+const FetchedShopList = fetch(ShopList, {
   actions: [fetchShops]
 });
 
@@ -35,4 +35,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FetchedShops);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedShopList);

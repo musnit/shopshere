@@ -8,12 +8,8 @@ class MyViewpoints extends Component {
   render() {
     return (
         <div>
-            <h1> My Shop's Viewpoints </h1>
-            <br></br>
-            <div>
-                <MyViewpointsFetchViewpoints data={this.props.data}> </MyViewpointsFetchViewpoints>
-                <MyViewpointsAddViewpoint data={this.props.data}> </MyViewpointsAddViewpoint>            
-            </div>
+          <MyViewpointsFetchViewpoints data={this.props.data}> </MyViewpointsFetchViewpoints>
+          <MyViewpointsAddViewpoint data={this.props.data}> </MyViewpointsAddViewpoint>
         </div>
     );
   }

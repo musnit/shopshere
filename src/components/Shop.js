@@ -4,17 +4,25 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchOneShop } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
-import MyViewpoints from '~/src/components/MyViewpoints';
-import MyProducts from '~/src/components/MyProducts';
+import Viewpoints from '~/src/components/Viewpoints';
+import Products from '~/src/components/Products';
 import { find } from 'lodash';
+import { Tabs, Tab } from 'react-bootstrap';
 
 class Shop extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewpointsShowing: true,
+      productsShowing: false
+    };
+  }
 
   render() {
 
     //this is to just filter out the one shop object we want
     //sometimes the state is empty so this logic will deal with that case
-
 
     if (this.props.shop.length == 0) {
       var name = this.props.params.name;
@@ -23,26 +31,22 @@ class Shop extends Component {
     else {
       var props = this.props.shop;
       var name = this.props.params.name;
-      var oneshop = [_.find(props, function(o) { return o.name == name; })];
+      var oneshop = _.find(props, function(o) { return o.name == name; });
     }
 
     return (
       <div>
-          <div> 
-              {oneshop.map((shop, index) =>
-              <div key={index}>
-                <h1> PAGE FOR <b>{shop.name}</b></h1>
-                <h2> KEY: <i>{shop.key}</i></h2>
-              </div>
-              )}
-              <br></br>
-          </div>
-
-      <MyViewpoints data={name}></MyViewpoints>
-
-      <br></br>
-
-      <MyProducts data={name}></MyProducts>
+        <div>
+          <h1>Shop: <b>{oneshop.name}</b></h1>
+        </div>
+        <Tabs defaultActiveKey={1}>
+          <Tab eventKey={1} title="Viewpoints">
+            <Viewpoints data={name} />
+          </Tab>
+          <Tab eventKey={2} title="Products">
+            <Products data={name} />
+          </Tab>
+        </Tabs>
       </div>
     );
   }

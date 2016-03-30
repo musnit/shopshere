@@ -3,14 +3,16 @@
 }
 
 .shop-list {
-  width: 30%;
+  width: 20%;
+  min-width: 200px;
   border-right: solid 1px #ddd;
   border-top: none;
   border-bottom: none;
 }
 
 .shop-details {
-  width: 70%;
+  width: 80%;
+  padding: 10px;
 }
 
 .shops-section {
