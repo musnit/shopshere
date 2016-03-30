@@ -4,11 +4,9 @@ import { Router, Route, browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import App from './App';
-import Example from './components/Example';
-import ExampleTwo from './components/ExampleTwo';
 import Viewer from './components/Viewer';
 import MyShops from './components/MyShops';
-import Shop from './components/Shop'; 
+import Shop from './components/Shop';
 
 class RouteContainer extends Component {
 
@@ -22,16 +20,12 @@ class RouteContainer extends Component {
       <Router ref="router" history={this.state.history}>
         <Route path="/" component={App}>
         </Route>
-        <Route path="/example" component={Example}>
-        </Route>
-        <Route path="/exampletwo" component={ExampleTwo}>
-        </Route>
         <Route path="/viewer" component={Viewer}>
         </Route>
         <Route path="/myshops" component={MyShops}>
-        </Route>   
+        </Route>
         <Route path="/myshops/:name" component={Shop}>
-        </Route>    
+        </Route>
       </Router>
     );
   }
