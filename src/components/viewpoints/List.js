@@ -7,7 +7,7 @@ import ViewpointListItemWrapper from '~/src/components/ViewpointListItemWrapper'
 import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
 
 
-class MyViewpointsFetchViewpoints extends Component {
+class List extends Component {
 
   componentWillUnmount() {
     this.props.clearViewpoints();
@@ -17,20 +17,18 @@ class MyViewpointsFetchViewpoints extends Component {
 
     return (
       <div className="container">
-          <br></br>
-          <h2> List of your Viewpoints: </h2>
-          <div>
-              {this.props.viewpoints.map((viewpoint, index) => 
-                <ViewpointListItemWrapper key={index} data={viewpoint}/>
-              )}
-          </div>
-          <br></br>
+        <label>Select a viewpoint to preview/edit:</label>
+        <select>
+          {this.props.viewpoints.map((viewpoint, index) =>
+            <option key={index}> {viewpoint.name} </option>
+          )}
+        </select>
       </div>
     );
   }
 }
 
-const FetchedViewpoints = fetch(MyViewpointsFetchViewpoints, {
+const FetchedList = fetch(List, {
   actions: [fetchViewpoints]
 });
 
@@ -48,4 +46,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FetchedViewpoints);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedList);

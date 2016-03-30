@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Input, ButtonInput } from 'react-bootstrap';
 import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 
-class MyViewpointsAddViewpoint extends Component {
+class Add extends Component {
 
   clickedAddViewpoint() {
     this.props.boundAddViewpoint({
@@ -47,4 +47,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(MyViewpointsAddViewpoint);
+export default connect(mapStateToProps,mapDispatchToProps)(Add);

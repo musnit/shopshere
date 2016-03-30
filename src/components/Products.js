@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import MyProductsFetchProducts from '~/src/components/MyProductsFetchProducts';
 import MyProductsAddProduct from '~/src/components/MyProductsAddProduct';
 
-class MyProducts extends Component {
+class Products extends Component {
   render() {
     return (
         <div>
@@ -15,4 +15,4 @@ class MyProducts extends Component {
   }
 }
 
-export default MyProducts;
+export default Products;
