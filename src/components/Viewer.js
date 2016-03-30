@@ -11,6 +11,9 @@ var TransformControls = require('three-transformcontrols');
 
 var controls = {};
 
+const viewerSizeX = 800;
+const viewerSizeY = 500;
+
 class Viewer extends Component {
 
 	disableOrbit(){
@@ -33,7 +36,7 @@ class Viewer extends Component {
 
 		// setting up the renderer
 		let renderer = new THREE.WebGLRenderer();
-		renderer.setSize(800, 500);
+		renderer.setSize(viewerSizeX, viewerSizeY);
 		document.getElementById('viewer-placeholder').appendChild(renderer.domElement);
 
 		// creating a new scene
@@ -215,14 +218,12 @@ class Viewer extends Component {
 		// 		//
 
 		window.addEventListener( 'resize', onWindowResize, false );
-
-		function onWindowResize() {
+			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setSize(viewerSizeX, viewerSizeY);
 			}
-
-		render();
+			render();
     }
 
   componentWillUnmount() {
