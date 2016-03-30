@@ -21,12 +21,11 @@ class RouteContainer extends Component {
     return (
       <Router ref="router" history={this.state.history}>
         <Route path="/" component={App}>
-          <IndexRoute component={Welcome} />
           <Route path="/viewer" component={Viewer}>
           </Route>
           <Route path="/myshops" component={MyShops}>
-          </Route>
-          <Route path="/myshops/:name" component={Shop}>
+            <Route path="/myshops/:name" component={Shop}>
+            </Route>
           </Route>
         </Route>
       </Router>

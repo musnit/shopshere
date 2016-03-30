@@ -10,7 +10,6 @@ class Welcome extends Component {
   render() {
     return (
       <div>
-        <Navbar />
         {this.props.children}
       </div>
     );

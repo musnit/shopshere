@@ -10,7 +10,6 @@ class Navbar extends Component {
   render() {
     return (
 	  <Nav bsStyle="pills">
-	    <LinkContainer to={{ pathname: '/' }}><NavItem> Home </NavItem></LinkContainer>
 	    <LinkContainer to={{ pathname: '/myshops' }}><NavItem> My Shops</NavItem></LinkContainer>
 	    <LinkContainer to={{ pathname: '/viewer' }}><NavItem> Viewer </NavItem></LinkContainer>
 	  </Nav>

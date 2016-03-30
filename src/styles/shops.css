@@ -1,0 +1,20 @@
+.shops-page {
+  padding: 50px;
+}
+
+.shop-list {
+  width: 30%;
+  border-right: solid 1px #ddd;
+  border-top: none;
+  border-bottom: none;
+}
+
+.shop-details {
+  width: 70%;
+}
+
+.shops-section {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px #ddd;
+}
