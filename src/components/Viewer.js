@@ -77,7 +77,7 @@ class Viewer extends Component {
         controls.enablePan  = false;
         //autorotation - can disable too
         controls.autoRotate = false;
-		controls.autoRotateSpeed = 0.5; 
+		controls.autoRotateSpeed = 0.5;
 
 		var raycaster = new THREE.Raycaster();
 
@@ -115,15 +115,15 @@ class Viewer extends Component {
 		// listeners
 		// document.addEventListener("mousedown", onDocumentMouseDown, false);
 		// document.addEventListener("mousemove", onDocumentMouseMove, false);
-		
-			
-		
-		
-		
-		
+
+
+
+
+
+
 
 		// function onDocumentMouseUp( event ){
-			
+
 		// 	event.preventDefault();
 
 
@@ -137,7 +137,7 @@ class Viewer extends Component {
 
 		// 	        var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
 		// 	        vector.unproject( camera );
-			        
+
 		// 	        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 		// 	        var intersects = raycaster.intersectObjects( [sphereMesh] );
 		// 	        // console.log("intersects.length: " + intersects.length);
@@ -148,33 +148,33 @@ class Viewer extends Component {
 		// 	            // console.log(intersects[0].point.y);
 		// 	            // console.log(intersects[0].point.z);
 		// 	            /* do stuff */
-			                
+
 		// 	     //        var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
   // 						// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
   // 						// var sprite2 = new THREE.Sprite( material2 );
-  //   				// 	sprite2.position.setX(intersects[0].point.x);		
-  //   				// 	sprite2.position.setY(intersects[0].point.y);	
-  //   				// 	sprite2.position.setZ(intersects[0].point.z);		
-  //   				// 	scene.add( sprite2 );	
+  //   				// 	sprite2.position.setX(intersects[0].point.x);
+  //   				// 	sprite2.position.setY(intersects[0].point.y);
+  //   				// 	sprite2.position.setZ(intersects[0].point.z);
+  //   				// 	scene.add( sprite2 );
 
   //   					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
 
-    					
+
 
 
 		// 	        }
 		// 	    }
 		// }
-		   
+
 		function render(){
-			
-			requestAnimationFrame(render);			
+
+			requestAnimationFrame(render);
 
 			controls.update();
 
 			// calling again render function
 			renderer.render(scene, camera);
-			
+
 		}
 
 
@@ -261,7 +261,6 @@ class Viewer extends Component {
   render() {
     return (
 <div>
-      <Navbar> </Navbar>
       <div>
 
       	<h1> Viewer </h1>
@@ -278,7 +277,7 @@ class Viewer extends Component {
       </div>
     );
   }
-  	
+
 };
 
 export default Viewer;

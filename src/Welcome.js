@@ -10,8 +10,14 @@ class Welcome extends Component {
   render() {
     return (
       <div>
-        <Navbar />
-        {this.props.children}
+          <div>
+              <div>
+                  <h1> Welcome to ShopSphere!</h1>
+              </div>
+              <div>
+                  <p> Your landing page here... </p>
+              </div>
+          </div>
       </div>
     );
   }
