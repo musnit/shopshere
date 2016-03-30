@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ViewpointListItemWrapper from '~/src/components/ViewpointListItemWrapper';
 import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
-
+import Viewer from '../Viewer';
 
 class List extends Component {
 
@@ -16,13 +16,14 @@ class List extends Component {
   render() {
 
     return (
-      <div className="container">
+      <div>
         <label>Select a viewpoint to preview/edit:</label>
         <select>
           {this.props.viewpoints.map((viewpoint, index) =>
             <option key={index}> {viewpoint.name} </option>
           )}
         </select>
+        <Viewer />
       </div>
     );
   }

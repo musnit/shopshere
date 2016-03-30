@@ -11,7 +11,6 @@ var TransformControls = require('three-transformcontrols');
 
 var controls = {};
 
-
 class Viewer extends Component {
 
 	disableOrbit(){
@@ -34,8 +33,8 @@ class Viewer extends Component {
 
 		// setting up the renderer
 		let renderer = new THREE.WebGLRenderer();
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(renderer.domElement);
+		renderer.setSize(800, 500);
+		document.getElementById('viewer-placeholder').appendChild(renderer.domElement);
 
 		// creating a new scene
 		let scene = new THREE.Scene();
@@ -66,17 +65,17 @@ class Viewer extends Component {
 		let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 		scene.add(sphereMesh);
 
-        controls = new OrbitControls( camera );
-        //dont want to zoom out further than the radius of the sphere of our shopwindow
-        controls.maxDistance = 100;
-        //can only look down to 45 degrees ( dont wanna display floor)
-        controls.minPolarAngle = Math.PI/4.0;
-        //can only look up to 45 degrees (dont wanna display ceiling)
-        controls.maxPolarAngle  = (3.0*Math.PI)/4.0;
-        //this is disabled so you cant pan out of the sphere
-        controls.enablePan  = false;
-        //autorotation - can disable too
-        controls.autoRotate = false;
+    controls = new OrbitControls( camera );
+    //dont want to zoom out further than the radius of the sphere of our shopwindow
+    controls.maxDistance = 100;
+    //can only look down to 45 degrees ( dont wanna display floor)
+    controls.minPolarAngle = Math.PI/4.0;
+    //can only look up to 45 degrees (dont wanna display ceiling)
+    controls.maxPolarAngle  = (3.0*Math.PI)/4.0;
+    //this is disabled so you cant pan out of the sphere
+    controls.enablePan  = false;
+    //autorotation - can disable too
+    controls.autoRotate = false;
 		controls.autoRotateSpeed = 0.5;
 
 		var raycaster = new THREE.Raycaster();
@@ -99,34 +98,16 @@ class Viewer extends Component {
 
 
 		//transform controls!!
-
 		TControl.attach( sphere1 );
-
-
-
 		scene.add( TControl );
-
-
 		TControl.setMode( "rotate" );
-
-
-
 
 		// listeners
 		// document.addEventListener("mousedown", onDocumentMouseDown, false);
 		// document.addEventListener("mousemove", onDocumentMouseMove, false);
 
-
-
-
-
-
-
 		// function onDocumentMouseUp( event ){
-
 		// 	event.preventDefault();
-
-
 
 		// 	if(event.target == renderer.domElement)
 		// 	    {
@@ -167,24 +148,17 @@ class Viewer extends Component {
 		// }
 
 		function render(){
-
 			requestAnimationFrame(render);
-
 			controls.update();
-
 			// calling again render function
 			renderer.render(scene, camera);
-
 		}
-
-
 
 		// let isDragging = false;
 		// let previousMousePosition = {
 		// 	x: 0,
 		// 	y: 0
 		// }
-
 
 		// //MOUSEDOWN
 		// function onDocumentMouseDown( event ) {
@@ -251,29 +225,21 @@ class Viewer extends Component {
 		render();
     }
 
-
   componentWillUnmount() {
     let canvasElement = document.getElementsByTagName("canvas");
     canvasElement[0].remove();
   }
 
-
   render() {
     return (
-<div>
-      <div>
-
-      	<h1> Viewer </h1>
-
+			<div>
       	<button
           className = "btn btn-lg btn-primary btn-block"
           type = "submit"
           onClick = {this.disableOrbit.bind(this)} >
           Toggle Camera Controls
-        </button><br/>
-
-      </div>
-
+        </button>
+				<div id='viewer-placeholder'></div>
       </div>
     );
   }
