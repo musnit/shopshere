@@ -19,9 +19,6 @@ class Shop extends Component {
 
   render() {
 
-    //this is to just filter out the one shop object we want
-    //sometimes the state is empty so this logic will deal with that case
-
     var name = this.props.params.name;
 
     return (

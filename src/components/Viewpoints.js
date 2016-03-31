@@ -5,6 +5,7 @@ import List from '~/src/components/viewpoints/List';
 import Add from '~/src/components/viewpoints/Add';
 
 class Viewpoints extends Component {
+
   render() {
     return (
         <div>

@@ -53,12 +53,12 @@ class Add extends Component {
           </Modal.Header>
           <Modal.Body>
 
-          <label htmlFor="inputViewpointName" className="sr-only">View Name</label>
-          <Input type="ViewpointName" ref='nameBox' placeholder="Viewpoint Name..." required />
-          <label htmlFor="inputViewpointKey" className="sr-only">View Key</label>
-          <Input type="ViewpointKey" ref='keyBox' placeholder="Viewpoint Key..." />
-          <label htmlFor="inputViewpointImageFile" className="sr-only">Viewpoint Image</label>
-          <Input type="ViewpointImageFile" ref='imageFileBox' placeholder="Viewpoint Image..." />
+          <label htmlFor="inputViewpointName">Viewpoint Name</label>
+          <Input type="ViewpointName" ref='nameBox' placeholder="Name..." required />
+          <label htmlFor="inputViewpointKey">Viewpoint Key</label>
+          <Input type="ViewpointKey" ref='keyBox' placeholder="Key..." />
+          <label htmlFor="inputViewpointImageFile">Viewpoint Image</label>
+          <Input type="ViewpointImageFile" ref='imageFileBox' placeholder="Image..." />
 
 
           </Modal.Body>

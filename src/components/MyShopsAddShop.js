@@ -50,10 +50,10 @@ class MyShopsAddShop extends Component {
             <Modal.Title>Add a new shop:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <label htmlFor="inputShopName" className="sr-only">Shop Name</label>
-          <Input type="ShopName" ref='nameBox' placeholder="Shop Name..." required />
-          <label htmlFor="inputShopKey" className="sr-only">Shop Key</label>
-          <Input type="ShopKey" ref='keyBox' placeholder="Shop Key..." />
+          <label htmlFor="inputShopName">Shop Name</label>
+          <Input type="ShopName" ref='nameBox' placeholder="Name..." required />
+          <label htmlFor="inputShopKey">Shop Key</label>
+          <Input type="ShopKey" ref='keyBox' placeholder="Key..." />
 
 
           </Modal.Body>
