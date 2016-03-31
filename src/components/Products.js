@@ -1,15 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import MyProductsFetchProducts from '~/src/components/MyProductsFetchProducts';
-import MyProductsAddProduct from '~/src/components/MyProductsAddProduct';
+import List from '~/src/components/products/List';
+import Add from '~/src/components/products/Add';
 
 class Products extends Component {
   render() {
     return (
         <div>
-          <MyProductsFetchProducts data={this.props.data}> </MyProductsFetchProducts>
-          <MyProductsAddProduct data={this.props.data}> </MyProductsAddProduct>
+          <List data={this.props.data} />
+          <Add data={this.props.data} />
         </div>
     );
   }
