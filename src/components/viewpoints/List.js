@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import ViewpointListItemWrapper from '~/src/components/ViewpointListItemWrapper';
 import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
 import Viewer from '../Viewer';
 
