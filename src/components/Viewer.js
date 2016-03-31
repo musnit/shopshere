@@ -17,8 +17,6 @@ const viewerSizeY = 500;
 class Viewer extends Component {
 
 	disableOrbit(){
-		console.log("here");
-		console.log(controls);
 		controls.enabled = !controls.enabled;
 	}
 
@@ -68,18 +66,19 @@ class Viewer extends Component {
 		let sphereMesh = new THREE.Mesh(sphere, sphereMaterial);
 		scene.add(sphereMesh);
 
-    controls = new OrbitControls( camera );
-    //dont want to zoom out further than the radius of the sphere of our shopwindow
-    controls.maxDistance = 100;
-    //can only look down to 45 degrees ( dont wanna display floor)
-    controls.minPolarAngle = Math.PI/4.0;
-    //can only look up to 45 degrees (dont wanna display ceiling)
-    controls.maxPolarAngle  = (3.0*Math.PI)/4.0;
-    //this is disabled so you cant pan out of the sphere
-    controls.enablePan  = false;
-    //autorotation - can disable too
-    controls.autoRotate = false;
+	    controls = new OrbitControls( camera, renderer.domElement );
+	    //dont want to zoom out further than the radius of the sphere of our shopwindow
+	    controls.maxDistance = 100;
+	    //can only look down to 45 degrees ( dont wanna display floor)
+	    controls.minPolarAngle = Math.PI/4.0;
+	    //can only look up to 45 degrees (dont wanna display ceiling)
+	    controls.maxPolarAngle  = (3.0*Math.PI)/4.0;
+	    //this is disabled so you cant pan out of the sphere
+	    controls.enablePan  = false;
+	    //autorotation - can disable too
+	    controls.autoRotate = false;
 		controls.autoRotateSpeed = 0.5;
+		controls.enabled = false;
 
 		var raycaster = new THREE.Raycaster();
 
