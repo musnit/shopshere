@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button} from 'react-bootstrap';
 import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 
 class Add extends Component {
@@ -14,24 +14,58 @@ class Add extends Component {
       shop: this.props.data,
       imageFile: this.refs.imageFileBox.getValue()
     });
-    this.refs.nameBox.value = '';
-    this.refs.keyBox.value = '';
-    this.refs.imageFileBox.value = '';
+    this.refs.nameBox.getInputDOMNode().value = '';
+    this.refs.keyBox.getInputDOMNode().value = '';
+    this.refs.imageFileBox.getInputDOMNode().value = '';
+    this.setState({ showModal: false });
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false
+    };
+  }
+
+  close() {
+    this.setState({ showModal: false });
+  }
+
+  open() {
+    this.setState({ showModal: true });
   }
 
   render() {
     return (
       <div>
-          <br></br>
-          <h2> Add a new Viewpoint: </h2>
+
+        <Button
+          bsStyle="primary"
+          bsSize="large"
+          onClick={this.open.bind(this)}
+        >
+          Add a new viewpoint
+        </Button>
+
+        <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a new viewpoint:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
           <label htmlFor="inputViewpointName" className="sr-only">View Name</label>
           <Input type="ViewpointName" ref='nameBox' placeholder="Viewpoint Name..." required />
           <label htmlFor="inputViewpointKey" className="sr-only">View Key</label>
           <Input type="ViewpointKey" ref='keyBox' placeholder="Viewpoint Key..." />
           <label htmlFor="inputViewpointImageFile" className="sr-only">Viewpoint Image</label>
           <Input type="ViewpointImageFile" ref='imageFileBox' placeholder="Viewpoint Image..." />
-          <ButtonInput type="submit" bsStyle="primary" bsSize="large"  onClick = {this.clickedAddViewpoint.bind(this)} >Add viewpoint</ButtonInput>
-          <br></br>
+
+
+          </Modal.Body>
+          <Modal.Footer>
+          <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedAddViewpoint.bind(this)} >Add viewpoint</ButtonInput>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
