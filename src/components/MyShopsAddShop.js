@@ -18,7 +18,7 @@ class MyShopsAddShop extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
           <br></br>
           <h2> Add a new shop: </h2>
           <label htmlFor="inputShopName" className="sr-only">Shop Name</label>

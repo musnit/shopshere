@@ -234,7 +234,7 @@ class Viewer extends Component {
     return (
 			<div>
       	<button
-          className = "btn btn-lg btn-primary btn-block"
+          className = "btn btn-lg btn-primary"
           type = "submit"
           onClick = {this.disableOrbit.bind(this)} >
           Toggle Camera Controls

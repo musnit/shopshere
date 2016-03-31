@@ -19,7 +19,7 @@ class Add extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
           <br></br>
           <h2> Add a new Product: </h2>
           <label htmlFor="inputProductName" className="sr-only">Product Name</label>

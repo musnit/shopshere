@@ -21,7 +21,7 @@ class Add extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
           <br></br>
           <h2> Add a new Viewpoint: </h2>
           <label htmlFor="inputViewpointName" className="sr-only">View Name</label>
