@@ -4,8 +4,9 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
-import { fetchProducts, clearProducts } from '~/src/actions/products';
-import { Input, ButtonInput, Modal, Button} from 'react-bootstrap';
+import { fetchProducts, clearProducts, unboundPatchProduct } from '~/src/actions/products';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem} from 'react-bootstrap';
+import '~/src/styles/product.css';
 
 
 
@@ -22,24 +23,94 @@ class List extends Component {
    }
   }
 
-  handleChange(event) {
-  var val = event.target.value;
-  //console.log(val);
+  clickedPatchProduct() {
+    this.props.boundPatchProduct({
+      name: this.refs.nameBox.getValue(),
+      key: this.refs.keyBox.getValue(),
+      description: this.refs.descriptionBox.getValue(),
+      price: this.refs.priceBox.getValue(),
+      shop: this.props.data
+    });
+    this.refs.nameBox.getInputDOMNode().value = '';
+    this.refs.keyBox.getInputDOMNode().value = '';
+    this.refs.descriptionBox.getInputDOMNode().value = '';
+    this.refs.priceBox.getInputDOMNode().value = '';
+    this.setState({ showModal: false });
+  }
+
+
+  constructor(props) {
+    super(props);
+      this.state = {
+        showModal: false,
+        selectedProduct: {
+          name: "",
+          key: "",
+          description: "",
+          price: "",
+          shop: ""
+        }
+      };
+  }
+
+  close() {
+    this.setState({ showModal: false });
+  }
+
+  open(name) {
+    this.setState({ 
+      showModal: true ,
+      selectedProduct: {
+          name: name.target.innerText,
+          key: "",
+          description: "",
+          price: "",
+          shop: ""
+        }
+    });
   }
 
   render() {
 
     return (
-      <div>
-          <label>Select a product to view/edit:</label>
-          <select onChange={this.handleChange.bind(this)}>
-              <option disabled>--</option>
-              {this.props.products.map((product, index) =>
-              <option key={index}> {product.name} </option>
-              )}
-          </select>
-          
+
+      <div className="product-button">
+
+        <DropdownButton bsStyle={'primary'} title={'Select a product to view/edit'} id="product-view-edit">
+
+          {this.props.products.map((product, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
+                )}
+
+        </DropdownButton>
+
+        <Modal show={this.state.showModal} onHide={this.close.bind(this)} prod={this.state.selectedProduct}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit {this.state.selectedProduct.name}:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+
+          <label htmlFor="inputProductName">Product Name</label>
+          <Input type="ProductName" ref='nameBox' placeholder="Name..." required />
+
+          <label htmlFor="inputProductKey">Product Key</label>
+          <Input type="ProductKey" ref='keyBox' placeholder="Key..." />
+
+          <label htmlFor="inputProductDescription">Product Description</label>
+          <Input type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
+
+          <label htmlFor="inputProductPrice">Product Price</label>
+          <Input type="ProductPrice" ref='priceBox' placeholder="Price..." />
+
+
+          </Modal.Body>
+          <Modal.Footer>
+          <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedPatchProduct.bind(this)} >Edit product</ButtonInput>
+          </Modal.Footer>
+        </Modal>
+
       </div>
+
     );
   }
 }
@@ -58,7 +129,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchProducts: bindActionCreators(fetchProducts, dispatch),
-    clearProducts: bindActionCreators(clearProducts, dispatch)
+    clearProducts: bindActionCreators(clearProducts, dispatch),
+    boundPatchProduct: bindActionCreators(unboundPatchProduct, dispatch)
   };
 }
 

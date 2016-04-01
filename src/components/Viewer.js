@@ -232,15 +232,17 @@ class Viewer extends Component {
 
   render() {
     return (
-			<div>
-      	<button
-          className = "btn btn-lg btn-primary"
-          type = "submit"
-          onClick = {this.disableOrbit.bind(this)} >
-          Toggle Camera Controls
-        </button>
-				<div id='viewer-placeholder'></div>
-      </div>
+		<div>
+		    <div className="view-button">
+		        <button
+		            className = "btn btn-lg btn-primary"
+		            type = "submit"
+		            onClick = {this.disableOrbit.bind(this)} >
+		        Toggle Camera Controls
+		        </button>
+		    </div>
+		    <div id='viewer-placeholder'></div>
+		</div>
     );
   }
 

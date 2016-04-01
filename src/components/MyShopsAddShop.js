@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button } from 'react-bootstrap';
 import { unboundAddShop } from '~/src/actions/shops';
+import '~/src/styles/shops.css';
+
 
 class MyShopsAddShop extends Component {
 
@@ -36,14 +38,15 @@ class MyShopsAddShop extends Component {
 
     return (
       <div>
-
-        <Button
-          bsStyle="primary"
-          bsSize="large"
-          onClick={this.open.bind(this)}
-        >
-          Add a new shop
-        </Button>
+        <div className="add-shop-btn">
+          <Button
+            bsStyle="primary"
+            bsSize="large"
+            onClick={this.open.bind(this)}
+          >
+            Add a new shop
+          </Button>
+        </div>
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
