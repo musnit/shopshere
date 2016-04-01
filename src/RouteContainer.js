@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router'
 import { bindActionCreators } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Welcome from './Welcome';
@@ -20,6 +20,7 @@ class RouteContainer extends Component {
   render() {
     return (
       <Router ref="router" history={this.state.history}>
+        <Redirect from="/" to="shops" />
         <Route path="/" component={App}>
           <Route path="/viewer" component={Viewer}>
           </Route>
