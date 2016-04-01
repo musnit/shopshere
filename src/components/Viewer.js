@@ -78,7 +78,7 @@ class Viewer extends Component {
 	    //autorotation - can disable too
 	    controls.autoRotate = false;
 		controls.autoRotateSpeed = 0.5;
-		controls.enabled = false;
+		//controls.enabled = false;
 
 		var raycaster = new THREE.Raycaster();
 
