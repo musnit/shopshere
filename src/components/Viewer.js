@@ -27,9 +27,10 @@ class Viewer extends Component {
 		let image5 = "https://upload.wikimedia.org/wikipedia/commons/7/71/Piccadilly_Arcade_360,_London_-_June_2009.jpg";
 		let image6 = "https://i.ytimg.com/vi/4bhCnXOlRbg/maxresdefault.jpg";
 		let image7 = "https://z-1-scontent-lax3-1.xx.fbcdn.net/hphotos-xfp1/v/t35.0-12/12675270_10154611510406102_593114028_o.jpg?oh=32848a29ee1a44305146b6f8da3ac4de&oe=56F43AE4";
+		let image8 = "/images/360_shop_from_aid.jpg"
 
 		// panoramas background
-		let panoramasArray = [image3];
+		let panoramasArray = [image8];
 		let panoramaNumber = Math.floor(Math.random()*panoramasArray.length);
 
 		// setting up the renderer
@@ -48,7 +49,7 @@ class Viewer extends Component {
 		let TControl = new TransformControls(camera, renderer.domElement);
 		TControl.addEventListener( 'change', render );
 
-		camera.position.z = -5;
+		camera.position.z = -80;
 
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
@@ -89,7 +90,7 @@ class Viewer extends Component {
 		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff, wireframe: true, vertexColors: THREE.FaceColors} );
 		var sphere1 = new THREE.Mesh( geometry1, material1 );
-		scene.add( sphere1 );
+		// scene.add( sphere1 );
 
 
 
@@ -99,55 +100,87 @@ class Viewer extends Component {
 		//scene.add( cube );
 
 
+		
+
+
+		// PRELOAD SOME HOTSPOTS
+
+
+		//BOOTS
+		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
+		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+		var hotspot1 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+		var quaternion = new THREE.Quaternion(-0.16815593676922186,0.01700779740021236,0.9856080075829905,0.00334331928233356);
+    	hotspot1.rotation.setFromQuaternion(quaternion);
+		scene.add( hotspot1 );
+
+
+		//BICYCLE
+		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
+		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+		var hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+		var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
+		hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
+		scene.add( hotspot2 );
+
+
+
+
 		//transform controls!!
-		TControl.attach( sphere1 );
-		scene.add( TControl );
-		TControl.setMode( "rotate" );
+		// TControl.attach( hotspot2 );
+		// scene.add( TControl );
+		// TControl.setMode( "rotate" );
 
 		// listeners
 		// document.addEventListener("mousedown", onDocumentMouseDown, false);
 		// document.addEventListener("mousemove", onDocumentMouseMove, false);
 
-		// function onDocumentMouseUp( event ){
-		// 	event.preventDefault();
+		function onDocumentMouseUp( event ){
+			event.preventDefault();
 
-		// 	if(event.target == renderer.domElement)
-		// 	    {
-		// 	    	isDragging = false;
+			if(event.target == renderer.domElement)
+			    {
+			    	var mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
+					var mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-		// 	    	var mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
-		// 			var mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			        var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
+			        vector.unproject( camera );
 
-		// 	        var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
-		// 	        vector.unproject( camera );
+			        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+			        var intersects = raycaster.intersectObjects( [hotspot1] );
+			        // console.log("intersects.length: " + intersects.length);
+			        if ( intersects.length > 0 ) {
+			        	console.log(intersects.length);
+			        	console.log(intersects[0].object.quaternion);
+			        	console.log(intersects)
 
-		// 	        var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-		// 	        var intersects = raycaster.intersectObjects( [sphereMesh] );
-		// 	        // console.log("intersects.length: " + intersects.length);
-		// 	        if ( intersects.length > 0 ) {
-		// 	            // console.log("intersected objects");
-		// 	            // console.log(intersects[0].point);
-		// 	            // console.log(intersects[0].point.x);
-		// 	            // console.log(intersects[0].point.y);
-		// 	            // console.log(intersects[0].point.z);
-		// 	            /* do stuff */
+			            // console.log("intersected objects");
+			            // console.log(intersects[0].point);
+			            // console.log(intersects[0].point.x);
+			            // console.log(intersects[0].point.y);
+			            // console.log(intersects[0].point.z);
+			            /* do stuff */
 
-		// 	     //        var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
-  // 						// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
-  // 						// var sprite2 = new THREE.Sprite( material2 );
-  //   				// 	sprite2.position.setX(intersects[0].point.x);
-  //   				// 	sprite2.position.setY(intersects[0].point.y);
-  //   				// 	sprite2.position.setZ(intersects[0].point.z);
-  //   				// 	scene.add( sprite2 );
+			     //        var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
+  						// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
+  						// var sprite2 = new THREE.Sprite( material2 );
+    				// 	sprite2.position.setX(intersects[0].point.x);
+    				// 	sprite2.position.setY(intersects[0].point.y);
+    				// 	sprite2.position.setZ(intersects[0].point.z);
+    				// 	scene.add( sprite2 );
 
-  //   					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
+    					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
 
 
 
 
-		// 	        }
-		// 	    }
-		// }
+			        }
+			    }
+		}
+
+		document.addEventListener("mouseup", onDocumentMouseUp, false);
 
 		function render(){
 			requestAnimationFrame(render);
@@ -179,7 +212,7 @@ class Viewer extends Component {
 
 		//document.addEventListener("mousemove", onDocumentMouseMove, false);
 
-		//document.addEventListener("mouseup", onDocumentMouseUp, false);
+		
 
 		//commented out to test performance increase
 		// document.addEventListener( 'dragover', function ( event ) {
