@@ -4,10 +4,10 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
-import { fetchProducts, clearProducts, unboundPatchProduct } from '~/src/actions/products';
+import { fetchProducts, clearProducts, unboundPatchProduct, deleteProduct } from '~/src/actions/products';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem} from 'react-bootstrap';
+import { find, findIndex } from 'lodash';
 import '~/src/styles/product.css';
-
 
 
 class List extends Component {
@@ -24,18 +24,35 @@ class List extends Component {
   }
 
   clickedPatchProduct() {
+
+    let clickDescription = this.refs.descriptionBox.getValue() ? this.refs.descriptionBox.getValue() : this.refs.descriptionBox.props.placeholder;
+    let clickPrice = this.refs.priceBox.getValue() ? this.refs.priceBox.getValue() : this.refs.priceBox.props.placeholder;
+
     this.props.boundPatchProduct({
-      name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue(),
-      description: this.refs.descriptionBox.getValue(),
-      price: this.refs.priceBox.getValue(),
+      name: this.state.selectedProduct.name,
+      key: this.state.selectedProduct.key,
+      description: clickDescription,
+      price: clickPrice,
       shop: this.props.data
     });
-    this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.keyBox.getInputDOMNode().value = '';
     this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
     this.setState({ showModal: false });
+  }
+
+  clickedDeleteProduct() {
+
+    let deleteObject = {
+      name: this.state.selectedProduct.name,
+      index: this.state.selectedProduct.index
+    };
+
+    this.props.deleteProduct(deleteObject);
+
+    this.setState({ 
+      showModal: false,
+      selectedProduct: {}
+     });
   }
 
 
@@ -43,30 +60,27 @@ class List extends Component {
     super(props);
       this.state = {
         showModal: false,
-        selectedProduct: {
-          name: "",
-          key: "",
-          description: "",
-          price: "",
-          shop: ""
-        }
+        selectedProduct: {}
       };
   }
 
   close() {
-    this.setState({ showModal: false });
+    this.setState({ 
+      showModal: false,
+      selectedProduct: {}
+    });
   }
 
   open(name) {
+
+    let selected = _.find(this.props.products, function(o) { return o.name == name.target.innerText});
+    let index = _.findIndex(this.props.products, function(o) { return o.name == name.target.innerText});
+
+    selected.index = index
+
     this.setState({ 
       showModal: true ,
-      selectedProduct: {
-          name: name.target.innerText,
-          key: "",
-          description: "",
-          price: "",
-          shop: ""
-        }
+      selectedProduct: selected
     });
   }
 
@@ -84,28 +98,23 @@ class List extends Component {
 
         </DropdownButton>
 
-        <Modal show={this.state.showModal} onHide={this.close.bind(this)} prod={this.state.selectedProduct}>
+        <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit {this.state.selectedProduct.name}:</Modal.Title>
+            <Modal.Title>Edit <b>{this.state.selectedProduct.name}</b> by modifying it below and then click Edit product</Modal.Title>
           </Modal.Header>
           <Modal.Body>
 
-          <label htmlFor="inputProductName">Product Name</label>
-          <Input type="ProductName" ref='nameBox' placeholder="Name..." required />
+          <Input label="Product Name" readOnly="true" type="ProductName" ref='nameBox' placeholder={this.state.selectedProduct.name} />
 
-          <label htmlFor="inputProductKey">Product Key</label>
-          <Input type="ProductKey" ref='keyBox' placeholder="Key..." />
+          <Input label="Product Description" type="ProductDescription" ref='descriptionBox' placeholder={this.state.selectedProduct.description}/>
 
-          <label htmlFor="inputProductDescription">Product Description</label>
-          <Input type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
-
-          <label htmlFor="inputProductPrice">Product Price</label>
-          <Input type="ProductPrice" ref='priceBox' placeholder="Price..." />
+          <Input label="Product Price" type="ProductPrice" ref='priceBox' placeholder={this.state.selectedProduct.price} />
 
 
           </Modal.Body>
           <Modal.Footer>
-          <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedPatchProduct.bind(this)} >Edit product</ButtonInput>
+          <ButtonInput className="product-button" type="submit" bsStyle="primary" onClick = {this.clickedPatchProduct.bind(this)} >Edit product</ButtonInput>
+          <ButtonInput className="product-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteProduct.bind(this)} >Delete this product!</ButtonInput>
           </Modal.Footer>
         </Modal>
 
@@ -130,7 +139,8 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchProducts: bindActionCreators(fetchProducts, dispatch),
     clearProducts: bindActionCreators(clearProducts, dispatch),
-    boundPatchProduct: bindActionCreators(unboundPatchProduct, dispatch)
+    boundPatchProduct: bindActionCreators(unboundPatchProduct, dispatch),
+    deleteProduct: bindActionCreators(deleteProduct, dispatch)
   };
 }
 

@@ -2,6 +2,7 @@ import * as types from '../constants/ActionTypes';
 import addProductAPI from '~/src/helpers/addProductAPI';
 import fetchProductsAPI from '~/src/helpers/fetchProductsAPI';
 import patchProductAPI from '~/src/helpers/patchProductAPI';
+import deleteProductAPI from '~/src/helpers/deleteProductAPI';
 import request from 'superagent';
 import config from '../config';
 
@@ -41,4 +42,14 @@ export function clearProducts() {
     type: types.CLEAR_PRODUCTS
   }
 };
+
+export function deleteProduct(object) {
+
+  return {
+    type: types.DELETE_PRODUCT,
+    payload: {
+      promise: deleteProductAPI(object)
+    }
+  }
+}
 

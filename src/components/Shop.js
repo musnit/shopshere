@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import Viewpoints from '~/src/components/Viewpoints';
 import Products from '~/src/components/Products';
-import { find } from 'lodash';
 import { Tabs, Tab } from 'react-bootstrap';
 
 class Shop extends Component {

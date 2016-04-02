@@ -134,6 +134,11 @@ const product = (state, action) => {
 	switch (action.type) {
 		case types.ADD_PRODUCT_FULFILLED:
 	        return action.payload;
+	    case types.EDIT_PRODUCT_FULFILLED:
+     		if (state.name !== action.payload.name) {
+				return state;
+			}
+			return action.payload;
     default:
       return state;
 	}
@@ -150,6 +155,13 @@ const products = (state=[], action) => {
 	        return action.payload;
 	    case types.CLEAR_PRODUCTS:
 	    	return [];
+	    case types.EDIT_PRODUCT_FULFILLED:
+	    	return state.map(t => product(t, action));
+	    case types.DELETE_PRODUCT_FULFILLED:
+	    	return [
+	    	    ...state.slice(0, action.payload),
+   			    ...state.slice(action.payload + 1)
+	    	]
     default:
       return state;
     }

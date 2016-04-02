@@ -9,7 +9,7 @@ export default (data) => {
 	    .send(data)
 	    .end(function(err, res){
 	     if (err || !res.ok) {
-	       console.log('Oh no! error' + JSON.stringify(err));
+	       //console.log('Oh no! error' + JSON.stringify(err));
 	     } else {
 	       console.log('yay posted ' + JSON.stringify(res.text));
 	       //console.log(res.text);
