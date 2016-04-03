@@ -14,7 +14,10 @@ export default class SphereViewer {
   constructor(params){
     this.mouse = {};
     this.openModal = params.openModal;
-  
+
+    this.drawingPoints = [];
+    this.drawingMarkers = [];
+
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
     this.setupCamera();
@@ -122,7 +125,7 @@ export default class SphereViewer {
   }
 
   setupMouseTracker() {
-    var newSphereGeom = new THREE.SphereGeometry(5,5,5);
+    var newSphereGeom = new THREE.SphereGeometry(2,2,2);
   	var sphere = new THREE.Mesh(newSphereGeom, new THREE.MeshBasicMaterial({ color: 0x2266dd }));
   	this.scene.add(sphere);
   	this.mouseSphere = sphere;
@@ -164,34 +167,45 @@ export default class SphereViewer {
             this.openModal();
           }
           else {
-            const rectLength = 20, rectWidth = 20;
-            const originX = intersects[0].point.x;
-            const originY = intersects[0].point.y;
-            var rectShape = new THREE.Shape();
-            rectShape.moveTo( originX, originY );
-            rectShape.lineTo( originX, rectWidth + originY );
-            rectShape.lineTo( originX + rectLength, rectWidth + originY );
-            rectShape.lineTo( originX + rectLength, originY );
-            rectShape.lineTo( originX, originY );
+            this.drawingPoints.push(intersects[0].point);
 
-            var rectGeom = new THREE.ShapeGeometry( rectShape );
-            const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-            material.side = THREE.DoubleSide;
-            var rectMesh = new THREE.Mesh( rectGeom, material) ;
-            this.scene.add( rectMesh );
-
-            var geometry = new THREE.BoxGeometry( 5, 5, 5 );
+            var geometry = new THREE.SphereGeometry(2, 2, 2);
             var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
             var cube = new THREE.Mesh( geometry, material );
             this.scene.add( cube );
             cube.position.x = intersects[0].point.x;
             cube.position.y = intersects[0].point.y;
             cube.position.z = intersects[0].point.z;
+            this.drawingMarkers.push(cube)
           }
         }
 	    }
 		}
-		document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
+    document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
+    document.addEventListener("dblclick", (() => {
+      var rectShape = new THREE.Shape();
+      rectShape.moveTo( this.drawingPoints[0].x, this.drawingPoints[0].y );
+      this.drawingPoints.forEach((point, index) => {
+        if(index === 0 || index === this.drawingPoints.length - 1 ){
+          return;
+        }
+        else {
+          rectShape.lineTo( point.x, point.y );
+        }
+      });
+      rectShape.lineTo( this.drawingPoints[0].x, this.drawingPoints[0].y );
+      console.log(rectShape);
+
+      var rectGeom = new THREE.ShapeGeometry( rectShape );
+      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+      material.side = THREE.DoubleSide;
+      var rectMesh = new THREE.Mesh( rectGeom, material) ;
+      this.scene.add( rectMesh );
+      this.drawingPoints = [];
+      this.drawingMarkers.forEach(((point) => {
+        this.scene.remove(point);
+      }).bind(this));
+    }).bind(this), false);
 
 		// let isDragging = false;
 		// let previousMousePosition = {
