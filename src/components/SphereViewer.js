@@ -13,20 +13,16 @@ export default class SphereViewer {
 
   constructor(params){
     this.mouse = {};
-
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
     this.setupCamera();
     this.setupSphereProjection();
 		this.setupViewerControls();
-    this.setupDefaultHotspot();
-    this.setupPreloadHotspots();
+    this.setupHotspots();
     this.someOtherControlsCode();
-    this.setupWindowResized();
     this.setupMouseTracker();
     this.setupClickEvent();
     this.reRender.call(this);
-
   }
 
   disableOrbit(){
@@ -69,7 +65,7 @@ export default class SphereViewer {
   setupViewerControls() {
 		//transform controls!!
 		let TControl = new TransformControls(this.camera, this.renderer.domElement);
-		TControl.addEventListener('change', this.reRender.bind(this));
+		//TControl.addEventListener('change', this.reRender.bind(this));
 		this.camera.position.z = 0.0001;
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
@@ -88,21 +84,7 @@ export default class SphereViewer {
 		//this.controls.enabled = false;
 	}
 
-  setupDefaultHotspot(){
-    //adding one default hotspot here:
-		var geometry1 = new THREE.SphereGeometry( 90, 10, 10, 0, 1.3, 1, 0.6 );
-		geometry1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-		var material1 = new THREE.MeshBasicMaterial( { color: 0x00a9ff, wireframe: true, vertexColors: THREE.FaceColors} );
-		var sphere1 = new THREE.Mesh( geometry1, material1 );
-		// this.scene.add( sphere1 );
-
-    //var geometry1 = new THREE.BoxGeometry( 1, 1, 1 );
-    //var material1 = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    //var cube = new THREE.Mesh( geometry1, material1 );
-    //this.scene.add( cube );
-  }
-
-  setupPreloadHotspots(){
+  setupHotspots(){
 		//BOOTS
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
 		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
@@ -111,6 +93,8 @@ export default class SphereViewer {
 		var quaternion = new THREE.Quaternion(-0.16815593676922186,0.01700779740021236,0.9856080075829905,0.00334331928233356);
   	this.hotspot1.rotation.setFromQuaternion(quaternion);
 		this.scene.add( this.hotspot1 );
+    this.hotspot1.isHotspot = true;
+    this.hotspot1.name = 'boots';
 
 		//BICYCLE
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
@@ -120,25 +104,8 @@ export default class SphereViewer {
 		var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
 		this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
 		this.scene.add( this.hotspot2 );
-
-    //Test with rect geometry
-    const rectLength = 20, rectWidth = 20;
-    const originX = 20;
-    const originY = 20;
-    var rectShape = new THREE.Shape();
-    rectShape.moveTo( originX, originY );
-    rectShape.lineTo( originX, rectWidth + originY );
-    rectShape.lineTo( originX + rectLength, rectWidth + originY );
-    rectShape.lineTo( originX + rectLength, originY );
-    rectShape.lineTo( originX, originY );
-
-    var rectGeom = new THREE.ShapeGeometry( rectShape );
-    const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-    material.side = THREE.DoubleSide;
-    var rectMesh = new THREE.Mesh( rectGeom, material) ;
-
-    this.scene.add( rectMesh );
-
+    this.hotspot2.isHotspot = true;
+    this.hotspot2.name = 'bike';
   }
 
   someOtherControlsCode(){
@@ -187,24 +154,37 @@ export default class SphereViewer {
         v3MouseCoords.unproject( this.camera );
         var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
 
-        var intersects = ray.intersectObjects( [this.hotspot1, this.hotspot2] );
-        console.log("intersects.length: " + intersects.length);
+        var intersects = ray.intersectObjects( [this.hotspot1, this.hotspot2, this.sphereMesh] );
 
         if ( intersects.length > 0 ) {
-        //	console.log(intersects.length);
-        	console.log(intersects[0].point);
+          if (intersects[0].object.isHotspot){
+            console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
+          }
+          else {
+            const rectLength = 20, rectWidth = 20;
+            const originX = intersects[0].point.x;
+            const originY = intersects[0].point.y;
+            var rectShape = new THREE.Shape();
+            rectShape.moveTo( originX, originY );
+            rectShape.lineTo( originX, rectWidth + originY );
+            rectShape.lineTo( originX + rectLength, rectWidth + originY );
+            rectShape.lineTo( originX + rectLength, originY );
+            rectShape.lineTo( originX, originY );
 
-          /* do stuff */
+            var rectGeom = new THREE.ShapeGeometry( rectShape );
+            const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+            material.side = THREE.DoubleSide;
+            var rectMesh = new THREE.Mesh( rectGeom, material) ;
+            this.scene.add( rectMesh );
 
-			    // var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
-					// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
-					// var sprite2 = new THREE.Sprite( material2 );
-				  // sprite2.position.setX(intersects[0].point.x);
-			   	// sprite2.position.setY(intersects[0].point.y);
-			    // sprite2.position.setZ(intersects[0].point.z);
-			    // scene.add( sprite2 );
-
-					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
+            var geometry = new THREE.BoxGeometry( 5, 5, 5 );
+            var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+            var cube = new THREE.Mesh( geometry, material );
+            this.scene.add( cube );
+            cube.position.x = intersects[0].point.x;
+            cube.position.y = intersects[0].point.y;
+            cube.position.z = intersects[0].point.z;
+          }
         }
 	    }
 		}
@@ -268,15 +248,6 @@ export default class SphereViewer {
 		// 			document.body.style.opacity = 1;
 		// 		}, false );
 		// 		//
-  }
-
-  setupWindowResized() {
-    window.addEventListener( 'resize', onWindowResize.bind(this), false );
-		function onWindowResize() {
-			this.camera.aspect = viewerSizeX / viewerSizeY;
-			this.camera.updateProjectionMatrix();
-			this.renderer.setSize(viewerSizeX, viewerSizeY);
-		}
   }
 
   reRender() {
