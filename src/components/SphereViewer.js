@@ -13,6 +13,8 @@ export default class SphereViewer {
 
   constructor(params){
     this.mouse = {};
+    this.openModal = params.openModal;
+  
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
     this.setupCamera();
@@ -159,6 +161,7 @@ export default class SphereViewer {
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
             console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
+            this.openModal();
           }
           else {
             const rectLength = 20, rectWidth = 20;
