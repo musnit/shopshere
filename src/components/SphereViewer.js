@@ -32,6 +32,7 @@ export default class SphereViewer {
 
   disableOrbit(){
     this.controls.enabled = !this.controls.enabled;
+    this.scene.remove(this.sphereMesh);
 	}
 
   setupRenderer(domContainerElement) {
@@ -125,8 +126,8 @@ export default class SphereViewer {
   }
 
   setupMouseTracker() {
-    var newSphereGeom = new THREE.SphereGeometry(2,2,2);
-  	var sphere = new THREE.Mesh(newSphereGeom, new THREE.MeshBasicMaterial({ color: 0x2266dd }));
+    var sphereGeom = new THREE.SphereGeometry(3,3,3);
+  	var sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0xff0000 }));
   	this.scene.add(sphere);
   	this.mouseSphere = sphere;
     document.addEventListener( 'mousemove', (event) => {
@@ -201,6 +202,12 @@ export default class SphereViewer {
       material.side = THREE.DoubleSide;
       var rectMesh = new THREE.Mesh( rectGeom, material) ;
       this.scene.add( rectMesh );
+      rectMesh.position.x = this.drawingPoints[0].x;
+      rectMesh.position.y = this.drawingPoints[0].y;
+      rectMesh.position.z = this.drawingPoints[0].z;
+      rectMesh.lookAt(this.camera.position);
+      rectMesh.translateZ(5);
+
       this.drawingPoints = [];
       this.drawingMarkers.forEach(((point) => {
         this.scene.remove(point);
