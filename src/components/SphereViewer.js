@@ -3,24 +3,30 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 const TransformControls = require('three-transformcontrols');
 
 const viewerSizeX = 800;
-const viewerSizeY = 500;
+const viewerSizeY = 400;
+const sphereRadius = 100;
+
 const testImage = "/images/360_shop_from_aid.jpg";
+const imageAspectRatio = 2;
 
 export default class SphereViewer {
 
   constructor(params){
+    this.mouse = {};
+
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
     this.setupCamera();
+    this.setupSphereProjection();
 		this.setupViewerControls();
-		this.setupSphereProjection();
-    this.setupRayCaster();
     this.setupDefaultHotspot();
     this.setupPreloadHotspots();
     this.someOtherControlsCode();
-    this.setupMouseStuff();
     this.setupWindowResized();
+    this.setupMouseTracker();
+    this.setupClickEvent();
     this.reRender.call(this);
+
   }
 
   disableOrbit(){
@@ -38,20 +44,38 @@ export default class SphereViewer {
   }
 
   setupCamera(){
-		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		this.camera = new THREE.PerspectiveCamera(75, viewerSizeX / viewerSizeY, 0.1, 1000);
 		//camera.target = new THREE.Vector3(0, 0, 0);
   }
+
+  setupSphereProjection() {
+		// creation of a big sphere geometry
+		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
+		this.sphere = new THREE.SphereGeometry(sphereRadius, 40, 40);
+		this.sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+
+		// creation of the sphere material
+		let sphereMaterial = new THREE.MeshBasicMaterial();
+
+		let loader = new THREE.TextureLoader();
+		loader.crossOrigin = "anonymous";
+		sphereMaterial.map = loader.load(testImage);
+
+		// geometry + material = mesh (actual object)
+		this.sphereMesh = new THREE.Mesh(this.sphere, sphereMaterial);
+		this.scene.add(this.sphereMesh);
+	}
 
   setupViewerControls() {
 		//transform controls!!
 		let TControl = new TransformControls(this.camera, this.renderer.domElement);
 		TControl.addEventListener('change', this.reRender.bind(this));
-		this.camera.position.z = -80;
+		this.camera.position.z = 0.0001;
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
 
     //dont want to zoom out further than the radius of the sphere of our shopwindow
-    this.controls.maxDistance = 100;
+    this.controls.maxDistance = sphereRadius;
     //can only look down to 45 degrees ( dont wanna display floor)
     this.controls.minPolarAngle = Math.PI/4.0;
     //can only look up to 45 degrees (dont wanna display ceiling)
@@ -63,28 +87,6 @@ export default class SphereViewer {
 		this.controls.autoRotateSpeed = 0.5;
 		//this.controls.enabled = false;
 	}
-
-	setupSphereProjection() {
-		// creation of a big sphere geometry
-		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
-		this.sphere = new THREE.SphereGeometry(100, 40, 40);
-		this.sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-
-		// creation of the sphere material
-		let sphereMaterial = new THREE.MeshBasicMaterial();
-
-		let loader = new THREE.TextureLoader();
-		loader.crossOrigin = "anonymous";
-		sphereMaterial.map = loader.load(testImage);
-
-		// geometry + material = mesh (actual object)
-		let sphereMesh = new THREE.Mesh(this.sphere, sphereMaterial);
-		this.scene.add(sphereMesh);
-	}
-
-  setupRayCaster() {
-    this.raycaster = new THREE.Raycaster();
-  }
 
   setupDefaultHotspot(){
     //adding one default hotspot here:
@@ -111,13 +113,32 @@ export default class SphereViewer {
 		this.scene.add( this.hotspot1 );
 
 		//BICYCLE
-		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
+		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
 		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
-		var hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+		this.hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
 		var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
-		hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
-		this.scene.add( hotspot2 );
+		this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
+		this.scene.add( this.hotspot2 );
+
+    //Test with rect geometry
+    const rectLength = 20, rectWidth = 20;
+    const originX = 20;
+    const originY = 20;
+    var rectShape = new THREE.Shape();
+    rectShape.moveTo( originX, originY );
+    rectShape.lineTo( originX, rectWidth + originY );
+    rectShape.lineTo( originX + rectLength, rectWidth + originY );
+    rectShape.lineTo( originX + rectLength, originY );
+    rectShape.lineTo( originX, originY );
+
+    var rectGeom = new THREE.ShapeGeometry( rectShape );
+    const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+    material.side = THREE.DoubleSide;
+    var rectMesh = new THREE.Mesh( rectGeom, material) ;
+
+    this.scene.add( rectMesh );
+
   }
 
   someOtherControlsCode(){
@@ -131,52 +152,63 @@ export default class SphereViewer {
 		// document.addEventListener("mousemove", onDocumentMouseMove, false);
   }
 
-  setupMouseStuff() {
+  setupMouseTracker() {
+    var newSphereGeom = new THREE.SphereGeometry(5,5,5);
+  	var sphere = new THREE.Mesh(newSphereGeom, new THREE.MeshBasicMaterial({ color: 0x2266dd }));
+  	this.scene.add(sphere);
+  	this.mouseSphere = sphere;
+    document.addEventListener( 'mousemove', (event) => {
+      const viewpointX = this.renderer.domElement.offsetLeft;
+      const viewpointY = this.renderer.domElement.offsetTop - window.scrollY;
+    	this.mouse.x = ((event.clientX - viewpointX)/viewerSizeX) * 2 - 1;
+    	this.mouse.y = - ((event.clientY - viewpointY)/viewerSizeY) * 2 + 1;
+    }, false );
+  }
+
+  updateMouseCursor() {
+    const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
+
+    v3MouseCoords.unproject( this.camera );
+    var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
+
+    var intersects = ray.intersectObjects( [this.sphereMesh] );
+    if ( intersects.length > 0 ) {
+      this.mouseSphere.position.set(intersects[0].point.x,intersects[0].point.y,intersects[0].point.z);
+    }
+  }
+
+  setupClickEvent() {
     function onDocumentMouseUp( event ){
 			event.preventDefault();
 
-			if(event.target == this.renderer.domElement)
-			    {
-			    	var mouseX = ( event.clientX / window.innerWidth ) * 2 - 1;
-					var mouseY = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			if(event.target == this.renderer.domElement) {
+        const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
 
-			        var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
-			        vector.unproject( this.camera );
+        v3MouseCoords.unproject( this.camera );
+        var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
 
-			        var raycaster = new THREE.Raycaster(this.camera.position, vector.sub(this.camera.position).normalize());
-			        var intersects = raycaster.intersectObjects( [this.hotspot1] );
-			        // console.log("intersects.length: " + intersects.length);
-			        if ( intersects.length > 0 ) {
-			        	console.log(intersects.length);
-			        	console.log(intersects[0].object.quaternion);
-			        	console.log(intersects)
+        var intersects = ray.intersectObjects( [this.hotspot1, this.hotspot2] );
+        console.log("intersects.length: " + intersects.length);
 
-			            // console.log("intersected objects");
-			            // console.log(intersects[0].point);
-			            // console.log(intersects[0].point.x);
-			            // console.log(intersects[0].point.y);
-			            // console.log(intersects[0].point.z);
-			            /* do stuff */
+        if ( intersects.length > 0 ) {
+        //	console.log(intersects.length);
+        	console.log(intersects[0].point);
 
-			     //        var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
-  						// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
-  						// var sprite2 = new THREE.Sprite( material2 );
-    				// 	sprite2.position.setX(intersects[0].point.x);
-    				// 	sprite2.position.setY(intersects[0].point.y);
-    				// 	sprite2.position.setZ(intersects[0].point.z);
-    				// 	scene.add( sprite2 );
+          /* do stuff */
 
-    					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
+			    // var map2 = new THREE.TextureLoader().load( "../images/sprite2.png" );
+					// var material2 = new THREE.SpriteMaterial( { map: map2, color: 0xffffff, fog: true } );
+					// var sprite2 = new THREE.Sprite( material2 );
+				  // sprite2.position.setX(intersects[0].point.x);
+			   	// sprite2.position.setY(intersects[0].point.y);
+			    // sprite2.position.setZ(intersects[0].point.z);
+			    // scene.add( sprite2 );
 
-
-
-
-			        }
-			    }
+					//SphereGeometry(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
+        }
+	    }
 		}
-
 		document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
-
 
 		// let isDragging = false;
 		// let previousMousePosition = {
@@ -193,7 +225,6 @@ export default class SphereViewer {
 		// 		isDragging = true;
 		// 		console.log("successful mousedown");
 		// 	}
-
 
 		// };
 
@@ -242,7 +273,7 @@ export default class SphereViewer {
   setupWindowResized() {
     window.addEventListener( 'resize', onWindowResize.bind(this), false );
 		function onWindowResize() {
-			this.camera.aspect = window.innerWidth / window.innerHeight;
+			this.camera.aspect = viewerSizeX / viewerSizeY;
 			this.camera.updateProjectionMatrix();
 			this.renderer.setSize(viewerSizeX, viewerSizeY);
 		}
@@ -250,6 +281,7 @@ export default class SphereViewer {
 
   reRender() {
     requestAnimationFrame(this.reRender.bind(this));
+    this.updateMouseCursor.call(this);
     this.controls.update();
     // calling again render function
     this.renderer.render(this.scene, this.camera);
