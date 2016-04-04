@@ -30,7 +30,7 @@ class List extends Component {
             <option key={index}> {viewpoint.name} </option>
           )}
         </select>
-        <Viewer />
+        <Viewer data={this.props.data}/>
       </div>
     );
   }

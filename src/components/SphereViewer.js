@@ -32,7 +32,7 @@ export default class SphereViewer {
 
   disableOrbit(){
     this.controls.enabled = !this.controls.enabled;
-    this.scene.remove(this.sphereMesh);
+    //this.scene.remove(this.sphereMesh);
 	}
 
   setupRenderer(domContainerElement) {
@@ -91,7 +91,7 @@ export default class SphereViewer {
 	}
 
   setupHotspots(){
-		//BOOTS
+		//JACKETS
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
 		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
@@ -100,7 +100,7 @@ export default class SphereViewer {
   	this.hotspot1.rotation.setFromQuaternion(quaternion);
 		this.scene.add( this.hotspot1 );
     this.hotspot1.isHotspot = true;
-    this.hotspot1.name = 'boots';
+    this.hotspot1.name = 'jackets';
 
 		//BICYCLE
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
@@ -165,7 +165,7 @@ export default class SphereViewer {
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
             console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
-            this.openModal();
+            this.openModal(intersects[0].object.name);
           }
           else {
             this.drawingPoints.push(intersects[0].point);
