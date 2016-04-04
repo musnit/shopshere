@@ -159,8 +159,8 @@ const products = (state=[], action) => {
 	    	return state.map(t => product(t, action));
 	    case types.DELETE_PRODUCT_FULFILLED:
 	    	return [
-	    	    ...state.slice(0, action.payload),
-   			    ...state.slice(action.payload + 1)
+	    	    ...state.slice(0, action.payload.index),
+   			    ...state.slice(action.payload.index + 1)
 	    	]
     default:
       return state;

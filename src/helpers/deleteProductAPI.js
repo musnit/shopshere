@@ -12,7 +12,7 @@ export default (object) => {
 
 				     else {
 				       //console.log('yay got ' + JSON.stringify(res.body));	
-				       resolve(object.index);		       
+				       resolve({index: object.index});		       
 				     }
 			    })
 
