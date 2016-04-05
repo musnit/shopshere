@@ -10,74 +10,76 @@ import '~/src/styles/product.css';
 
 class Viewer extends Component {
 
-	constructor(props) {
-    super(props);
-    this.state = {
-			showModal: false,
-			currentHotspot: ""
-			};
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            showModal: false,
+            currentHotspot: ""
+        };
+    }
 
-	componentDidMount() {
-		this.sphereViewer = new SphereViewer({
-			domContainerElement: document.getElementById('viewer-placeholder'),
-			openModal: this.open.bind(this)
-		});
-  }
+    componentDidMount() {
+        this.sphereViewer = new SphereViewer({
+            domContainerElement: document.getElementById('viewer-placeholder'),
+            openModal: this.open.bind(this)
+        });
+    }
 
-  componentWillUnmount() {
-    let canvasElement = document.getElementsByTagName("canvas");
-    canvasElement[0].remove();
-  }
+    componentWillUnmount() {
+        let canvasElement = document.getElementsByTagName("canvas");
+        canvasElement[0].remove();
+    }
 
-	close() {
-    this.setState({ 
-    	showModal: false,
-    	currentHotspot: ""
-    	 });
-  }
+    close() {
+        this.setState({
+            showModal: false,
+            currentHotspot: ""
+        });
+    }
 
-  open(name) {
-    this.setState({ 
-    	showModal: true,
-    	currentHotspot: name
-    	 });
+    open(name) {
+        this.setState({
+            showModal: true,
+            currentHotspot: name
+        });
 
-  }
+    }
 
-  connectProductToHotspot(name) {
+    connectProductToHotspot(name) {
 
-	let selected = _.find(this.props.products, function(o) { return o.name == name.target.innerText});
+        let selected = _.find(this.props.products, function(o) {
+            return o.name == name.target.innerText
+        });
 
-	debugger;
+        debugger;
 
-  	this.props.connectProductToHotspot({
-  		name: this.state.currentHotspot,
-  		shop: this.props.data,
-  		product: selected.name
-  	});
+        this.props.connectProductToHotspot({
+            name: this.state.currentHotspot,
+            shop: this.props.data,
+            product: selected.name
+        });
 
 
-  	this.setState({ 
-      showModal: false,
-      currentHotspot: ""
-    });
+        this.setState({
+            showModal: false,
+            currentHotspot: ""
+        });
 
-  }
+    }
 
-  clickedDeleteHotspot() {
+    clickedDeleteHotspot() {
 
-    let deleteObject = {
-      name: this.state.currentHotspot
-    };
+        let deleteObject = {
+            name: this.state.currentHotspot
+        };
 
-    this.props.deleteHotspot(deleteObject);
+        this.props.deleteHotspot(deleteObject);
 
-    this.setState({ 
-      showModal: false,
-      currentHotspot: ""
-     });
-  }
+        this.setState({
+            showModal: false,
+            currentHotspot: ""
+        });
+    }
 
 
 
