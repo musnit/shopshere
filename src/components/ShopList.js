@@ -8,18 +8,37 @@ import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 class ShopList extends Component {
+
+
+  constructor(props) {
+        super(props);
+        this.state = {
+            activeTab: 0
+        };
+    }
+
+    clickHandler(param) {
+      console.log(param);
+        this.setState({
+            activeTab: param
+        });
+
+    }
+
+
   render() {
     return (
-      <Nav className="shop-list" bsStyle="pills" stacked={true}>
+      <Nav className="shop-list" activeKey={this.state.activeTab} bsStyle="pills" stacked={true}>
         {this.props.shops.map((shop, index) =>
           <LinkContainer key={index} to={{ pathname: `/shops/${shop.name}` }}>
-            <NavItem>{shop.name}</NavItem>
+            <NavItem eventKey={index} key={index} onClick={this.clickHandler.bind(this, index)} >{shop.name}</NavItem>
           </LinkContainer>
         )}
-  	  </Nav>
+      </Nav>
     );
   }
 }
+
 const FetchedShopList = fetch(ShopList, {
   actions: [fetchShops]
 });
