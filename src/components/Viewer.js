@@ -85,44 +85,34 @@ class Viewer extends Component {
 
   render() {
     return (
-			<div>
+		<div>
 		    <div className="view-button">
-	        <button
-            className = "btn btn-lg btn-primary"
-            type = "submit"
-            onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
+		        <button
+		        className = "btn btn-lg btn-primary"
+		        type = "submit"
+		        onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
 		        Toggle Camera Controls
-	        </button>
+		        </button>
 		    </div>
 		    <div id='viewer-placeholder'></div>
-					<Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-					<Modal.Header closeButton>
-            <Modal.Title>Select a product to connect with this hotspot ({this.state.currentHotspot}). Or alternatively you can delete this hotspot.</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-      <div className="product-button">
-
-        <DropdownButton bsStyle={'primary'} title={'Select a product to connect with this hotspot'} id="product-view-edit">
-
-          {this.props.products.map((product, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.connectProductToHotspot.bind(this)}> {product.name} </MenuItem>
-                )}
-
-        </DropdownButton>
-        </div>
-
-          </Modal.Body>
-
-          <Modal.Footer>
-
-          <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput>
-
-
-          </Modal.Footer>
-
-	        </Modal>
-			</div>
+		    <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+		        <Modal.Header closeButton>
+		            <Modal.Title>Select a product to connect with this hotspot ({this.state.currentHotspot}). Or alternatively you can delete this hotspot.</Modal.Title>
+		        </Modal.Header>
+		        <Modal.Body>
+		            <div className="product-button">
+		                <DropdownButton bsStyle={'primary'} title={'Select a product to connect with this hotspot'} id="product-view-edit">
+		                    {this.props.products.map((product, index) =>
+		                    <MenuItem eventKey={index} key={index} onClick={this.connectProductToHotspot.bind(this)}> {product.name} </MenuItem>
+		                    )}
+		                </DropdownButton>
+		            </div>
+		        </Modal.Body>
+		        <Modal.Footer>
+		            <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput>
+		        </Modal.Footer>
+		    </Modal>
+		</div>
     );
   }
 };
