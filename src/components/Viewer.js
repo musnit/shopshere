@@ -6,6 +6,7 @@ import fetch from '~/src/components/fetch';
 import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
+import { clearProducts, fetchProducts } from '~/src/actions/products';
 import { find, findIndex } from 'lodash';
 import '~/src/styles/product.css';
 import '~/src/styles/hotspot.css';
@@ -22,6 +23,14 @@ class Viewer extends Component {
             currentProduct: ""
         };
     }
+
+    componentWillReceiveProps(nextProps) {
+	   if(nextProps.data !== this.props.data){
+	    this.props.clearProducts();
+	    this.props.fetchProducts({data: nextProps.data});
+	    this.props.fetchHotspots({data: nextProps.data});
+	   }
+	  }
 
     componentDidMount() {
         this.sphereViewer = new SphereViewer({
@@ -53,6 +62,7 @@ class Viewer extends Component {
     		var thisProduct = this.state.currentProduct;
 
     	}
+    	debugger;
 
         this.setState({
         	modalMode: this.state.modalMode,
@@ -224,7 +234,9 @@ function mapDispatchToProps(dispatch) {
   return {
     connectProductToHotspot: bindActionCreators(connectProductToHotspot, dispatch),
     deleteHotspot: bindActionCreators(deleteHotspot, dispatch),
-    fetchHotspots: bindActionCreators(fetchHotspots, dispatch)
+    fetchHotspots: bindActionCreators(fetchHotspots, dispatch),
+    clearProducts: bindActionCreators(clearProducts, dispatch),
+    fetchProducts: bindActionCreators(fetchProducts, dispatch)
   };
 }
 
