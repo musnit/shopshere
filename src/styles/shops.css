@@ -24,3 +24,12 @@
 .add-shop-btn {
   padding: 10px;
 }
+
+.force-to-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.parent-of-list {
+  position: relative;
+}

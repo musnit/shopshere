@@ -13,13 +13,11 @@ class Shops extends Component {
           <div className="column container-header">Shops</div>
         </div>
         <div className="row shops-section">
-          <ShopList/ >
+          <ShopList />
           <div className="shop-details">
             {this.props.children}
           </div>
         </div>
-        <MyShopsAddShop />
-
       </div>
     );
   }

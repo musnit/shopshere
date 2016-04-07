@@ -37,7 +37,7 @@ class MyShopsAddShop extends Component {
   render() {
 
     return (
-      <div>
+      <div className="force-to-bottom">
         <div className="add-shop-btn">
           <Button
             bsStyle="primary"

@@ -6,6 +6,8 @@ import { fetchShops } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
 import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import MyShopsAddShop from '~/src/components/MyShopsAddShop';
+import '~/src/styles/shops.css';
 
 class ShopList extends Component {
 
@@ -28,13 +30,16 @@ class ShopList extends Component {
 
   render() {
     return (
-      <Nav className="shop-list" activeKey={this.state.activeTab} bsStyle="pills" stacked={true}>
-        {this.props.shops.map((shop, index) =>
-          <LinkContainer key={index} to={{ pathname: `/shops/${shop.name}` }}>
-            <NavItem eventKey={index} key={index} onClick={this.clickHandler.bind(this, index)} >{shop.name}</NavItem>
-          </LinkContainer>
-        )}
-      </Nav>
+      <div className="parent-of-list">
+        <Nav className="shop-list" activeKey={this.state.activeTab} bsStyle="pills" stacked={true}>
+          {this.props.shops.map((shop, index) =>
+            <LinkContainer key={index} to={{ pathname: `/shops/${shop.name}` }}>
+              <NavItem eventKey={index} key={index} onClick={this.clickHandler.bind(this, index)} >{shop.name}</NavItem>
+            </LinkContainer>
+          )}
+        </Nav>
+        <MyShopsAddShop />
+      </div>
     );
   }
 }
