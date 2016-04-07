@@ -56,7 +56,13 @@ class Viewer extends Component {
     open(name) {
     	if (!this.state.modalMode) {
     		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
-    		var thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.product });
+    		if (thisHotspot.product) {
+    			var thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.product });
+    		}
+    		else {
+    			var thisProduct = this.state.currentProduct;
+    		}
+    		
     	}
     	else {
     		var thisProduct = this.state.currentProduct;
