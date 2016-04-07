@@ -195,7 +195,7 @@ class Viewer extends Component {
 		        	<label>Price:</label>
 		        	<p>R{this.state.currentProduct.price}</p>
 		        <div>
-		        <Image className="modal-image" src="/images/womens_grey_jacket.jpg" rounded/>
+		        <Image className="modal-image" src={this.state.currentProduct.imageURL} rounded/>
 		        </div>
 
 		        </Modal.Body>
