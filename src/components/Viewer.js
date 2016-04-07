@@ -2,10 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem } from 'react-bootstrap';
+import fetch from '~/src/components/fetch';
+import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
-import { connectProductToHotspot, deleteHotspot } from '~/src/actions/hotspots';
+import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
+import { find, findIndex } from 'lodash';
 import '~/src/styles/product.css';
+import '~/src/styles/hotspot.css';
 
 
 class Viewer extends Component {
@@ -13,8 +16,10 @@ class Viewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
+        	modalMode: true,
             showModal: false,
-            currentHotspot: ""
+            currentHotspot: "",
+            currentProduct: ""
         };
     }
 
@@ -32,17 +37,49 @@ class Viewer extends Component {
 
     close() {
         this.setState({
+        	modalMode: this.state.modalMode,
             showModal: false,
-            currentHotspot: ""
+            currentHotspot: "",
+            currentProduct: ""
         });
     }
 
     open(name) {
+    	if (!this.state.modalMode) {
+    		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
+    		var thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.product });
+    	}
+    	else {
+    		var thisProduct = this.state.currentProduct;
+
+    	}
+
         this.setState({
+        	modalMode: this.state.modalMode,
             showModal: true,
-            currentHotspot: name
+            currentHotspot: name,
+            currentProduct: thisProduct
         });
 
+    }
+
+    setModalTypeToOwner() {
+        this.state = {
+        	modalMode: true,
+            showModal: false,
+            currentHotspot: this.state.currentHotspot,
+            currentProduct: this.state.currentProduct
+        };
+    }
+
+    setModelTypeToShopper() {
+
+    	this.state = {
+        	modalMode: false,
+            showModal: false,
+            currentHotspot: this.state.currentHotspot,
+            currentProduct: this.state.currentProduct
+        };
     }
 
     connectProductToHotspot(name) {
@@ -50,8 +87,6 @@ class Viewer extends Component {
         let selected = _.find(this.props.products, function(o) {
             return o.name == name.target.innerText
         });
-
-        debugger;
 
         this.props.connectProductToHotspot({
             name: this.state.currentHotspot,
@@ -61,8 +96,10 @@ class Viewer extends Component {
 
 
         this.setState({
+        	modalMode: this.state.modalMode,
             showModal: false,
-            currentHotspot: ""
+            currentHotspot: "",
+            currentProduct: this.state.currentProduct
         });
 
     }
@@ -76,8 +113,10 @@ class Viewer extends Component {
         this.props.deleteHotspot(deleteObject);
 
         this.setState({
+        	modalMode: this.state.modalMode,
             showModal: false,
-            currentHotspot: ""
+            currentHotspot: "",
+            currentProduct: this.state.currentProduct
         });
     }
 
@@ -88,6 +127,25 @@ class Viewer extends Component {
   render() {
     return (
 		<div>
+
+		    <div className="view-button">
+		        <button
+		        className = "btn btn-lg btn-primary"
+		        type = "submit"
+		        onClick = {this.setModalTypeToOwner.bind(this)} >
+		        View Hotspot as Shopowner
+		        </button>
+		    </div>
+
+		    <div className="view-button">
+		        <button
+		        className = "btn btn-lg btn-primary"
+		        type = "submit"
+		        onClick = {this.setModelTypeToShopper.bind(this)} >
+		        Preview Hotspot as Shopper
+		        </button>
+		    </div>
+
 		    <div className="view-button">
 		        <button
 		        className = "btn btn-lg btn-primary"
@@ -96,8 +154,11 @@ class Viewer extends Component {
 		        Toggle Camera Controls
 		        </button>
 		    </div>
+
 		    <div id='viewer-placeholder'></div>
-		    <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+
+
+		    <Modal show={this.state.showModal && this.state.modalMode} onHide={this.close.bind(this)}>
 		        <Modal.Header closeButton>
 		            <Modal.Title>Select a product to connect with this hotspot ({this.state.currentHotspot}). Or alternatively you can delete this hotspot.</Modal.Title>
 		        </Modal.Header>
@@ -114,21 +175,57 @@ class Viewer extends Component {
 		            <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput>
 		        </Modal.Footer>
 		    </Modal>
+
+		    <Modal show={this.state.showModal && !this.state.modalMode} onHide={this.close.bind(this)}>
+		        <Modal.Header closeButton>
+		            <Modal.Title>{this.state.currentProduct.name}</Modal.Title>
+		        </Modal.Header>
+
+		        <Modal.Body>
+		        	<label>Description:</label>
+		        	<p>{this.state.currentProduct.description}</p>
+		        	<label>Price:</label>
+		        	<p>R{this.state.currentProduct.price}</p>
+		        <div>
+		        <Image className="modal-image" src="/images/womens_grey_jacket.jpg" rounded/>
+		        </div>
+
+		        </Modal.Body>
+
+		        <Modal.Footer>
+
+		                  <label>Quantity</label>
+
+          				  <Input type="Quantity" ref='quantitybox' placeholder="Quantity..." />
+
+		            <ButtonInput className="hotspot-button" type="submit" bsStyle="primary"  >Add to cart</ButtonInput>
+		        </Modal.Footer>
+		    </Modal>
+
 		</div>
     );
   }
 };
 
+const FetchedHotspots = fetch(Viewer, {
+  actions: [fetchHotspots]
+});
+
 function mapStateToProps(state) {
   const products = state.products;
-  return { products };
+  const hotspots = state.hotspots;
+  return { 
+  	products,
+  	hotspots
+  	};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     connectProductToHotspot: bindActionCreators(connectProductToHotspot, dispatch),
-    deleteHotspot: bindActionCreators(deleteHotspot, dispatch)
+    deleteHotspot: bindActionCreators(deleteHotspot, dispatch),
+    fetchHotspots: bindActionCreators(fetchHotspots, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Viewer);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedHotspots);

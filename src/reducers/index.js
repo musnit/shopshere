@@ -172,6 +172,33 @@ const products = (state=[], action) => {
     }
 };
 
+///////////////////  HOTSPOTS  ///////////////////
+
+const hotspot = (state, action) => {
+	switch (action.type) {
+		case types.ADD_PRODUCT_FULFILLED:
+	        return action.payload;
+	    case types.EDIT_PRODUCT_FULFILLED:
+     		if (state.name !== action.payload.name) {
+				return state;
+			}
+			return action.payload;
+    default:
+      return state;
+	}
+};
+
+const hotspots = (state=[], action) => {
+	switch (action.type) {
+	    case types.FETCH_HOTSPOTS_FULFILLED:
+	        return action.payload;
+    default:
+      return state;
+    }
+};
+
+
+
 ///////////////////////////////////ROOT
 
 const rootReducer = combineReducers({
@@ -179,7 +206,8 @@ const rootReducer = combineReducers({
   users,
   shops,
   viewpoints,
-  products
+  products,
+  hotspots
 });
 
 export default rootReducer;
