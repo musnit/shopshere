@@ -62,8 +62,6 @@ class Viewer extends Component {
     		var thisProduct = this.state.currentProduct;
 
     	}
-    	debugger;
-
         this.setState({
         	modalMode: this.state.modalMode,
             showModal: true,
