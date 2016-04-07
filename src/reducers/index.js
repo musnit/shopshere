@@ -94,6 +94,11 @@ const shops = (state=[], action) => {
           ...state,
           shop(undefined, action)
           ];
+    case types.DELETE_SHOP_FULFILLED:
+    	return [
+    	    ...state.slice(0, action.payload.index),
+			    ...state.slice(action.payload.index + 1)
+    	]
 	case 'ADD_VIEW_TO_SHOP':
 			return state.map(t => shop(t, action));
 	default:

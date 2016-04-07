@@ -20,7 +20,6 @@ class ShopList extends Component {
     }
 
     clickHandler(param) {
-      console.log(param);
         this.setState({
             activeTab: param
         });

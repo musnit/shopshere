@@ -2,6 +2,7 @@ import * as types from '../constants/ActionTypes';
 import fetchShopsAPI from '~/src/helpers/fetchShopsAPI';
 import fetchOneShopAPI from '~/src/helpers/fetchOneShopAPI';
 import addShopAPI from '~/src/helpers/addShopAPI';
+import deleteShopAPI from '~/src/helpers/deleteShopAPI';
 import { apiClient } from '../services/ApiClient.js';
 import request from 'superagent';
 import config from '../config';
@@ -34,3 +35,12 @@ export function fetchOneShop(name) {
     }
   }
 };
+
+export function unboundDeleteShop(object) {
+  return {
+    type: types.DELETE_SHOP,
+    payload: {
+      promise: deleteShopAPI(object)
+    }
+  }
+}

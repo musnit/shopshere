@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import Viewpoints from '~/src/components/Viewpoints';
 import Products from '~/src/components/Products';
+import Admin from '~/src/components/Admin';
 import { Tabs, Tab } from 'react-bootstrap';
 
 class Shop extends Component {
@@ -31,6 +32,9 @@ class Shop extends Component {
           </Tab>
           <Tab eventKey={2} title="Products">
             <Products data={name} />
+          </Tab>
+          <Tab eventKey={3} title="Admin">
+            <Admin data={name} />
           </Tab>
         </Tabs>
       </div>

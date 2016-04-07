@@ -5,9 +5,8 @@
 .shop-list {
   width: 20%;
   min-width: 200px;
-  border-right: solid 1px #ddd;
   border-top: none;
-  border-bottom: none;
+  border-bottom: solid 1px #ddd;
 }
 
 .shop-details {
@@ -25,11 +24,16 @@
   padding: 10px;
 }
 
-.force-to-bottom {
-  position: absolute;
-  bottom: 0;
-}
-
 .parent-of-list {
   position: relative;
+  border-right: solid 1px #ddd;
+}
+
+.delete-modal-button {
+  padding: 10px;
+  margin:10px;
+}
+
+.modal-body-delete {
+  display:flex;
 }
