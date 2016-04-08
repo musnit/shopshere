@@ -1,55 +1,49 @@
 import * as types from '../constants/ActionTypes';
-import addProductAPI from '~/src/helpers/addProductAPI';
-import fetchProductsAPI from '~/src/helpers/fetchProductsAPI';
-import patchProductAPI from '~/src/helpers/patchProductAPI';
-import deleteProductAPI from '~/src/helpers/deleteProductAPI';
-import request from 'superagent';
-import config from '../config';
+import { addProductAPI, fetchProductsAPI, patchProductAPI, deleteProductAPI } from '~/src/helpers/ClientAPI';
 
 //action creators:
 export function unboundAddProduct(data) {
-  return {
-    type: types.ADD_PRODUCT,
-    payload: {
-      promise: addProductAPI(data)
+    return {
+        type: types.ADD_PRODUCT,
+        payload: {
+            promise: addProductAPI(data)
+        }
     }
-  }
 };
 
 export function unboundPatchProduct(data) {
-  return {
-    type: types.EDIT_PRODUCT,
-    payload: {
-      promise: patchProductAPI(data)
+    return {
+        type: types.EDIT_PRODUCT,
+        payload: {
+            promise: patchProductAPI(data)
+        }
     }
-  }
 };
 
 export function fetchProducts(options) {
 
-  const nameForFetch = options.data; 
+    const nameForFetch = options.data;
 
-  return {
-    type: types.FETCH_PRODUCTS,
-    payload: {
-      promise: fetchProductsAPI(nameForFetch)
+    return {
+        type: types.FETCH_PRODUCTS,
+        payload: {
+            promise: fetchProductsAPI(nameForFetch)
+        }
     }
-  }
 };
 
 export function clearProducts() {
-  return {
-    type: types.CLEAR_PRODUCTS
-  }
+    return {
+        type: types.CLEAR_PRODUCTS
+    }
 };
 
 export function deleteProduct(object) {
 
-  return {
-    type: types.DELETE_PRODUCT,
-    payload: {
-      promise: deleteProductAPI(object)
+    return {
+        type: types.DELETE_PRODUCT,
+        payload: {
+            promise: deleteProductAPI(object)
+        }
     }
-  }
 }
-
