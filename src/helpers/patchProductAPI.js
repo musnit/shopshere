@@ -4,7 +4,7 @@ export default (data) => {
   return new Promise((resolve, reject) => {
     const name = data.name;
     delete(data.name);
-	  request.patch('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/product/' + name)
+	  request.patch('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/data/product/' + name)
 	    .set('Content-Type', 'application/json')
 	    .send(data)
 	    .end(function(err, res){

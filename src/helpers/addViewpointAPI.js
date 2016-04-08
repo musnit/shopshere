@@ -3,7 +3,7 @@ import request from 'superagent';
 export default (data) => {
   return new Promise((resolve, reject) => {
 
-	  request.post('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/viewpoint/')
+	  request.post('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/data/viewpoint/')
 	    .set('Content-Type', 'application/json')
 	    .send(data)
 	    .end(function(err, res){
@@ -12,10 +12,9 @@ export default (data) => {
 	     } else {
 	       //console.log('yay posted ' + JSON.stringify(res.text));
 	       //console.log(res.text);
-	       resolve(JSON.parse(res.text)["Item"]);	
+	       resolve(JSON.parse(res.text)["Item"]);
 	     }
 	   })
 
   });
 };
-
