@@ -112,6 +112,58 @@ export default class SphereViewer {
 		this.scene.add( this.hotspot2 );
     this.hotspot2.isHotspot = true;
     this.hotspot2.name = 'bike';
+
+
+    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
+    geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+    this.hotspot3 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+
+    // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
+    // this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
+    
+    //attempting to rotate according to xyz!
+
+    var Mat = new THREE.Matrix4();
+    var Quat = new THREE.Quaternion();
+
+    var xPoint = -45.77134193267549;
+    var yPoint = 18.08499658268368;
+    var zPoint = -86.86518506819539;
+
+    var R_1 = 100;
+    var R_2 = 90;
+
+    var THETA_100 = Math.acos(zPoint / R_1);
+    var THETA_90 = Math.acos(zPoint / R_2);
+
+    var PHI;
+
+    if (xPoint > 0 ) {
+      PHI = Math.atan( yPoint / xPoint );
+    }
+
+    else if ( xPoint < 0 && yPoint >= 0 ) {
+      PHI = Math.atan( yPoint / xPoint ) + Math.PI;
+    }
+
+    else if ( xPoint < 0 && yPoint < 0 ) {
+      PHI = Math.atan( yPoint / xPoint ) - Math.PI;
+    }
+    
+    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
+    geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+    this.hotspot3 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+
+    var Rot = new THREE.Euler( rotX, rotY, rotZ );
+    Quat.setFromEuler( Rot );
+    this.hotspot3.rotation.setFromQuaternion( Quat );
+    //debugger;
+    this.scene.add( this.hotspot3 );
+    this.hotspot3.isHotspot = true;
+    this.hotspot3.name = 'bike';
+
   }
 
   someOtherControlsCode(){
@@ -147,6 +199,7 @@ export default class SphereViewer {
     var intersects = ray.intersectObjects( [this.sphereMesh] );
     if ( intersects.length > 0 ) {
       this.mouseSphere.position.set(intersects[0].point.x,intersects[0].point.y,intersects[0].point.z);
+      //console.log(intersects[0].point.x);
     }
   }
 
@@ -165,10 +218,12 @@ export default class SphereViewer {
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
             console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
+            console.log(intersects[0].point);
             this.openModal(intersects[0].object.name);
           }
           else {
             this.drawingPoints.push(intersects[0].point);
+            console.log(intersects[0].point);
 
             var geometry = new THREE.SphereGeometry(2, 2, 2);
             var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
@@ -184,29 +239,10 @@ export default class SphereViewer {
 		}
     document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
     document.addEventListener("dblclick", (() => {
-      var rectShape = new THREE.Shape();
-      rectShape.moveTo( this.drawingPoints[0].x, this.drawingPoints[0].y );
-      this.drawingPoints.forEach((point, index) => {
-        if(index === 0 || index === this.drawingPoints.length - 1 ){
-          return;
-        }
-        else {
-          rectShape.lineTo( point.x, point.y );
-        }
-      });
-      rectShape.lineTo( this.drawingPoints[0].x, this.drawingPoints[0].y );
-      console.log(rectShape);
+      
+      console.log(this.drawingPoints);
 
-      var rectGeom = new THREE.ShapeGeometry( rectShape );
-      const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-      material.side = THREE.DoubleSide;
-      var rectMesh = new THREE.Mesh( rectGeom, material) ;
-      this.scene.add( rectMesh );
-      rectMesh.position.x = this.drawingPoints[0].x;
-      rectMesh.position.y = this.drawingPoints[0].y;
-      rectMesh.position.z = this.drawingPoints[0].z;
-      rectMesh.lookAt(this.camera.position);
-      rectMesh.translateZ(5);
+      console.log(this.hotspot1.rotation);
 
       this.drawingPoints = [];
       this.drawingMarkers.forEach(((point) => {
@@ -214,64 +250,6 @@ export default class SphereViewer {
       }).bind(this));
     }).bind(this), false);
 
-		// let isDragging = false;
-		// let previousMousePosition = {
-		// 	x: 0,
-		// 	y: 0
-		// }
-
-		// //MOUSEDOWN
-		// function onDocumentMouseDown( event ) {
-
-		// 	event.preventDefault();
-
-		// 	if(event.target == renderer.domElement) {
-		// 		isDragging = true;
-		// 		console.log("successful mousedown");
-		// 	}
-
-		// };
-
-		//document.addEventListener("mousedown", onDocumentMouseDown, false);
-
-		//document.addEventListener("mousemove", onDocumentMouseMove, false);
-
-
-
-		//commented out to test performance increase
-		// document.addEventListener( 'dragover', function ( event ) {
-
-		// 			event.preventDefault();
-		// 			event.dataTransfer.dropEffect = 'copy';
-
-		// 		}, false );
-
-
-		// document.addEventListener( 'dragenter', function ( event ) {
-
-		// 			document.body.style.opacity = 0.5;
-
-		// 		}, false );
-
-		// document.addEventListener( 'dragleave', function ( event ) {
-		// 			document.body.style.opacity = 1;
-		// 		}, false );
-
-		// document.addEventListener( 'drop', function ( event ) {
-		// 			event.preventDefault();
-		// 			var reader = new FileReader();
-
-		// 			reader.addEventListener( 'load', function ( event ) {
-
-		// 				sphereMaterial.map.image.src = event.target.result;
-		// 				sphereMaterial.map.needsUpdate = true;
-
-		// 			}, false );
-
-		// 			reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
-		// 			document.body.style.opacity = 1;
-		// 		}, false );
-		// 		//
   }
 
   reRender() {
