@@ -125,44 +125,44 @@ export default class SphereViewer {
     //attempting to rotate according to xyz!
 
     var Mat = new THREE.Matrix4();
-    var Quat = new THREE.Quaternion();
 
     var xPoint = -45.77134193267549;
     var yPoint = 18.08499658268368;
     var zPoint = -86.86518506819539;
 
-    var R_1 = 100;
-    var R_2 = 90;
+    var rotX;
+    var rotY;
+    var rotZ;
 
-    var THETA_100 = Math.acos(zPoint / R_1);
-    var THETA_90 = Math.acos(zPoint / R_2);
-
-    var PHI;
-
-    if (xPoint > 0 ) {
-      PHI = Math.atan( yPoint / xPoint );
+    if ( xPoint < 0 ) {
+      rotX = Math.atan2(zPoint,yPoint) + Math.PI;
+    }
+    else {
+      rotX = Math.atan2(zPoint,yPoint);
     }
 
-    else if ( xPoint < 0 && yPoint >= 0 ) {
-      PHI = Math.atan( yPoint / xPoint ) + Math.PI;
+    if ( yPoint < 0 ) {
+      rotY = Math.atan2(xPoint,zPoint) + Math.PI;
+    }
+    else {
+      rotY = Math.atan2(xPoint,zPoint);
     }
 
-    else if ( xPoint < 0 && yPoint < 0 ) {
-      PHI = Math.atan( yPoint / xPoint ) - Math.PI;
+    if ( zPoint < 0 ) {
+      rotZ = Math.atan2(yPoint,xPoint) + Math.PI;
     }
-    
-    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
-    geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
-    this.hotspot3 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+    else {
+      rotZ = Math.atan2(yPoint,xPoint);
+    }
+
+    var Quat = new THREE.Quaternion();
 
     var Rot = new THREE.Euler( rotX, rotY, rotZ );
     Quat.setFromEuler( Rot );
     this.hotspot3.rotation.setFromQuaternion( Quat );
-    //debugger;
     this.scene.add( this.hotspot3 );
     this.hotspot3.isHotspot = true;
-    this.hotspot3.name = 'bike';
+    this.hotspot3.name = 'test';
 
   }
 
