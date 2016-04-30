@@ -8,8 +8,13 @@ import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
 import { find, findIndex } from 'lodash';
+
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 import '~/src/styles/product.css';
 import '~/src/styles/hotspot.css';
+import '~/src/styles/viewer.css';
 
 
 class Viewer extends Component {
@@ -22,6 +27,13 @@ class Viewer extends Component {
             currentHotspot: "",
             currentProduct: ""
         };
+
+        this.values = {
+          min: 2,
+          max: 10
+        };
+
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -136,6 +148,9 @@ class Viewer extends Component {
     }
 
 
+    handleChange(value) {
+        console.log(value);
+    }
 
 
 
@@ -165,6 +180,9 @@ class Viewer extends Component {
         onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
         Toggle Camera Controls
         </button>
+    </div>
+    <div className="slider">
+                 <Slider onChange={this.handleChange.bind(this)} />
     </div>
     <div id='viewer-placeholder'></div>
     <Modal show={this.state.showModal && this.state.modalMode} onHide={this.close.bind(this)}>

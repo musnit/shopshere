@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 require('es6-promise').polyfill();
+require("babel-polyfill");
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',

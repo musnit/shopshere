@@ -72,7 +72,7 @@ export default class SphereViewer {
 		//transform controls!!
 		let TControl = new TransformControls(this.camera, this.renderer.domElement);
 		//TControl.addEventListener('change', this.reRender.bind(this));
-		this.camera.position.z = 0.0001;
+		this.camera.position.x = 0.0001;
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
 
@@ -114,9 +114,9 @@ export default class SphereViewer {
     this.hotspot2.name = 'bike';
 
 
-    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
+    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
     geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
     this.hotspot3 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
 
     // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
@@ -124,42 +124,46 @@ export default class SphereViewer {
     
     //attempting to rotate according to xyz!
 
-    var Mat = new THREE.Matrix4();
+    // var Mat = new THREE.Matrix4();
 
     var xPoint = -45.77134193267549;
     var yPoint = 18.08499658268368;
     var zPoint = -86.86518506819539;
 
-    var rotX;
-    var rotY;
-    var rotZ;
+    // var rotX;
+    // var rotY;
+    // var rotZ;
 
-    if ( xPoint < 0 ) {
-      rotX = Math.atan2(zPoint,yPoint) + Math.PI;
-    }
-    else {
-      rotX = Math.atan2(zPoint,yPoint);
-    }
+    // if ( xPoint < 0 ) {
+    //   rotX = Math.atan2(zPoint,yPoint) + Math.PI;
+    // }
+    // else {
+    //   rotX = Math.atan2(zPoint,yPoint);
+    // }
 
-    if ( yPoint < 0 ) {
-      rotY = Math.atan2(xPoint,zPoint) + Math.PI;
-    }
-    else {
-      rotY = Math.atan2(xPoint,zPoint);
-    }
+    // if ( yPoint < 0 ) {
+    //   rotY = Math.atan2(xPoint,zPoint) + Math.PI;
+    // }
+    // else {
+    //   rotY = Math.atan2(xPoint,zPoint);
+    // }
 
-    if ( zPoint < 0 ) {
-      rotZ = Math.atan2(yPoint,xPoint) + Math.PI;
-    }
-    else {
-      rotZ = Math.atan2(yPoint,xPoint);
-    }
+    // if ( zPoint < 0 ) {
+    //   rotZ = Math.atan2(yPoint,xPoint) + Math.PI;
+    // }
+    // else {
+    //   rotZ = Math.atan2(yPoint,xPoint);
+    // }
 
-    var Quat = new THREE.Quaternion();
+    // var Quat = new THREE.Quaternion();
 
-    var Rot = new THREE.Euler( rotX, rotY, rotZ );
-    Quat.setFromEuler( Rot );
-    this.hotspot3.rotation.setFromQuaternion( Quat );
+    // var Rot = new THREE.Euler( rotX, rotY, rotZ );
+    // Quat.setFromEuler( Rot );
+    // this.hotspot3.rotation.setFromQuaternion( Quat );
+
+    var vect = new THREE.Vector3( xPoint, yPoint, zPoint );
+    //this.hotspot3.lookAt(vect);
+
     this.scene.add( this.hotspot3 );
     this.hotspot3.isHotspot = true;
     this.hotspot3.name = 'test';
@@ -224,6 +228,15 @@ export default class SphereViewer {
           else {
             this.drawingPoints.push(intersects[0].point);
             console.log(intersects[0].point);
+            //console.log(this.hotspot3.rotation)
+            this.hotspot3.lookAt(intersects[0].point);
+            var axis = new THREE.Vector3(0,1,0);
+            var rad = (3*Math.PI) / 4;
+            this.hotspot3.rotateOnAxis( axis, rad);
+
+            
+
+            // console.log(this.hotspot3.rotation)
 
             var geometry = new THREE.SphereGeometry(2, 2, 2);
             var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
