@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image } from 'react-bootstrap';
+import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
@@ -27,13 +27,6 @@ class Viewer extends Component {
             currentHotspot: "",
             currentProduct: ""
         };
-
-        this.values = {
-          min: 2,
-          max: 10
-        };
-
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -148,9 +141,7 @@ class Viewer extends Component {
     }
 
 
-    handleChange(value) {
-        console.log(value);
-    }
+    
 
 
 
@@ -182,7 +173,16 @@ class Viewer extends Component {
         </button>
     </div>
     <div className="slider">
-                 <Slider onChange={this.handleChange.bind(this)} />
+                <p><Label>Rotate around Y &ndash; Axis</Label></p>
+                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderYChange.bind(this.sphereViewer)} />
+    </div>
+    <div className="slider">
+                <p><Label>Rotate around X &ndash; Axis</Label></p>
+                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderXChange.bind(this.sphereViewer)} />
+    </div>
+    <div className="slider">
+                <p><Label>Rotate around Z &ndash; Axis</Label></p>
+                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderZChange.bind(this.sphereViewer)} />
     </div>
     <div id='viewer-placeholder'></div>
     <Modal show={this.state.showModal && this.state.modalMode} onHide={this.close.bind(this)}>

@@ -1,3 +1,23 @@
 .slider {
 	padding:15px;
 }
+
+.rc-slider {
+    height: 10px;
+    width: 100%;
+}
+
+.rc-slider-track {
+	height: 10px;
+    background-color: #337ab7;
+}
+
+.rc-slider-handle {
+    width: 20px;
+    height: 20px;
+    border: solid 2px #2e6da4;
+}
+
+.rc-slider-handle:hover {
+    border-color: #337ab7;
+}

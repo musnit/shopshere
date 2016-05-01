@@ -207,6 +207,25 @@ export default class SphereViewer {
     }
   }
 
+  sliderYChange(value) {
+
+        this.hotspot3.rotation.y = (Math.PI * 2 )  - value;
+
+        // var angleOfRotation = (Math.PI * 2 ) - value;
+
+        // var Yaxis = new THREE.Vector3( 0, 1, 0 );
+
+        // var quat =  new THREE.Quaternion()
+
+        // quat.setFromAxisAngle( Yaxis, angleOfRotation );
+
+        // var eulerAngle = new THREE.Euler().setFromQuaternion( quat );
+
+        //this.hotspot3.matrix.makeRotationFromQuaternion(quat)
+
+
+  }
+
   setupClickEvent() {
     function onDocumentMouseUp( event ){
 			event.preventDefault();
@@ -226,26 +245,24 @@ export default class SphereViewer {
             this.openModal(intersects[0].object.name);
           }
           else {
-            this.drawingPoints.push(intersects[0].point);
+            //this.drawingPoints.push(intersects[0].point);
             console.log(intersects[0].point);
             //console.log(this.hotspot3.rotation)
-            this.hotspot3.lookAt(intersects[0].point);
-            var axis = new THREE.Vector3(0,1,0);
-            var rad = (3*Math.PI) / 4;
-            this.hotspot3.rotateOnAxis( axis, rad);
-
-            
+            // this.hotspot3.lookAt(intersects[0].point);
+            // var axis = new THREE.Vector3(0,1,0);
+            // var rad = (3*Math.PI) / 4;
+            //this.hotspot3.rotateOnAxis( axis, rad);
 
             // console.log(this.hotspot3.rotation)
 
-            var geometry = new THREE.SphereGeometry(2, 2, 2);
-            var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-            var cube = new THREE.Mesh( geometry, material );
-            this.scene.add( cube );
-            cube.position.x = intersects[0].point.x;
-            cube.position.y = intersects[0].point.y;
-            cube.position.z = intersects[0].point.z;
-            this.drawingMarkers.push(cube)
+            // var geometry = new THREE.SphereGeometry(2, 2, 2);
+            // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+            // var cube = new THREE.Mesh( geometry, material );
+            // this.scene.add( cube );
+            // cube.position.x = intersects[0].point.x;
+            // cube.position.y = intersects[0].point.y;
+            // cube.position.z = intersects[0].point.z;
+            // this.drawingMarkers.push(cube)
           }
         }
 	    }
