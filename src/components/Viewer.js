@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col } from 'react-bootstrap';
+import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col,ButtonGroup,ButtonToolbar,Glyphicon } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
@@ -24,6 +24,11 @@ class Viewer extends Component {
         this.state = {
         	modalMode: true,
             showModal: false,
+            showNewHotspotModal: false,
+            showNewHotspotModalNew: true,
+            showNewHotspotModalProduct: false,
+            showNewHotspotModalNavigation: false,
+
             currentHotspot: "",
             currentProduct: ""
         };
@@ -140,6 +145,10 @@ class Viewer extends Component {
         });
     }
 
+    addNewHotspot () {
+        this.setState({ showNewHotspotModal: true, showNewHotspotModalNew:true });
+
+    }
 
     
 
@@ -188,23 +197,13 @@ class Viewer extends Component {
             </Row>
 
             <Row className="show-grid">
-                <Col xs={5}>
+                <Col xs={10}>
                     <div className="view-button">
                         <button
                             className = "btn btn-lg btn-primary"
                             type = "submit"
-                            onClick = {this.sphereViewer && this.sphereViewer.addNewProductHotspot.bind(this)} >
-                        Add a new product hotspot
-                        </button>
-                    </div>
-                </Col>
-                <Col xs={5}>
-                    <div className="view-button">
-                        <button
-                            className = "btn btn-lg btn-primary"
-                            type = "submit"
-                            onClick = {this.sphereViewer && this.sphereViewer.addNewNavigationHotspot.bind(this)} >
-                        Add a new navigation hotspot
+                            onClick = {this.addNewHotspot.bind(this)} >
+                        Add a new hotspot
                         </button>
                     </div>
                 </Col>
@@ -280,6 +279,25 @@ class Viewer extends Component {
 	        <ButtonInput className="hotspot-button" type="submit" bsStyle="primary"  >Add to cart</ButtonInput>
 	    </Modal.Footer>
     </Modal>
+
+    <Modal show={this.state.showNewHotspotModal} onHide={this.close.bind(this)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Select the type of hotspot you would like to add:</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <ButtonToolbar>
+        <ButtonGroup>
+            <Button  className="hotspot-button" type="submit" bsStyle="primary" onClick = {this.clickedDeleteHotspot.bind(this)} >Product Hotspot  <Glyphicon glyph="tags" />  </Button>
+        </ButtonGroup>
+
+        <ButtonGroup>
+            <Button  className="hotspot-button" type="submit" bsStyle="primary"  > Navigation Hotspot  <Glyphicon glyph="transfer" /> </Button>
+        </ButtonGroup>
+        </ButtonToolbar>
+        </Modal.Body> 
+    </Modal>
+
+
 </div>
     );
   }
