@@ -175,13 +175,15 @@ export default class SphereViewer {
 
 
   addNewProductHotspot() {
-    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
+    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.4 );
     geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
     var prodhs = new THREE.Mesh( geom, mat);
     prodhs.isHotspot = true;
     prodhs.name = 'prodHStest';
-    debugger;
+    this.sphereViewer.camera.position.y = 0;
+    this.sphereViewer.camera.position.z = 0;
+    this.sphereViewer.camera.position.x = -0.0001;
     this.sphereViewer.scene.add( prodhs );
     
     
@@ -194,13 +196,16 @@ export default class SphereViewer {
   }
   addNewNavigationHotspot() {
 
-    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.6 );
+    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.2 );
     geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
     var navhs = new THREE.Mesh( geom, mat);
     navhs.isHotspot = true;
     navhs.name = 'navHStest';
-    debugger;
+    navhs.rotation.z = (3 * Math.PI) / 2;
+    this.sphereViewer.camera.position.y = 0;
+    this.sphereViewer.camera.position.z = 0;
+    this.sphereViewer.camera.position.x = -0.0001;
     this.sphereViewer.scene.add( navhs );
     
     
@@ -247,23 +252,22 @@ export default class SphereViewer {
   }
 
   sliderYChange(value) {
-        // this.camera.position.x = 0;
-        // this.camera.position.y = 0;
-        // this.camera.position.z = 0;
-        this.hotspot3.rotation.y = (Math.PI * 2 )  - value;
-        
-        this.camera.lookAt( this.hotspot3.rotation );
 
-        
-        //this.controls.target.set( this.hotspot3.position );
+        var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
+        current.rotation.y = (Math.PI * 2 )  - value;
+
   }
 
   sliderXChange(value) {
-        this.hotspot3.rotation.x = (Math.PI * 2 )  - value;
+
+        var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
+        current.rotation.x = (Math.PI * 2 )  - value;
   }
 
   sliderZChange(value) {
-        this.hotspot3.rotation.z = (Math.PI * 2 )  - value;
+        var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
+        current.rotation.z = (Math.PI * 2 )  - value;
+        console.log(current.rotation)
   }
 
 

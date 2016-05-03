@@ -211,6 +211,12 @@ class Viewer extends Component {
             </Row>
 
             <Row className="show-grid">
+                <Col xs={10}>
+                    <h4>Toggle these sliders below to position your new hotspot, then save the hotspot location.</h4>
+                </Col>
+            </Row>
+
+            <Row className="show-grid">
                 <Col xs={4}>
                 <div className="slider">
                     <p>
