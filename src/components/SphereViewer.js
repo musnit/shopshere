@@ -17,6 +17,8 @@ export default class SphereViewer {
 
     this.drawingPoints = [];
     this.drawingMarkers = [];
+    this.productHotspots = []
+    this.navigationHotspots = []
 
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
@@ -72,7 +74,7 @@ export default class SphereViewer {
 		//transform controls!!
 		let TControl = new TransformControls(this.camera, this.renderer.domElement);
 		//TControl.addEventListener('change', this.reRender.bind(this));
-		this.camera.position.x = 0.0001;
+		this.camera.position.x = -0.0001;
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement );
 
@@ -171,12 +173,40 @@ export default class SphereViewer {
   }
 
 
-  addNewProductHotspot() {
-    console.log("add new prod hs");
-  }
 
+  addNewProductHotspot() {
+    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
+    geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    var mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
+    var prodhs = new THREE.Mesh( geom, mat);
+    prodhs.isHotspot = true;
+    prodhs.name = 'prodHStest';
+    debugger;
+    this.sphereViewer.scene.add( prodhs );
+    
+    
+
+    this.sphereViewer.productHotspots.push(prodhs);
+
+    
+
+
+  }
   addNewNavigationHotspot() {
-    console.log("add new nav hs");
+
+    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.6 );
+    geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    var mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
+    var navhs = new THREE.Mesh( geom, mat);
+    navhs.isHotspot = true;
+    navhs.name = 'navHStest';
+    debugger;
+    this.sphereViewer.scene.add( navhs );
+    
+    
+
+    this.sphereViewer.navigationHotspots.push(navhs);
+
   }
 
   someOtherControlsCode(){
@@ -221,8 +251,8 @@ export default class SphereViewer {
         // this.camera.position.y = 0;
         // this.camera.position.z = 0;
         this.hotspot3.rotation.y = (Math.PI * 2 )  - value;
-        this.camera.rotationAutoUpdate = false;
-        this.camera.rotation.y = (Math.PI * 2 )  - value;
+        
+        this.camera.lookAt( this.hotspot3.rotation );
 
         
         //this.controls.target.set( this.hotspot3.position );
