@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
 import Viewer from '../Viewer';
+import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
 class List extends Component {
 

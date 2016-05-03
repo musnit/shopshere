@@ -114,10 +114,10 @@ export default class SphereViewer {
     this.hotspot2.name = 'bike';
 
 
-    var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
-    geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    this.geometry_hs_3 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
+    this.geometry_hs_3.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
-    this.hotspot3 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+    this.hotspot3 = new THREE.Mesh( this.geometry_hs_3, material_hs_1 );
 
     // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
     // this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
@@ -170,6 +170,15 @@ export default class SphereViewer {
 
   }
 
+
+  addNewProductHotspot() {
+    console.log("add new prod hs");
+  }
+
+  addNewNavigationHotspot() {
+    console.log("add new nav hs");
+  }
+
   someOtherControlsCode(){
     //transform controls!!
 		// TControl.attach( hotspot2 );
@@ -208,23 +217,25 @@ export default class SphereViewer {
   }
 
   sliderYChange(value) {
-
+        // this.camera.position.x = 0;
+        // this.camera.position.y = 0;
+        // this.camera.position.z = 0;
         this.hotspot3.rotation.y = (Math.PI * 2 )  - value;
+        this.camera.rotationAutoUpdate = false;
+        this.camera.rotation.y = (Math.PI * 2 )  - value;
 
-        // var angleOfRotation = (Math.PI * 2 ) - value;
-
-        // var Yaxis = new THREE.Vector3( 0, 1, 0 );
-
-        // var quat =  new THREE.Quaternion()
-
-        // quat.setFromAxisAngle( Yaxis, angleOfRotation );
-
-        // var eulerAngle = new THREE.Euler().setFromQuaternion( quat );
-
-        //this.hotspot3.matrix.makeRotationFromQuaternion(quat)
-
-
+        
+        //this.controls.target.set( this.hotspot3.position );
   }
+
+  sliderXChange(value) {
+        this.hotspot3.rotation.x = (Math.PI * 2 )  - value;
+  }
+
+  sliderZChange(value) {
+        this.hotspot3.rotation.z = (Math.PI * 2 )  - value;
+  }
+
 
   setupClickEvent() {
     function onDocumentMouseUp( event ){
@@ -246,7 +257,22 @@ export default class SphereViewer {
           }
           else {
             //this.drawingPoints.push(intersects[0].point);
-            console.log(intersects[0].point);
+            // console.log(intersects[0].point);
+            // console.log(this.hotspot3.rotation);
+            // this.geometry_hs_3.verticesNeedUpdate = true;
+            // console.log(this.geometry_hs_3.vertices);
+
+            // var lookatpoint = this.geometry_hs_3.vertices[Math.floor(this.geometry_hs_3.vertices.length / 2)];
+
+            // console.log(lookatpoint);
+
+
+            // this.camera.position.x = 0;
+            // this.camera.position.y = 0;
+            // this.camera.position.z = 0;
+            // console.log(this.camera);
+            // this.camera.lookAt( lookatpoint );
+
             //console.log(this.hotspot3.rotation)
             // this.hotspot3.lookAt(intersects[0].point);
             // var axis = new THREE.Vector3(0,1,0);

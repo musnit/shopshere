@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label } from 'react-bootstrap';
+import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots } from '~/src/actions/hotspots';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
@@ -11,7 +11,7 @@ import { find, findIndex } from 'lodash';
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-
+import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 import '~/src/styles/product.css';
 import '~/src/styles/hotspot.css';
 import '~/src/styles/viewer.css';
@@ -148,43 +148,96 @@ class Viewer extends Component {
   render() {
     return (
 <div>
-    <div className="view-button">
-        <button
-            className = "btn btn-lg btn-primary"
-            type = "submit"
-            onClick = {this.setModalTypeToOwner.bind(this)} >
-        View Hotspot as Shopowner
-        </button>
+    <div>
+        <Grid className="grid-panel">
+
+            <Row className="show-grid">
+                <Col xs={5}>
+                    <div className="view-button">
+                        <button
+                            className = "btn btn-lg btn-primary"
+                            type = "submit"
+                            onClick = {this.setModalTypeToOwner.bind(this)} >
+                        View Hotspot as Shopowner
+                        </button>
+                    </div>
+                </Col>
+                <Col xs={5}>
+                    <div className="view-button">
+                        <button
+                            className = "btn btn-lg btn-primary"
+                            type = "submit"
+                            onClick = {this.setModelTypeToShopper.bind(this)} >
+                        Preview Hotspot as Shopper
+                        </button>
+                    </div>
+                </Col>
+            </Row>
+
+            <Row className="show-grid">
+                <Col xs={5}>
+                    <div className="view-button">
+                        <button
+                        className = "btn btn-lg btn-primary"
+                        type = "submit"
+                        onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
+                        Toggle Camera Controls
+                        </button>
+                    </div>
+                </Col>
+            </Row>
+
+            <Row className="show-grid">
+                <Col xs={5}>
+                    <div className="view-button">
+                        <button
+                            className = "btn btn-lg btn-primary"
+                            type = "submit"
+                            onClick = {this.sphereViewer && this.sphereViewer.addNewProductHotspot.bind(this)} >
+                        Add a new product hotspot
+                        </button>
+                    </div>
+                </Col>
+                <Col xs={5}>
+                    <div className="view-button">
+                        <button
+                            className = "btn btn-lg btn-primary"
+                            type = "submit"
+                            onClick = {this.sphereViewer && this.sphereViewer.addNewNavigationHotspot.bind(this)} >
+                        Add a new navigation hotspot
+                        </button>
+                    </div>
+                </Col>
+            </Row>
+
+            <Row className="show-grid">
+                <Col xs={4}>
+                <div className="slider">
+                    <p>
+                        <Label>Rotate around Y &ndash; Axis</Label>
+                    </p>
+                    <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderYChange.bind(this.sphereViewer)} />
+                </div>
+                </Col>
+                <Col xs={4}>
+                <div className="slider">
+                    <p><Label>Rotate around X &ndash; Axis</Label></p>
+                    <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderXChange.bind(this.sphereViewer)} />
+                </div>
+                </Col>
+                <Col xs={4}>
+                <div className="slider">
+                    <p><Label>Rotate around Z &ndash; Axis</Label></p>
+                    <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderZChange.bind(this.sphereViewer)} />
+                </div>
+                </Col>
+            </Row>
+        </Grid>
     </div>
-    <div className="view-button">
-        <button
-            className = "btn btn-lg btn-primary"
-            type = "submit"
-            onClick = {this.setModelTypeToShopper.bind(this)} >
-        Preview Hotspot as Shopper
-        </button>
-    </div>
-    <div className="view-button">
-        <button
-        className = "btn btn-lg btn-primary"
-        type = "submit"
-        onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
-        Toggle Camera Controls
-        </button>
-    </div>
-    <div className="slider">
-                <p><Label>Rotate around Y &ndash; Axis</Label></p>
-                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderYChange.bind(this.sphereViewer)} />
-    </div>
-    <div className="slider">
-                <p><Label>Rotate around X &ndash; Axis</Label></p>
-                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderXChange.bind(this.sphereViewer)} />
-    </div>
-    <div className="slider">
-                <p><Label>Rotate around Z &ndash; Axis</Label></p>
-                <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderZChange.bind(this.sphereViewer)} />
-    </div>
+
+
     <div id='viewer-placeholder'></div>
+
     <Modal show={this.state.showModal && this.state.modalMode} onHide={this.close.bind(this)}>
 	    <Modal.Header closeButton>
 	        <Modal.Title>Select a product to connect with this hotspot ({this.state.currentHotspot}). Or alternatively you can delete this hotspot.</Modal.Title>
