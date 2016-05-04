@@ -17,8 +17,10 @@ export default class SphereViewer {
 
     this.drawingPoints = [];
     this.drawingMarkers = [];
-    this.productHotspots = []
-    this.navigationHotspots = []
+    this.productHotspots = [];
+    this.navigationHotspots = [];
+
+    this.currentUnsavedHotspot = undefined;
 
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
@@ -166,7 +168,7 @@ export default class SphereViewer {
     var vect = new THREE.Vector3( xPoint, yPoint, zPoint );
     //this.hotspot3.lookAt(vect);
 
-    this.scene.add( this.hotspot3 );
+    //this.scene.add( this.hotspot3 );
     this.hotspot3.isHotspot = true;
     this.hotspot3.name = 'test';
 
@@ -186,6 +188,8 @@ export default class SphereViewer {
     this.camera.position.z = 0;
     this.camera.position.x = -0.0001;
     this.scene.add( prodhs );
+
+    this.currentUnsavedHotspot = prodhs;
     
     
 
@@ -209,10 +213,14 @@ export default class SphereViewer {
     this.camera.position.x = -0.0001;
     this.scene.add( navhs );
     
-    
+    this.currentUnsavedHotspot = navhs;
 
     this.navigationHotspots.push(navhs);
 
+  }
+
+  saveNewHotspotLocation() {
+    this.currentUnsavedHotspot = undefined;
   }
 
   someOtherControlsCode(){
@@ -253,22 +261,21 @@ export default class SphereViewer {
   }
 
   sliderYChange(value) {
-      this.hotspot3.rotation.y = (Math.PI * 2 )  - value;
-        // var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
-        // current.rotation.y = (Math.PI * 2 )  - value;
-
+    if (this.currentUnsavedHotspot){
+      this.currentUnsavedHotspot.rotation.y = (Math.PI * 2 )  - value;
+    }
   }
 
   sliderXChange(value) {
-        this.hotspot3.rotation.x = (Math.PI * 2 )  - value;
-        // var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
-        // current.rotation.x = (Math.PI * 2 )  - value;
+    if (this.currentUnsavedHotspot){
+      this.currentUnsavedHotspot.rotation.x = (Math.PI * 2 )  - value;
+    }
   }
 
   sliderZChange(value) {
-        this.hotspot3.rotation.z = (Math.PI * 2 )  - value;
-        // var current = _.find(this.navigationHotspots, function(o) { return o.name == 'navHStest' });
-        console.log(this.hotspot3.rotation.z);
+    if (this.currentUnsavedHotspot){
+      this.currentUnsavedHotspot.rotation.z = (Math.PI * 2 )  - value;
+    }
   }
 
 
@@ -281,8 +288,8 @@ export default class SphereViewer {
 
         v3MouseCoords.unproject( this.camera );
         var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
-
-        var intersects = ray.intersectObjects( [this.hotspot1, this.hotspot2, this.sphereMesh] );
+        var intersectables = this.productHotspots.concat([this.hotspot1, this.hotspot2, this.sphereMesh])
+        var intersects = ray.intersectObjects( intersectables );
 
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){

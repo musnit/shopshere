@@ -269,6 +269,19 @@ class Viewer extends Component {
                 </div>
                 </Col>
             </Row>
+
+            <Row className="show-grid">
+                <Col xs={10}>
+                    <div className="view-button">
+                        <button
+                            className = "btn btn-lg btn-primary"
+                            type = "submit"
+                            onClick = {this.sphereViewer && this.sphereViewer.saveNewHotspotLocation.bind(this.sphereViewer)} >
+                        Save new hotspot location
+                        </button>
+                    </div>
+                </Col>
+            </Row>
         </Grid>
     </div>
 
