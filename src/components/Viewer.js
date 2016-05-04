@@ -15,6 +15,7 @@ import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 import '~/src/styles/product.css';
 import '~/src/styles/hotspot.css';
 import '~/src/styles/viewer.css';
+import '~/src/styles/viewpoint.css';
 
 
 class Viewer extends Component {
@@ -25,9 +26,8 @@ class Viewer extends Component {
         	modalMode: true,
             showModal: false,
             showNewHotspotModal: false,
-            showNewHotspotModalNew: true,
-            showNewHotspotModalProduct: false,
-            showNewHotspotModalNavigation: false,
+            showNewProductHotspotModal: false,
+            showNewNavigationHotspotModal: false,
 
             currentHotspot: "",
             currentProduct: ""
@@ -145,12 +145,33 @@ class Viewer extends Component {
         });
     }
 
-    addNewHotspot () {
-        this.setState({ showNewHotspotModal: true, showNewHotspotModalNew:true });
+    addNewHotspot() {
+        this.setState({ showNewHotspotModal: true});
 
     }
 
-    
+    closeNewHotspotModal() {
+        this.setState({ showNewHotspotModal: false});
+    }
+
+    showNewProductHotspotModal() {
+        this.setState({ showNewProductHotspotModal: true});
+        this.closeNewHotspotModal();
+    }
+
+    closeNewProductHotspotModal() {
+        this.setState({ showNewProductHotspotModal: false});
+        
+    }
+
+    showNewNavigationHotspotModal() {
+        this.setState({ showNewNavigationHotspotModal: true});
+        this.closeNewHotspotModal();
+    }
+
+    closeNewNavigationHotspotModal() {
+        this.setState({ showNewNavigationHotspotModal: false});
+    }  
 
 
 
@@ -280,21 +301,65 @@ class Viewer extends Component {
 	    </Modal.Footer>
     </Modal>
 
-    <Modal show={this.state.showNewHotspotModal} onHide={this.close.bind(this)}>
+    <Modal show={this.state.showNewHotspotModal} onHide={this.closeNewHotspotModal.bind(this)}>
         <Modal.Header closeButton>
             <Modal.Title>Select the type of hotspot you would like to add:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <ButtonToolbar>
-        <ButtonGroup>
-            <Button  className="hotspot-button" type="submit" bsStyle="primary" onClick = {this.clickedDeleteHotspot.bind(this)} >Product Hotspot  <Glyphicon glyph="tags" />  </Button>
+        <ButtonGroup className="view-button-left">
+            <Button   bsSize="large" type="submit" bsStyle="primary" onClick = {this.showNewProductHotspotModal.bind(this)} >Product Hotspot  <Glyphicon glyph="tags" />  </Button>
         </ButtonGroup>
 
-        <ButtonGroup>
-            <Button  className="hotspot-button" type="submit" bsStyle="primary"  > Navigation Hotspot  <Glyphicon glyph="transfer" /> </Button>
+        <ButtonGroup className="view-button-right">
+            <Button   bsSize="large" type="submit" bsStyle="primary" onClick = {this.showNewNavigationHotspotModal.bind(this)} > Navigation Hotspot  <Glyphicon glyph="transfer" /> </Button>
         </ButtonGroup>
         </ButtonToolbar>
         </Modal.Body> 
+    </Modal>
+
+    <Modal show={this.state.showNewProductHotspotModal} onHide={this.closeNewProductHotspotModal.bind(this)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Add a new product hotspot:</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+     <div className="product-button">
+
+        <DropdownButton bsStyle={'primary'} title={'Select a product to link to this hotspot'} id="product-view-edit">
+
+          {this.props.products.map((product, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
+                )}
+
+        </DropdownButton>
+        </div>
+
+        </Modal.Body> 
+        <Modal.Footer>
+            <ButtonInput type="submit" bsStyle="primary"  >Add hotspot</ButtonInput>
+        </Modal.Footer>
+    </Modal>
+
+    <Modal show={this.state.showNewNavigationHotspotModal} onHide={this.closeNewNavigationHotspotModal.bind(this)}>
+        <Modal.Header closeButton>
+            <Modal.Title>Add a new product hotspot:</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+     <div className="product-button">
+
+        <DropdownButton bsStyle={'primary'} title={'Select a product to link to this hotspot'} id="product-view-edit">
+
+          {this.props.products.map((product, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
+                )}
+
+        </DropdownButton>
+        </div>
+
+        </Modal.Body> 
+        <Modal.Footer>
+            <ButtonInput type="submit" bsStyle="primary"  disabled='true'>Add hotspot</ButtonInput>
+        </Modal.Footer>
     </Modal>
 
 

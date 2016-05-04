@@ -5,7 +5,10 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import { fetchViewpoints, clearViewpoints } from '~/src/actions/viewpoints';
 import Viewer from '../Viewer';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem} from 'react-bootstrap';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
+import '~/src/styles/viewpoint.css';
+
 
 class List extends Component {
 
@@ -20,17 +23,22 @@ class List extends Component {
    }
   }
 
+  clickViewpoint() {
+    return;
+  }
 
   render() {
 
     return (
-      <div>
-        <label>Select a viewpoint to preview/edit:</label>
-        <select>
-          {this.props.viewpoints.map((viewpoint, index) =>
-            <option key={index}> {viewpoint.name} </option>
-          )}
-        </select>
+      <div className="view-button">
+        <DropdownButton bsStyle={'primary'} title={'Select a viewpoint to view'} id="viewpoint">
+
+          {this.props.viewpoints.map((viewpoints, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.clickViewpoint.bind(this)}> {viewpoints.name} </MenuItem>
+                )}
+
+        </DropdownButton>
+
         <Viewer data={this.props.data}/>
       </div>
     );

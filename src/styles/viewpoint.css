@@ -1,4 +1,19 @@
 .view-button {
   border-color: transparent;
   padding: 10px;
+  margin: 0 auto 0 auto;
+}
+
+.view-button-left {
+	border-color: transparent;
+  	padding: 10px;
+  	float: left;
+  	margin: 0 auto 0 auto;
+}
+
+.view-button-right {
+	border-color: transparent;
+  	padding: 10px;
+  	float: right;
+  	margin: 0 auto 0 auto;
 }
