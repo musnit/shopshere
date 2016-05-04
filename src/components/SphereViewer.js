@@ -205,7 +205,7 @@ export default class SphereViewer {
     geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
     var navhs = new THREE.Mesh( geom, mat);
-    navhs.isHotspot = true;
+    navhs.isNavigation = true;
     navhs.name = 'navHStest';
     navhs.rotation.z = (3 * Math.PI) / 2;
     this.camera.position.y = 0;
@@ -288,7 +288,8 @@ export default class SphereViewer {
 
         v3MouseCoords.unproject( this.camera );
         var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
-        var intersectables = this.productHotspots.concat([this.hotspot1, this.hotspot2, this.sphereMesh])
+        var allCustomHotspots = this.productHotspots.concat(this.navigationHotspots);
+        var intersectables = allCustomHotspots.concat([this.hotspot1, this.hotspot2, this.sphereMesh]);
         var intersects = ray.intersectObjects( intersectables );
 
         if ( intersects.length > 0 ) {
@@ -296,6 +297,9 @@ export default class SphereViewer {
             console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
             console.log(intersects[0].point);
             this.openModal(intersects[0].object.name);
+          }
+          else if (intersects[0].object.isNavigation){
+            console.log("navigation point");
           }
           else {
             //this.drawingPoints.push(intersects[0].point);
@@ -336,17 +340,7 @@ export default class SphereViewer {
 	    }
 		}
     document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
-    document.addEventListener("dblclick", (() => {
-      
-      console.log(this.drawingPoints);
 
-      console.log(this.hotspot1.rotation);
-
-      this.drawingPoints = [];
-      this.drawingMarkers.forEach(((point) => {
-        this.scene.remove(point);
-      }).bind(this));
-    }).bind(this), false);
 
   }
 

@@ -29,3 +29,18 @@ export function fetchHotspots(options) {
         }
     }
 };
+
+export function unboundAddHotspot(data) {
+    return {
+        type: types.ADD_HOTSPOT,
+        payload: {
+            promise: addHotspotAPI(data)
+        }
+    }
+};
+
+export function clearHotspots() {
+    return {
+        type: types.CLEAR_HOTSPOTS
+    }
+};

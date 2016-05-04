@@ -176,13 +176,8 @@ const products = (state=[], action) => {
 
 const hotspot = (state, action) => {
 	switch (action.type) {
-		case types.ADD_PRODUCT_FULFILLED:
+		case types.ADD_HOTSPOT_FULFILLED:
 	        return action.payload;
-	    case types.EDIT_PRODUCT_FULFILLED:
-     		if (state.name !== action.payload.name) {
-				return state;
-			}
-			return action.payload;
     default:
       return state;
 	}
@@ -190,6 +185,13 @@ const hotspot = (state, action) => {
 
 const hotspots = (state=[], action) => {
 	switch (action.type) {
+		case types.ADD_HOTSPOT_FULFILLED:
+			return [
+	          ...state,
+	          hotspot(undefined, action)
+	          ];
+	    case types.CLEAR_HOTSPOTS:
+	    	return [];
 	    case types.FETCH_HOTSPOTS_FULFILLED:
 	        return action.payload;
     default:

@@ -35,6 +35,9 @@ export function addViewpointAPI(data) {
     return PostAPI(data, 'viewpoint');
 };
 
+export function addHotspotAPI(data) {
+    return PostAPI(data, 'hotspot');
+};
 
 ////////////////////////////////////// DELETE API /////////////////////////////////
 
