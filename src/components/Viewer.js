@@ -173,6 +173,17 @@ class Viewer extends Component {
         this.setState({ showNewNavigationHotspotModal: false});
     }  
 
+    addNewNavigationHotspot() {
+        this.closeNewNavigationHotspotModal();
+        this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
+        this.sphereViewer.addNewNavigationHotspot();
+    }
+
+    addNewProductHotspot() {
+        this.closeNewProductHotspotModal();
+        this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
+        this.sphereViewer.addNewProductHotspot();
+    }
 
 
   render() {
@@ -328,16 +339,13 @@ class Viewer extends Component {
         <DropdownButton bsStyle={'primary'} title={'Select a product to link to this hotspot'} id="product-view-edit">
 
           {this.props.products.map((product, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
+            <MenuItem eventKey={index} key={index} onClick={this.addNewProductHotspot.bind(this)}> {product.name} </MenuItem>
                 )}
 
         </DropdownButton>
         </div>
 
         </Modal.Body> 
-        <Modal.Footer>
-            <ButtonInput type="submit" bsStyle="primary"  >Add hotspot</ButtonInput>
-        </Modal.Footer>
     </Modal>
 
     <Modal show={this.state.showNewNavigationHotspotModal} onHide={this.closeNewNavigationHotspotModal.bind(this)}>
@@ -347,19 +355,16 @@ class Viewer extends Component {
         <Modal.Body>
      <div className="product-button">
 
-        <DropdownButton bsStyle={'primary'} title={'Select a product to link to this hotspot'} id="product-view-edit">
+        <DropdownButton bsStyle={'primary'} title={'Select a viewpoint to link to this hotspot'} id="product-view-edit">
 
-          {this.props.products.map((product, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
+          {this.props.viewpoints.map((viewpoint, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.addNewNavigationHotspot.bind(this) }> {viewpoint.name} </MenuItem>
                 )}
 
         </DropdownButton>
         </div>
 
         </Modal.Body> 
-        <Modal.Footer>
-            <ButtonInput type="submit" bsStyle="primary"  disabled='true'>Add hotspot</ButtonInput>
-        </Modal.Footer>
     </Modal>
 
 
@@ -375,7 +380,9 @@ const FetchedHotspots = fetch(Viewer, {
 function mapStateToProps(state) {
   const products = state.products;
   const hotspots = state.hotspots;
+  const viewpoints = state.viewpoints;
   return { 
+    viewpoints,
   	products,
   	hotspots
   	};
