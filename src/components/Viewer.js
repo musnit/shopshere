@@ -37,11 +37,13 @@ class Viewer extends Component {
 
     componentWillReceiveProps(nextProps) {
 
+        //if change to new shop:
 	   if(nextProps.data[0] !== this.props.data[0]){
 	    this.props.clearProducts();
+        this.props.clearHotspots();
 	    this.props.fetchProducts({data: nextProps.data[0]});
 	    this.props.fetchHotspots({data: nextProps.data});
-	   }
+	   } //if change to new viewpoint:
        else if ( nextProps.data[1] !== this.props.data[1] ){
         this.props.clearHotspots();
         this.props.fetchHotspots({data: nextProps.data});
@@ -232,6 +234,12 @@ class Viewer extends Component {
         console.log( navigateTo );
     }
 
+    removeAllHotspots() {
+        this.sphereViewer.removeHotspots.bind(this.sphereViewer);
+        this.sphereViewer.removeHotspots();
+
+    }
+
 
   render() {
     return (
@@ -243,15 +251,14 @@ class Viewer extends Component {
                                 <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
                             </Col>
                     </Row>
-
-                    {/* dont need this button right now
+                    {/*
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
                             <button
                             className = "btn btn-lg btn-primary"
                             type = "submit"
-                            onClick = {this.sphereViewer && this.sphereViewer.disableOrbit.bind(this.sphereViewer)} >
+                            onClick = {this.removeAllHotspots.bind(this)} >
                             Toggle Camera Controls
                             </button>
                         </div>

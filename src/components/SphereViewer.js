@@ -1,6 +1,7 @@
 import { THREE } from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 const TransformControls = require('three-transformcontrols');
+import { forEach } from 'lodash';
 
 const viewerSizeX = 800;
 const viewerSizeY = 400;
@@ -17,8 +18,7 @@ export default class SphereViewer {
 
     this.drawingPoints = [];
     this.drawingMarkers = [];
-    this.productHotspots = [];
-    this.navigationHotspots = [];
+    this.Hotspots = [];
 
     this.currentUnsavedHotspot = undefined;
 
@@ -105,6 +105,7 @@ export default class SphereViewer {
 		this.scene.add( this.hotspot1 );
     this.hotspot1.isHotspot = true;
     this.hotspot1.name = 'jackets';
+    this.Hotspots.push(this.hotspot1);
 
 		//BICYCLE
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
@@ -116,6 +117,7 @@ export default class SphereViewer {
 		this.scene.add( this.hotspot2 );
     this.hotspot2.isHotspot = true;
     this.hotspot2.name = 'bike';
+    this.Hotspots.push(this.hotspot2);
 
 
     this.geometry_hs_3 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
@@ -194,7 +196,7 @@ export default class SphereViewer {
     
     
 
-    this.productHotspots.push(prodhs);
+    this.Hotspots.push(prodhs);
 
     
 
@@ -217,7 +219,7 @@ export default class SphereViewer {
     
     this.currentUnsavedHotspot = navhs;
 
-    this.navigationHotspots.push(navhs);
+    this.Hotspots.push(navhs);
 
     [ navhs.rotation.x, navhs.rotation.y, navhs.rotation.z ];
 
@@ -303,6 +305,13 @@ export default class SphereViewer {
     }
   }
 
+  removeHotspots(){
+    debugger;
+    var viewportScene = this.scene;
+    _.forEach(this.Hotspots, function(o) { viewportScene.remove( o ); });
+    this.Hotspots = [];
+  }
+
 
   setupClickEvent() {
     function onDocumentMouseUp( event ){
@@ -313,9 +322,8 @@ export default class SphereViewer {
 
         v3MouseCoords.unproject( this.camera );
         var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
-        var allCustomHotspots = this.productHotspots.concat(this.navigationHotspots);
-        var intersectables = allCustomHotspots.concat([this.hotspot1, this.hotspot2, this.sphereMesh]);
-        var intersects = ray.intersectObjects( intersectables );
+
+        var intersects = ray.intersectObjects( this.Hotspots );
 
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
