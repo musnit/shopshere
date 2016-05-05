@@ -272,11 +272,11 @@ class Viewer extends Component {
                         </Col>
                     </Row> : null }
                     { this.state.isEditing ?
-                    <div>
+                    <div className="edit-box">
 
 
                     <Row className="show-grid">
-                        <Col xs={10}>
+                        <Col xs={12} className="edit-text">
                         <h4>Toggle these sliders below to position your new hotspot, then save the hotspot location.</h4>
                         </Col>
                     </Row>
@@ -284,46 +284,49 @@ class Viewer extends Component {
                     <Row className="show-grid">
                         <Col xs={4}>
                         <div className="slider">
-                            <p>
-                                <Label>Rotate around Y &ndash; Axis</Label>
+                            <p className="edit-text">
+                                Rotate Y &ndash; Axis
                             </p>
                             <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderYChange.bind(this.sphereViewer)} />
                         </div>
                         </Col>
                         <Col xs={4}>
                         <div className="slider">
-                            <p><Label>Rotate around X &ndash; Axis</Label></p>
+                            <p className="edit-text">Rotate X &ndash; Axis</p>
                             <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderXChange.bind(this.sphereViewer)} />
                         </div>
                         </Col>
                         <Col xs={4}>
                         <div className="slider">
-                            <p><Label>Rotate around Z &ndash; Axis</Label></p>
+                            <p className="edit-text">Rotate Z &ndash; Axis</p>
                             <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderZChange.bind(this.sphereViewer)} />
                         </div>
                         </Col>
                     </Row>
                     
                     <Row className="show-grid">
-                        <Col xs={10}>
+
+                        <Col xs={8}>
                         <div className="view-button">
                             <button
-                                className = "btn btn-lg btn-primary"
+                                className = "btn btn-lg btn-primary save-edit-button"
                                 type = "submit"
                                 onClick = {this.saveHotspot.bind(this)} >
                             Save new hotspot location
                             </button>
                         </div> 
                         </Col>
+
                     </Row>
 
                     </div> : null }
 
-                    <Row className="show-grid">
-                        <Col xs={10}>
-                            <div id='viewer-placeholder'></div>
-                        </Col>
-                    </Row>
+                </Grid>
+            </div>
+            
+            <div id='viewer-placeholder'></div>
+
+                <Grid className="grid-panel">
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
@@ -347,8 +350,6 @@ class Viewer extends Component {
                         </Col>
                     </Row>
                 </Grid>
-            </div>
-            
 
             <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
             <Modal.Header closeButton>
