@@ -21,11 +21,12 @@ export function deleteHotspot(object) {
 }
 
 export function fetchHotspots(options) {
-    const nameForFetch = options.data;
+    const shop = options.data[0];
+    const viewpoint = options.data[1];
     return {
         type: types.FETCH_HOTSPOTS,
         payload: {
-            promise: fetchHotspotsAPI(nameForFetch)
+            promise: fetchHotspotsAPI( shop, viewpoint )
         }
     }
 };

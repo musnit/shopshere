@@ -176,13 +176,14 @@ export default class SphereViewer {
 
 
 
-  addNewProductHotspot() {
+  addNewProductHotspot(name) {
     var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.4 );
     geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
     var prodhs = new THREE.Mesh( geom, mat);
     prodhs.isHotspot = true;
-    prodhs.name = 'prodHStest';
+    console.log(name.target.innerText);
+    prodhs.name = name.target.innerText;
     prodhs.rotation.z = (2 * Math.PI) - 0.35;
     this.camera.position.y = 0;
     this.camera.position.z = 0;

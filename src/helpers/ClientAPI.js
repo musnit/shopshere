@@ -92,8 +92,27 @@ function GetPerShopAPI(name, table) {
     });
 }
 
-export function fetchHotspotsAPI(name) {
-    return GetPerShopAPI(name, 'hotspot');
+function GetPerViewpointAPI(shopName, viewpointName, table) {
+    return new Promise((resolve, reject) => {
+        var getResult = (() => {
+            request.get(UrlAPI + table + '/')
+                .query({ 'filter[shop]': String(shopName) })
+                .query({ 'filter[viewpoint]': String(viewpointName) })
+                .set('Content-Type', 'application/json')
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        console.log('Oh no! error' + JSON.stringify(err));
+                    } else {
+                        //console.log('yay got ' + JSON.stringify(res.body));
+                        resolve(res.body["Items"]);
+                    }
+                })
+        })();
+    });
+}
+
+export function fetchHotspotsAPI(shop, viewpoint) {
+    return GetPerViewpointAPI(shop, viewpoint, 'hotspot');
 };
 
 export function fetchProductsAPI(name) {

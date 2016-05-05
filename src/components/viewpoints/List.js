@@ -12,6 +12,13 @@ import '~/src/styles/viewpoint.css';
 
 class List extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+          selectedViewpoint: false,
+        };
+    }
+
   componentWillUnmount() {
     this.props.clearViewpoints();
   }
@@ -23,8 +30,8 @@ class List extends Component {
    }
   }
 
-  clickViewpoint() {
-    return;
+  clickViewpoint(name) {
+    this.setState({ selectedViewpoint: name.target.innerText });
   }
 
   render() {
@@ -39,7 +46,8 @@ class List extends Component {
 
         </DropdownButton>
 
-        <Viewer data={this.props.data}/>
+        { this.state.selectedViewpoint ? <Viewer data={[this.props.data,this.state.selectedViewpoint]}/> : null }
+        
       </div>
     );
   }
