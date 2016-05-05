@@ -25,3 +25,7 @@
 .grid-panel {
 	width:auto;
 }
+
+.admin-modal {
+    float:left;
+}

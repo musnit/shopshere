@@ -30,7 +30,8 @@ class Viewer extends Component {
             showNewNavigationHotspotModal: false,
 
             currentHotspot: "",
-            currentProduct: ""
+            currentProduct: "",
+            isEditing:false
         };
     }
 
@@ -69,31 +70,27 @@ class Viewer extends Component {
     }
 
     open(name) {
-    	if (!this.state.modalMode) {
-            var thisProduct;
-    		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
-    		if (thisHotspot.type === "product") {
-    			thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.prodview });
-    		}
-            else if (thisHotspot.type === "navigation") {
-                var navigateTo = _.find(this.props.viewpoints, function(o) { return o.name == thisHotspot.prodview });
-                this.navigateToViewpoint( navigateTo );
-                this.setState({ 
-                    modalMode: this.state.modalMode,
-                    showModal: false,
-                    currentHotspot: "",
-                    currentProduct: "" });
-                return; 
-            }
-    		else {
-    			thisProduct = this.state.currentProduct;
-    		}
-    		
-    	}
-    	else {
-    		thisProduct = this.state.currentProduct;
 
-    	}
+        var thisProduct;
+		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
+		if (thisHotspot.type === "product") {
+			thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.prodview });
+		}
+        else if (thisHotspot.type === "navigation") {
+            var navigateTo = _.find(this.props.viewpoints, function(o) { return o.name == thisHotspot.prodview });
+            this.navigateToViewpoint( navigateTo );
+            this.setState({ 
+                modalMode: this.state.modalMode,
+                showModal: false,
+                currentHotspot: "",
+                currentProduct: "" });
+            return; 
+        }
+		else {
+			thisProduct = this.state.currentProduct;
+		}
+    		
+
         this.setState({
         	modalMode: this.state.modalMode,
             showModal: true,
@@ -190,6 +187,7 @@ class Viewer extends Component {
     }  
 
     addNewNavigationHotspot(name) {
+        this.setState({ isEditing: true});
         var inputName = name.target.innerText;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
@@ -197,6 +195,7 @@ class Viewer extends Component {
     }
 
     addNewProductHotspot(name) {
+        this.setState({ isEditing: true});
         var inputName = name.target.innerText;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
@@ -208,6 +207,7 @@ class Viewer extends Component {
         var savedParams = this.sphereViewer.saveNewHotspotLocation();
 
         this.addHotspot( savedParams );
+        this.setState({ isEditing: false});
     }
 
     addHotspot( params ) {
@@ -243,28 +243,8 @@ class Viewer extends Component {
                                 <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
                             </Col>
                     </Row>
-                    <Row className="show-grid">
-                        <Col xs={5}>
-                        <div className="view-button">
-                            <button
-                                className = "btn btn-lg btn-primary"
-                                type = "submit"
-                                onClick = {this.setModalTypeToOwner.bind(this)} >
-                            View Hotspot as Shopowner
-                            </button>
-                        </div>
-                        </Col>
-                        <Col xs={5}>
-                        <div className="view-button">
-                            <button
-                                className = "btn btn-lg btn-primary"
-                                type = "submit"
-                                onClick = {this.setModelTypeToShopper.bind(this)} >
-                            Preview Hotspot as Shopper
-                            </button>
-                        </div>
-                        </Col>
-                    </Row>
+
+                    {/* dont need this button right now
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
@@ -277,6 +257,8 @@ class Viewer extends Component {
                         </div>
                         </Col>
                     </Row>
+                    */}
+                    { !this.state.isEditing ?
                     <Row className="show-grid">
                         <Col xs={10}>
                         <div className="view-button">
@@ -288,12 +270,17 @@ class Viewer extends Component {
                             </button>
                         </div>
                         </Col>
-                    </Row>
+                    </Row> : null }
+                    { this.state.isEditing ?
+                    <div>
+
+
                     <Row className="show-grid">
                         <Col xs={10}>
                         <h4>Toggle these sliders below to position your new hotspot, then save the hotspot location.</h4>
                         </Col>
                     </Row>
+                    
                     <Row className="show-grid">
                         <Col xs={4}>
                         <div className="slider">
@@ -316,6 +303,7 @@ class Viewer extends Component {
                         </div>
                         </Col>
                     </Row>
+                    
                     <Row className="show-grid">
                         <Col xs={10}>
                         <div className="view-button">
@@ -325,17 +313,46 @@ class Viewer extends Component {
                                 onClick = {this.saveHotspot.bind(this)} >
                             Save new hotspot location
                             </button>
+                        </div> 
+                        </Col>
+                    </Row>
+
+                    </div> : null }
+
+                    <Row className="show-grid">
+                        <Col xs={10}>
+                            <div id='viewer-placeholder'></div>
+                        </Col>
+                    </Row>
+                    <Row className="show-grid">
+                        <Col xs={5}>
+                        <div className="view-button">
+                            <button
+                                className = "btn btn-lg btn-primary"
+                                type = "submit"
+                                onClick = {this.setModalTypeToOwner.bind(this)} >
+                            View Hotspot as Shopowner
+                            </button>
+                        </div>
+                        </Col>
+                        <Col xs={5}>
+                        <div className="view-button">
+                            <button
+                                className = "btn btn-lg btn-primary"
+                                type = "submit"
+                                onClick = {this.setModelTypeToShopper.bind(this)} >
+                            Preview Hotspot as Shopper
+                            </button>
                         </div>
                         </Col>
                     </Row>
                 </Grid>
             </div>
-            <div id='viewer-placeholder'></div>
+            
 
             <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
             <Modal.Header closeButton>
                 <Modal.Title>{this.state.currentProduct.name}</Modal.Title>
-                { this.state.modalMode ? <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput> : null}
             </Modal.Header>
             <Modal.Body>
                 <label>Description:</label>
@@ -350,6 +367,18 @@ class Viewer extends Component {
                 <label>Quantity</label>
                 <Input type="Quantity" ref='quantitybox' placeholder="Quantity..." />
                 <ButtonInput className="hotspot-button" type="submit" bsStyle="primary"  >Add to cart</ButtonInput>
+
+
+                { this.state.modalMode ?
+                                <div className="admin-modal">
+                                <br />
+                                <div>Currently viewing as shop admin so you can:</div>
+
+                                <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput>
+
+                </div> : null}
+
+
             </Modal.Footer>
             </Modal>
             <Modal show={this.state.showNewHotspotModal} onHide={this.closeNewHotspotModal.bind(this)}>
