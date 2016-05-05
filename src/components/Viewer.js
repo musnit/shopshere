@@ -107,6 +107,8 @@ class Viewer extends Component {
         this.state = {
         	modalMode: true,
             showModal: false,
+            currentHotspot: this.state.currentHotspot,
+            currentProduct: this.state.currentProduct
         };
     }
 
@@ -115,6 +117,8 @@ class Viewer extends Component {
     	this.state = {
         	modalMode: false,
             showModal: false,
+            currentHotspot: this.state.currentHotspot,
+            currentProduct: this.state.currentProduct
         };
     }
 
@@ -327,26 +331,11 @@ class Viewer extends Component {
                 </Grid>
             </div>
             <div id='viewer-placeholder'></div>
-            <Modal show={this.state.showModal && this.state.modalMode} onHide={this.close.bind(this)}>
-            <Modal.Header closeButton>
-                <Modal.Title>Select a product to connect with this hotspot ({this.state.currentHotspot}). Or alternatively you can delete this hotspot.</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className="product-button">
-                    <DropdownButton bsStyle={'primary'} title={'Select a product to connect with this hotspot'} id="product-view-edit">
-                        {this.props.products.map((product, index) =>
-                        <MenuItem eventKey={index} key={index} onClick={this.connectProductToHotspot.bind(this)}> {product.name} </MenuItem>
-                        )}
-                    </DropdownButton>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput>
-            </Modal.Footer>
-            </Modal>
-            <Modal show={this.state.showModal && !this.state.modalMode} onHide={this.close.bind(this)}>
+
+            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
             <Modal.Header closeButton>
                 <Modal.Title>{this.state.currentProduct.name}</Modal.Title>
+                { this.state.modalMode ? <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteHotspot.bind(this)} >Delete this hotspot!</ButtonInput> : null}
             </Modal.Header>
             <Modal.Body>
                 <label>Description:</label>
