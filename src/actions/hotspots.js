@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { connectProductToHotspotAPI, deleteHotspotAPI, fetchHotspotsAPI } from '~/src/helpers/ClientAPI';
+import { connectProductToHotspotAPI, deleteHotspotAPI, fetchHotspotsAPI, addHotspotAPI } from '~/src/helpers/ClientAPI';
 
 //action creators:
 export function connectProductToHotspot(data) {

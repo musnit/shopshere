@@ -182,8 +182,8 @@ export default class SphereViewer {
     var mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
     var prodhs = new THREE.Mesh( geom, mat);
     prodhs.isHotspot = true;
-    console.log(name.target.innerText);
-    prodhs.name = name.target.innerText;
+    prodhs.isProduct = true;
+    prodhs.name = name;
     prodhs.rotation.z = (2 * Math.PI) - 0.35;
     this.camera.position.y = 0;
     this.camera.position.z = 0;
@@ -200,14 +200,15 @@ export default class SphereViewer {
 
 
   }
-  addNewNavigationHotspot() {
+  addNewNavigationHotspot(name) {
 
     var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.2 );
     geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
     var mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
     var navhs = new THREE.Mesh( geom, mat);
+    navhs.isHotspot = true;
     navhs.isNavigation = true;
-    navhs.name = 'navHStest';
+    navhs.name = name;
     navhs.rotation.z = (3 * Math.PI) / 2;
     this.camera.position.y = 0;
     this.camera.position.z = 0;
@@ -218,10 +219,33 @@ export default class SphereViewer {
 
     this.navigationHotspots.push(navhs);
 
+    [ navhs.rotation.x, navhs.rotation.y, navhs.rotation.z ];
+
   }
 
   saveNewHotspotLocation() {
+
+
+    var outputName = this.currentUnsavedHotspot.name;
+
+    var outputRotation = { 
+      "X": this.currentUnsavedHotspot.rotation.x, 
+      "Y": this.currentUnsavedHotspot.rotation.y, 
+      "Z": this.currentUnsavedHotspot.rotation.z 
+    };
+
+    var outputType;
+
+    if ( this.currentUnsavedHotspot.isProduct ) {
+      outputType = "product";
+    }
+    else if ( this.currentUnsavedHotspot.isNavigation ) {
+      outputType = "navigation";
+    }
+
     this.currentUnsavedHotspot = undefined;
+
+    return [ outputName, outputRotation, outputType ];
   }
 
   someOtherControlsCode(){
@@ -295,12 +319,9 @@ export default class SphereViewer {
 
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
-            console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
-            console.log(intersects[0].point);
+            // console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
+            // console.log(intersects[0].point);
             this.openModal(intersects[0].object.name);
-          }
-          else if (intersects[0].object.isNavigation){
-            console.log("navigation point");
           }
           else {
             //this.drawingPoints.push(intersects[0].point);

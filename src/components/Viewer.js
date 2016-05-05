@@ -70,17 +70,28 @@ class Viewer extends Component {
 
     open(name) {
     	if (!this.state.modalMode) {
+            var thisProduct;
     		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
-    		if (thisHotspot.product) {
-    			var thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.product });
+    		if (thisHotspot.type === "product") {
+    			thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.prodview });
     		}
+            else if (thisHotspot.type === "navigation") {
+                var navigateTo = _.find(this.props.viewpoints, function(o) { return o.name == thisHotspot.prodview });
+                this.navigateToViewpoint( navigateTo );
+                this.setState({ 
+                    modalMode: this.state.modalMode,
+                    showModal: false,
+                    currentHotspot: "",
+                    currentProduct: "" });
+                return; 
+            }
     		else {
-    			var thisProduct = this.state.currentProduct;
+    			thisProduct = this.state.currentProduct;
     		}
     		
     	}
     	else {
-    		var thisProduct = this.state.currentProduct;
+    		thisProduct = this.state.currentProduct;
 
     	}
         this.setState({
@@ -174,31 +185,47 @@ class Viewer extends Component {
         this.setState({ showNewNavigationHotspotModal: false});
     }  
 
-    addNewNavigationHotspot() {
+    addNewNavigationHotspot(name) {
+        var inputName = name.target.innerText;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewNavigationHotspot();
+        this.sphereViewer.addNewNavigationHotspot(inputName);
     }
 
     addNewProductHotspot(name) {
-        debugger;
+        var inputName = name.target.innerText;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewProductHotspot(name);
+        this.sphereViewer.addNewProductHotspot(inputName);        
     }
 
     saveHotspot(){
         this.sphereViewer.saveNewHotspotLocation.bind(this.sphereViewer);
-        this.sphereViewer.saveNewHotspotLocation();
+        var savedParams = this.sphereViewer.saveNewHotspotLocation();
+
+        this.addHotspot( savedParams );
     }
 
-    addHotspot(name) {
+    addHotspot( params ) {
         this.props.boundAddHotspot({
-          name: name,
+
+          name: params[0],
+
           shop: this.props.data[0],
-          product: name,
-          viewpoint: name
+
+          prodview: params[0],
+
+          viewpoint: this.props.data[1],
+
+          rotation: params[1],
+
+          type: params[2]
+
         });
+    }
+
+    navigateToViewpoint( navigateTo ) {
+        console.log( navigateTo );
     }
 
 
@@ -330,7 +357,7 @@ class Viewer extends Component {
                     <Image className="modal-image" src={this.state.currentProduct.imageURL} rounded/>
                 </div>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer show={false}>
                 <label>Quantity</label>
                 <Input type="Quantity" ref='quantitybox' placeholder="Quantity..." />
                 <ButtonInput className="hotspot-button" type="submit" bsStyle="primary"  >Add to cart</ButtonInput>
