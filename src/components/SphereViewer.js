@@ -221,8 +221,6 @@ export default class SphereViewer {
 
     this.Hotspots.push(navhs);
 
-    [ navhs.rotation.x, navhs.rotation.y, navhs.rotation.z ];
-
   }
 
   saveNewHotspotLocation() {
@@ -306,10 +304,45 @@ export default class SphereViewer {
   }
 
   removeHotspots(){
-    debugger;
     var viewportScene = this.scene;
     _.forEach(this.Hotspots, function(o) { viewportScene.remove( o ); });
     this.Hotspots = [];
+  }
+
+  addAHotspot(hotspot){
+      var geom
+      var mat
+      var hs
+
+      if(hotspot.type === "product") {
+          geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.4 );
+          mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
+      }
+      else if (hotspot.type == "navigation") {
+          geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.2 );
+          mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
+      }
+
+      geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+
+      hs = new THREE.Mesh( geom, mat);
+      hs.isHotspot = true;
+      hs.name = hotspot.name;
+
+      if(hotspot.type === "product") {
+          hs.isProduct = true;
+      }
+      else if (hotspot.type == "navigation") {
+          hs.isNavigation = true;
+      }
+
+      hs.rotation.y = hotspot.rotation["Y"];
+      hs.rotation.x = hotspot.rotation["X"];
+      hs.rotation.z = hotspot.rotation["Z"];
+
+      this.scene.add( hs );
+
+      this.Hotspots.push( hs );
   }
 
 

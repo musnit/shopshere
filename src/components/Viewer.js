@@ -7,7 +7,7 @@ import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Lab
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots, unboundAddHotspot, clearHotspots } from '~/src/actions/hotspots';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
-import { find, findIndex } from 'lodash';
+import { find, findIndex, forEach } from 'lodash';
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -48,6 +48,11 @@ class Viewer extends Component {
         this.props.clearHotspots();
         this.props.fetchHotspots({data: nextProps.data});
        }
+
+       if(nextProps.hotspots !== this.props.hotspots && nextProps.hotspots.length != 0){
+        this.removeAllHotspots();
+        this.addHotspotsToViewpoint(nextProps.hotspots);
+       } 
 	  }
 
     componentDidMount() {
@@ -238,6 +243,12 @@ class Viewer extends Component {
         this.sphereViewer.removeHotspots.bind(this.sphereViewer);
         this.sphereViewer.removeHotspots();
 
+    }
+
+    addHotspotsToViewpoint(hotspots){
+        
+        var addAHotspot = this.sphereViewer.addAHotspot.bind(this.sphereViewer);
+        _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
 
 
