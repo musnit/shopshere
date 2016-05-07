@@ -8,6 +8,7 @@ const viewerSizeY = 400;
 const sphereRadius = 100;
 
 const testImage = "/images/360_shop_from_aid.jpg";
+const testImage2 = "/images/360_shop_1.jpg"
 const imageAspectRatio = 2;
 
 export default class SphereViewer {
@@ -19,6 +20,8 @@ export default class SphereViewer {
     this.drawingPoints = [];
     this.drawingMarkers = [];
     this.Hotspots = [];
+
+    this.currentImage = testImage;
 
     this.currentUnsavedHotspot = undefined;
 
@@ -61,14 +64,14 @@ export default class SphereViewer {
 		this.sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
 		// creation of the sphere material
-		let sphereMaterial = new THREE.MeshBasicMaterial();
+		this.sphereMaterial = new THREE.MeshBasicMaterial();
 
 		let loader = new THREE.TextureLoader();
 		loader.crossOrigin = "anonymous";
-		sphereMaterial.map = loader.load(testImage);
+		this.sphereMaterial.map = loader.load(this.currentImage);
 
 		// geometry + material = mesh (actual object)
-		this.sphereMesh = new THREE.Mesh(this.sphere, sphereMaterial);
+		this.sphereMesh = new THREE.Mesh(this.sphere, this.sphereMaterial);
 		this.scene.add(this.sphereMesh);
 	}
 
@@ -246,6 +249,14 @@ export default class SphereViewer {
     this.currentUnsavedHotspot = undefined;
 
     return [ outputName, outputRotation, outputType ];
+  }
+
+  changeBackgroundImage(newImage){
+    this.currentImage = testImage2;
+
+    let loader = new THREE.TextureLoader();
+    loader.crossOrigin = "anonymous";
+    this.sphereMaterial.map = loader.load(this.currentImage);
   }
 
   someOtherControlsCode(){

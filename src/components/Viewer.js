@@ -251,6 +251,11 @@ class Viewer extends Component {
         _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
 
+    changeViewpoint(){
+        this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
+        this.sphereViewer.changeBackgroundImage();
+    }
+
 
   render() {
     return (
@@ -262,20 +267,20 @@ class Viewer extends Component {
                                 <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
                             </Col>
                     </Row>
-                    {/*
+                    {/**/}
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
                             <button
                             className = "btn btn-lg btn-primary"
                             type = "submit"
-                            onClick = {this.removeAllHotspots.bind(this)} >
-                            Toggle Camera Controls
+                            onClick = {this.changeViewpoint.bind(this)} >
+                            Change Background Image
                             </button>
                         </div>
                         </Col>
                     </Row>
-                    */}
+                    {/**/}
                     { !this.state.isEditing ?
                     <Row className="show-grid">
                         <Col xs={10}>
