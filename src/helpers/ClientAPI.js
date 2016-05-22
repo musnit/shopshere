@@ -1,7 +1,7 @@
 import request from 'superagent';
 
-const UrlAPI = 'https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/data/'
-
+import { apiURL } from '~/src/config';
+const UrlAPI = apiURL;
 
 ////////////////////////////////////// POST API /////////////////////////////////
 
