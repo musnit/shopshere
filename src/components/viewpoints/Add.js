@@ -6,6 +6,10 @@ import { Input, ButtonInput, Modal, Button} from 'react-bootstrap';
 import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 import '~/src/styles/viewpoint.css';
 
+import S3Uploader from '~/src/components/utility/S3Uploader';
+
+import { viewpointFolderURL } from '~/src/config';
+
 class Add extends Component {
 
   clickedAddViewpoint() {
@@ -13,12 +17,11 @@ class Add extends Component {
       name: this.refs.nameBox.getValue(),
       key: this.refs.keyBox.getValue(),
       shop: this.props.data,
-      imageFile: this.refs.imageFileBox.getValue()
+      imageFile: this.state.imageFile
     });
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.keyBox.getInputDOMNode().value = '';
-    this.refs.imageFileBox.getInputDOMNode().value = '';
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, submitDisabled: false, imageFile: undefined });
   }
 
   constructor(props) {
@@ -29,11 +32,19 @@ class Add extends Component {
   }
 
   close() {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, imageFile: undefined });
   }
 
   open() {
     this.setState({ showModal: true });
+  }
+
+  imageUploadStarted(){
+    this.setState({ submitDisabled: true });
+  }
+
+  imageUploadComplete(imageFile){
+    this.setState({ submitDisabled: false, imageFile: imageFile });
   }
 
   render() {
@@ -59,13 +70,16 @@ class Add extends Component {
           <Input type="ViewpointName" ref='nameBox' placeholder="Name..." required />
           <label htmlFor="inputViewpointKey">Viewpoint Key</label>
           <Input type="ViewpointKey" ref='keyBox' placeholder="Key..." />
-          <label htmlFor="inputViewpointImageFile">Viewpoint Image</label>
-          <Input type="ViewpointImageFile" ref='imageFileBox' placeholder="Image..." />
-
-
+          <label htmlFor="inputViewpointImageFile">Viewpoint Image</label><br/>
+          <S3Uploader
+            onUploadStart={this.imageUploadStarted.bind(this)}
+            onUploadFinish={this.imageUploadComplete.bind(this)}
+            folderURL={viewpointFolderURL}/>
           </Modal.Body>
           <Modal.Footer>
-          <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedAddViewpoint.bind(this)} >Add viewpoint</ButtonInput>
+          <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedAddViewpoint.bind(this)} disabled={this.state.submitDisabled}>
+            {this.state.submitDisabled? 'Wait for upload to finish' : 'Add viewpoint'}
+          </ButtonInput>
           </Modal.Footer>
         </Modal>
       </div>
