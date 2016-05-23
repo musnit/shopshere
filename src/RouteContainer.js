@@ -9,7 +9,7 @@ import Shops from './components/Shops';
 import Shop from './components/Shop';
 import Navbar from './Navbar.js';
 import App from './App.js';
-import Home from './components/Home.js';
+import Home from './components/user/Home.js';
 
 class RouteContainer extends Component {
 
