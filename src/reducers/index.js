@@ -200,6 +200,31 @@ const hotspots = (state=[], action) => {
 };
 
 
+//////////////// CATEGORIES ///////////////////////
+
+const category = (state, action) => {
+	switch (action.type) {
+		case types.ADD_CATEGORY_FULFILLED:
+	        return action.payload;
+    default:
+      return state;
+	}
+};
+
+const categories = (state=[], action) => {
+	switch (action.type) {
+		case types.ADD_CATEGORY_FULFILLED:
+			return [
+	          ...state,
+	          category(undefined, action)
+	          ];
+	    case types.FETCH_CATEGORIES_FULFILLED:
+	        return action.payload;
+    default:
+      return state;
+    }
+};
+
 
 ///////////////////////////////////ROOT
 
@@ -209,7 +234,8 @@ const rootReducer = combineReducers({
   shops,
   viewpoints,
   products,
-  hotspots
+  hotspots,
+  categories
 });
 
 export default rootReducer;

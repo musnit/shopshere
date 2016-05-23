@@ -12,10 +12,12 @@ class MyShopsAddShop extends Component {
   clickedAddShop() {
     this.props.boundAddShop({
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue()
+      key: this.refs.keyBox.getValue(),
+      category: this.refs.catBox.getValue()
     });
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.keyBox.getInputDOMNode().value = '';
+    this.refs.catBox.getInputDOMNode.value = '';
     this.setState({ showModal: false });
   }
 
@@ -57,6 +59,8 @@ class MyShopsAddShop extends Component {
           <Input type="ShopName" ref='nameBox' placeholder="Name..." required />
           <label htmlFor="inputShopKey">Shop Key</label>
           <Input type="ShopKey" ref='keyBox' placeholder="Key..." />
+          <label htmlFor="inputShopCategory">Category</label>
+          <Input type="ShopCat" ref='catBox' placeholder="Category..." />
 
 
           </Modal.Body>

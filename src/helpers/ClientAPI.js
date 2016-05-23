@@ -143,6 +143,23 @@ export function fetchShopsAPI() {
     });
 };
 
+export function fetchCategoriesAPI() {
+    return new Promise((resolve, reject) => {
+        var getResult = (() => {
+            request.get(UrlAPI + 'category' + '/')
+                .set('Content-Type', 'application/json')
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        console.log('Oh no! error' + JSON.stringify(err));
+                    } else {
+                        //console.log('yay got ' + JSON.stringify(res.body));
+                        resolve(res.body["Items"]);
+                    }
+                })
+        })();
+    });    
+}
+
 
 ////////////////////////////////////// PATCH API /////////////////////////////////
 

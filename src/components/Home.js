@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Header from '~/src/components/Header'
 import DirectoryList from '~/src/components/DirectoryList'
 
+
 class Home extends Component {
   render() {
     return (
@@ -19,3 +20,4 @@ class Home extends Component {
 }
 
 export default Home;
+

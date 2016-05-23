@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import ShopList from '~/src/components/ShopList';
-import MyShopsAddShop from '~/src/components/MyShopsAddShop';
 import '~/src/styles/shops.css';
 
 class Shops extends Component {
