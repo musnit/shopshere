@@ -9,6 +9,7 @@ import Shops from './components/Shops';
 import Shop from './components/Shop';
 import Navbar from './Navbar.js';
 import App from './App.js';
+import Home from './components/Home.js';
 
 class RouteContainer extends Component {
 
@@ -27,6 +28,8 @@ class RouteContainer extends Component {
           <Route path="/shops" component={Shops}>
             <Route path="/shops/:name" component={Shop}>
             </Route>
+          </Route>
+          <Route path="/user" component={Home}>
           </Route>
         </Route>
       </Router>
