@@ -18,12 +18,6 @@ class DirectoryList extends Component {
 
   render() {
 
-  	var cats = [];
-
-  	this.props.categories.map((item) => cats.push(item.text));
-
-  	var sortedcats = cats.sort();
-
   	var categories = [];
 
   	_.forEach(this.props.categories, function(value){ categories.push([value.name,value.text])});
