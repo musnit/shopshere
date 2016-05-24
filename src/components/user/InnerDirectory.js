@@ -15,20 +15,11 @@ class InnerDirectory extends Component {
   }
 
   render() {
-
-
-
-
     return (
-      
       <div>
         {this.props.data.map((item, index) =>
-              <li eventKey={index} key={index} className="shop-name" onClick={this.onClick.bind(this)}> {item["name"]} </li>)}
+              <li key={index} className="shop-name" onClick={this.onClick.bind(this)}> {item["name"]} </li>)}
       </div>
-
-
-
-      
     );
   }
 }
