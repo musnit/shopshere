@@ -7,13 +7,14 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import { find, sortBy, forEach } from 'lodash';
 import InnerDirectory from '~/src/components/user/InnerDirectory'
+import { LinkContainer } from 'react-router-bootstrap';
 
 
 
 class DirectoryList extends Component {
 
   onClick() {
-  	console.log("catclick")
+  	return
   }
 
   render() {
@@ -39,7 +40,9 @@ class DirectoryList extends Component {
       <div className="main">
       {sortcats.map((item, index) =>
         <ul className="directory-list">
-            <li eventKey={index} key={index} className="category-name" onClick={this.onClick.bind(this)}> {item[1].toUpperCase()} </li>
+            <LinkContainer to={{ pathname: `/user/${item[0]}` }}>
+              <li eventKey={index} key={index} className="category-name" onClick={this.onClick.bind(this)}> {item[1].toUpperCase()} </li>
+            </LinkContainer>
             <InnerDirectory data={item[2]} />
         </ul>)}
       </div>

@@ -10,6 +10,10 @@ import Shop from './components/Shop';
 import Navbar from './Navbar.js';
 import App from './App.js';
 import Home from './components/user/Home.js';
+import DirectoryList from './components/user/DirectoryList.js';
+import CategoryShopList from './components/user/CategoryShopList.js';
+
+
 
 class RouteContainer extends Component {
 
@@ -21,6 +25,7 @@ class RouteContainer extends Component {
   render() {
     return (
       <Router ref="router" history={this.state.history}>
+        <Redirect from="/user" to="/user/directory" />
         <Redirect from="/" to="shops" />
         <Route path="/" component={App}>
           <Route path="/viewer" component={Viewer}>
@@ -30,6 +35,10 @@ class RouteContainer extends Component {
             </Route>
           </Route>
           <Route path="/user" component={Home}>
+            <Route path="/user/directory" component={DirectoryList}>
+            </Route>
+            <Route path="/user/:category" component={CategoryShopList}>
+            </Route>
           </Route>
         </Route>
       </Router>

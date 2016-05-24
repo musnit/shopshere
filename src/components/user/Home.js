@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Header from '~/src/components/user/Header'
-import DirectoryList from '~/src/components/user/DirectoryList'
+
 
 
 class Home extends Component {
@@ -11,7 +11,9 @@ class Home extends Component {
 
         <Header />
 
-        <DirectoryList />
+          <div>
+            {this.props.children}
+          </div>
 
 
       </div>
