@@ -37,3 +37,19 @@
 .modal-body-delete {
   display:flex;
 }
+
+.cat-button {
+  border-color: transparent;
+  padding: 10px;
+  margin: 0 auto 0 auto;
+  display:inline-block;
+
+}
+
+.form-element {
+  width:100%;
+}
+
+.cat-box {
+    display:inline-block;
+}

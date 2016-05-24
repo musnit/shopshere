@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchShops } from '~/src/actions/shops';
+import { fetchCategories } from '~/src/actions/categories';
 import fetch from '~/src/components/fetch';
 import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -37,24 +38,29 @@ class ShopList extends Component {
             </LinkContainer>
           )}
         </Nav>
-        <MyShopsAddShop />
+        <MyShopsAddShop data={this.props.categories}/>
       </div>
     );
   }
 }
 
 const FetchedShopList = fetch(ShopList, {
-  actions: [fetchShops]
+  actions: [fetchShops, fetchCategories]
 });
 
 function mapStateToProps(state) {
+  const categories = state.categories;
   const shops = state.shops;
-  return { shops };
+  return { 
+    categories,
+    shops
+    };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchShops: bindActionCreators(fetchShops, dispatch),
+    fetchCategories: bindActionCreators(fetchCategories, dispatch)
   };
 }
 

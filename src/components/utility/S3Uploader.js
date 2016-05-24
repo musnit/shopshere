@@ -4,6 +4,10 @@ import Dropzone from 'react-dropzone';
 import superagent from 'superagent';
 import uuid from 'node-uuid';
 
+import '~/src/styles/uploader.css';
+
+
+
 class S3Uploader extends Component {
 
   constructor(props) {
@@ -37,7 +41,7 @@ class S3Uploader extends Component {
   render() {
     const dropZone = !this.state.uploadInProgress && !this.state.uploadCompleted &&
       <Dropzone onDrop={this.onDrop.bind(this)}>
-        <div>Drop a file here, or click to select a file to upload.</div>
+        <div className="dropzone">Drop a file here, or click to select a file to upload.</div>
       </Dropzone>;
     const uploadProgress = this.state.uploadInProgress && <div>Uploading...</div>;
     const uploadPreview = this.state.uploadCompleted &&

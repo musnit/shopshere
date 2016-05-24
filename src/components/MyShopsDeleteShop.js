@@ -72,10 +72,12 @@ class MyShopsDeleteShop extends Component {
 }
 
 function mapStateToProps(state) {
+  const categories = state.categories;
   const shops = state.shops;
-  return {
+  return { 
+    categories,
     shops
-  };
+    };
 };
 
 function mapDispatchToProps(dispatch) {

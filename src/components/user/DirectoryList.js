@@ -37,17 +37,11 @@ class DirectoryList extends Component {
 
     return (
       <div className="main">
-
       {sortcats.map((item, index) =>
         <ul className="directory-list">
             <li eventKey={index} key={index} className="category-name" onClick={this.onClick.bind(this)}> {item[1].toUpperCase()} </li>
             <InnerDirectory data={item[2]} />
         </ul>)}
-
-
-
-
-
       </div>
     );
   }
