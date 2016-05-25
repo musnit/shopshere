@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, LinkContainer } from 'react-bootstrap';
 import '~/src/styles/header.css';
 
 
@@ -14,7 +14,9 @@ class Header extends Component {
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <NavItem href="#" ><div id="store-directory"><img src="/images/shop.jpg" />Store Directory</div></NavItem>
+            <NavItem href="/user/directory" >
+                <div id="store-directory"><img src="/images/shop.jpg" />Store Directory</div>
+            </NavItem>
         </Nav>
       </Navbar>
     );
