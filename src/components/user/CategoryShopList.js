@@ -29,7 +29,7 @@ class CategoryShopList extends Component {
     return (
       <div>
         {shopsInCategory.map((shop, index) =>
-              <ShopCarousel data={[shop,index]} />
+              <ShopCarousel key={index} data={shop} />
           )}
       </div>
     );

@@ -39,9 +39,9 @@ class DirectoryList extends Component {
     return (
       <div className="main">
       {sortcats.map((item, index) =>
-        <ul className="directory-list">
+        <ul key={index} className="directory-list">
             <LinkContainer to={{ pathname: `/user/${item[0]}` }}>
-              <li eventKey={index} key={index} className="category-name" onClick={this.onClick.bind(this)}> {item[1].toUpperCase()} </li>
+              <li eventKey={index} className="category-name" onClick={this.onClick.bind(this)}> {item[1].toUpperCase()} </li>
             </LinkContainer>
             <InnerDirectory data={item[2]} />
         </ul>)}

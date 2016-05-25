@@ -158,7 +158,25 @@ export function fetchCategoriesAPI() {
                 })
         })();
     });    
-}
+};
+
+export function fetchAllViewpointsAPI() {
+    return new Promise((resolve, reject) => {
+        var getResult = (() => {
+            request.get(UrlAPI + 'viewpoint' + '/')
+                .set('Content-Type', 'application/json')
+                .end(function(err, res) {
+                    if (err || !res.ok) {
+                        console.log('Oh no! error' + JSON.stringify(err));
+                    } else {
+                        //console.log('yay got ' + JSON.stringify(res.body));
+                        resolve(res.body["Items"]);
+                    }
+                })
+        })();
+    });    
+};
+
 
 
 ////////////////////////////////////// PATCH API /////////////////////////////////

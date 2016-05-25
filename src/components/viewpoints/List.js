@@ -23,7 +23,7 @@ class List extends Component {
     this.props.clearViewpoints();
   }
 
-   componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
    if(nextProps.data !== this.props.data){
     this.props.clearViewpoints();
     this.props.fetchViewpoints({data: nextProps.data});

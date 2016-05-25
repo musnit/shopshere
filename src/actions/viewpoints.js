@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { addViewpointAPI, fetchViewpointsAPI } from '~/src/helpers/ClientAPI';
+import { addViewpointAPI, fetchViewpointsAPI, fetchAllViewpointsAPI } from '~/src/helpers/ClientAPI';
 
 //action creators:
 export function unboundAddViewpoint(data) {
@@ -12,7 +12,16 @@ export function unboundAddViewpoint(data) {
 };
 
 export function fetchViewpoints(options) {
-    const nameForFetch = options.data;
+
+    var nameForFetch;
+
+    if (typeof(options.data) == "string") {
+        nameForFetch = options.data;
+    }
+    else {
+        nameForFetch = options.data.name;
+    }
+
     return {
         type: types.FETCH_VIEWPOINTS,
         payload: {
@@ -24,5 +33,14 @@ export function fetchViewpoints(options) {
 export function clearViewpoints() {
     return {
         type: types.CLEAR_VIEWPOINTS
+    }
+};
+
+export function fetchAllViewpoints() {
+    return {
+        type: types.FETCH_VIEWPOINTS,
+        payload: {
+            promise: fetchAllViewpointsAPI()
+        }
     }
 };
