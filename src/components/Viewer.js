@@ -31,7 +31,8 @@ class Viewer extends Component {
 
             currentHotspot: "",
             currentProduct: "",
-            isEditing:false
+            isEditing:true,
+            newHSCoords:""
         };
     }
 
@@ -47,18 +48,24 @@ class Viewer extends Component {
        else if ( nextProps.data[1] !== this.props.data[1] ){
         this.props.clearHotspots();
         this.props.fetchHotspots({data: nextProps.data});
+        this.changeViewpoint(nextProps.data[1]);
        }
 
-       if(nextProps.hotspots !== this.props.hotspots && nextProps.hotspots.length != 0){
+       if(nextProps.hotspots !== this.props.hotspots){
         this.removeAllHotspots();
         this.addHotspotsToViewpoint(nextProps.hotspots);
        } 
 	  }
 
     componentDidMount() {
+        var name = this.props.data[1];
+        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
+        var imageURL = viewpointImage.imageFile;
         this.sphereViewer = new SphereViewer({
             domContainerElement: document.getElementById('viewer-placeholder'),
-            openModal: this.open.bind(this)
+            openModal: this.open.bind(this),
+            openNewHSModal: this.addNewHotspotModal.bind(this),
+            imageURL:imageURL
         });
     }
 
@@ -166,8 +173,14 @@ class Viewer extends Component {
     }
 
     addNewHotspot() {
-        this.setState({ showNewHotspotModal: true});
+        this.setState({ isEditing: true});        
+    }
 
+    addNewHotspotModal(Coords) {
+        this.setState({ 
+            showNewHotspotModal: true,
+            newHSCoords: Coords
+        });
     }
 
     closeNewHotspotModal() {
@@ -198,7 +211,8 @@ class Viewer extends Component {
         var inputName = name.target.innerText;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewNavigationHotspot(inputName);
+        this.sphereViewer.addNewNavigationHotspot(inputName, this.state.newHSCoords);
+        this.saveHotspot();
     }
 
     addNewProductHotspot(name) {
@@ -206,7 +220,8 @@ class Viewer extends Component {
         var inputName = name.target.innerText;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewProductHotspot(inputName);        
+        this.sphereViewer.addNewProductHotspot(inputName, this.state.newHSCoords);   
+        this.saveHotspot();     
     }
 
     saveHotspot(){
@@ -214,7 +229,7 @@ class Viewer extends Component {
         var savedParams = this.sphereViewer.saveNewHotspotLocation();
 
         this.addHotspot( savedParams );
-        this.setState({ isEditing: false});
+        this.setState({ isEditing: true});
     }
 
     addHotspot( params ) {
@@ -228,7 +243,7 @@ class Viewer extends Component {
 
           viewpoint: this.props.data[1],
 
-          rotation: params[1],
+          position: params[1],
 
           type: params[2]
 
@@ -236,7 +251,12 @@ class Viewer extends Component {
     }
 
     navigateToViewpoint( navigateTo ) {
-        console.log( navigateTo );
+
+        this.removeAllHotspots();
+        this.props.clearHotspots();
+        this.props.fetchHotspots({data: [navigateTo.shop ,navigateTo.name]});
+        this.changeViewpoint(navigateTo.name);
+    
     }
 
     removeAllHotspots() {
@@ -251,9 +271,12 @@ class Viewer extends Component {
         _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
 
-    changeViewpoint(){
+    changeViewpoint(vpname){
+        var name = vpname;
+        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
+        var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
-        this.sphereViewer.changeBackgroundImage();
+        this.sphereViewer.changeBackgroundImage(imageURL);
     }
 
 
@@ -267,7 +290,7 @@ class Viewer extends Component {
                                 <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
                             </Col>
                     </Row>
-                    {/**/}
+                    {/*
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
@@ -280,7 +303,7 @@ class Viewer extends Component {
                         </div>
                         </Col>
                     </Row>
-                    {/**/}
+                       */}
                     { !this.state.isEditing ?
                     <Row className="show-grid">
                         <Col xs={10}>
@@ -300,47 +323,10 @@ class Viewer extends Component {
 
                     <Row className="show-grid">
                         <Col xs={12} className="edit-text">
-                        <h4>Toggle these sliders below to position your new hotspot, then save the hotspot location.</h4>
+                        <h4>Double-Click anywhere on the viewpoint below to add a hotspot.</h4>
                         </Col>
                     </Row>
-                    
-                    <Row className="show-grid">
-                        <Col xs={4}>
-                        <div className="slider">
-                            <p className="edit-text">
-                                Rotate Y &ndash; Axis
-                            </p>
-                            <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderYChange.bind(this.sphereViewer)} />
-                        </div>
-                        </Col>
-                        <Col xs={4}>
-                        <div className="slider">
-                            <p className="edit-text">Rotate X &ndash; Axis</p>
-                            <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderXChange.bind(this.sphereViewer)} />
-                        </div>
-                        </Col>
-                        <Col xs={4}>
-                        <div className="slider">
-                            <p className="edit-text">Rotate Z &ndash; Axis</p>
-                            <Slider min={0} step={0.01} max = {Math.PI * 2} defaultValue={0} onChange={this.sphereViewer && this.sphereViewer.sliderZChange.bind(this.sphereViewer)} />
-                        </div>
-                        </Col>
-                    </Row>
-                    
-                    <Row className="show-grid">
 
-                        <Col xs={8}>
-                        <div className="view-button">
-                            <button
-                                className = "btn btn-lg btn-primary save-edit-button"
-                                type = "submit"
-                                onClick = {this.saveHotspot.bind(this)} >
-                            Save new hotspot location
-                            </button>
-                        </div> 
-                        </Col>
-
-                    </Row>
 
                     </div> : null }
 
@@ -407,7 +393,7 @@ class Viewer extends Component {
             </Modal>
             <Modal show={this.state.showNewHotspotModal} onHide={this.closeNewHotspotModal.bind(this)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Select the type of hotspot you would like to add:</Modal.Title>
+                    <Modal.Title>Select the type of hotspot you would like to add here:</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ButtonToolbar>

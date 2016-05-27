@@ -8,7 +8,10 @@ const viewerSizeY = 400;
 const sphereRadius = 100;
 
 const testImage = "/images/360_shop_from_aid.jpg";
-const testImage2 = "/images/360_shop_1.jpg"
+const testImage2 = "/images/360_shop_1.jpg";
+const prodHsImage = "/images/product_hs.jpg";
+const navHsImage = "/images/nav_hs.jpg";
+
 const imageAspectRatio = 2;
 
 export default class SphereViewer {
@@ -16,6 +19,7 @@ export default class SphereViewer {
   constructor(params){
     this.mouse = {};
     this.openModal = params.openModal;
+    this.openNewHSModal = params.openNewHSModal;
 
     this.drawingPoints = [];
     this.drawingMarkers = [];
@@ -28,7 +32,7 @@ export default class SphereViewer {
     this.setupRenderer(params.domContainerElement);
     this.setupScene();
     this.setupCamera();
-    this.setupSphereProjection();
+    this.setupSphereProjection(params.imageURL);
 		this.setupViewerControls();
     this.setupHotspots();
     this.someOtherControlsCode();
@@ -57,7 +61,7 @@ export default class SphereViewer {
 		//camera.target = new THREE.Vector3(0, 0, 0);
   }
 
-  setupSphereProjection() {
+  setupSphereProjection(imageURL) {
 		// creation of a big sphere geometry
 		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
 		this.sphere = new THREE.SphereGeometry(sphereRadius, 40, 40);
@@ -68,10 +72,14 @@ export default class SphereViewer {
 
 		let loader = new THREE.TextureLoader();
 		loader.crossOrigin = "anonymous";
-		this.sphereMaterial.map = loader.load(this.currentImage);
+		this.sphereMaterial.map = loader.load(imageURL);
+
+    this.sphereMaterial.depthWrite = false;
+    this.sphereMaterial.depthTest = false;
 
 		// geometry + material = mesh (actual object)
 		this.sphereMesh = new THREE.Mesh(this.sphere, this.sphereMaterial);
+    this.sphereMesh.renderDepth = 1e20;
 		this.scene.add(this.sphereMesh);
 	}
 
@@ -94,7 +102,7 @@ export default class SphereViewer {
     //autorotation - can disable too
     this.controls.autoRotate = false;
 		this.controls.autoRotateSpeed = 0.5;
-		//this.controls.enabled = false;
+		//this.controls.enabled = true;
 	}
 
   setupHotspots(){
@@ -105,10 +113,10 @@ export default class SphereViewer {
 		this.hotspot1 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
 		var quaternion = new THREE.Quaternion(-0.16815593676922186,0.01700779740021236,0.9856080075829905,0.00334331928233356);
   	this.hotspot1.rotation.setFromQuaternion(quaternion);
-		this.scene.add( this.hotspot1 );
+		//this.scene.add( this.hotspot1 );
     this.hotspot1.isHotspot = true;
     this.hotspot1.name = 'jackets';
-    this.Hotspots.push(this.hotspot1);
+    //this.Hotspots.push(this.hotspot1);
 
 		//BICYCLE
 		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
@@ -117,10 +125,10 @@ export default class SphereViewer {
 		this.hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
 		var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
 		this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
-		this.scene.add( this.hotspot2 );
+		//this.scene.add( this.hotspot2 );
     this.hotspot2.isHotspot = true;
     this.hotspot2.name = 'bike';
-    this.Hotspots.push(this.hotspot2);
+    //this.Hotspots.push(this.hotspot2);
 
 
     this.geometry_hs_3 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
@@ -181,21 +189,30 @@ export default class SphereViewer {
 
 
 
-  addNewProductHotspot(name) {
-    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.4 );
-    geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-    var mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
-    var prodhs = new THREE.Mesh( geom, mat);
+  addNewProductHotspot(name, coords) {
+
+    var map = new THREE.TextureLoader().load(prodHsImage);
+    var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+    var prodhs = new THREE.Sprite( material );
+
+    prodhs.position.x = coords.x
+    prodhs.position.y = coords.y
+    prodhs.position.z = coords.z
+
     prodhs.isHotspot = true;
     prodhs.isProduct = true;
     prodhs.name = name;
-    prodhs.rotation.z = (2 * Math.PI) - 0.35;
-    this.camera.position.y = 0;
-    this.camera.position.z = 0;
-    this.camera.position.x = -0.0001;
+
+
     this.scene.add( prodhs );
 
     this.currentUnsavedHotspot = prodhs;
+
+    var prodhsScalar = 10;
+
+    prodhs.scale.x *= prodhsScalar
+    prodhs.scale.y *= prodhsScalar
+    prodhs.scale.z *= prodhsScalar
     
     
 
@@ -205,22 +222,30 @@ export default class SphereViewer {
 
 
   }
-  addNewNavigationHotspot(name) {
+  addNewNavigationHotspot(name, coords) {
 
-    var geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.2 );
-    geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-    var mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
-    var navhs = new THREE.Mesh( geom, mat);
+    var map = new THREE.TextureLoader().load(navHsImage);
+    var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+    var navhs = new THREE.Sprite( material );
+
+    navhs.position.x = coords.x
+    navhs.position.y = coords.y
+    navhs.position.z = coords.z
+
+
     navhs.isHotspot = true;
     navhs.isNavigation = true;
     navhs.name = name;
-    navhs.rotation.z = (3 * Math.PI) / 2;
-    this.camera.position.y = 0;
-    this.camera.position.z = 0;
-    this.camera.position.x = -0.0001;
+
     this.scene.add( navhs );
     
     this.currentUnsavedHotspot = navhs;
+
+    var navhsScalar = 10;
+
+    navhs.scale.x *= navhsScalar
+    navhs.scale.y *= navhsScalar
+    navhs.scale.z *= navhsScalar
 
     this.Hotspots.push(navhs);
 
@@ -231,10 +256,10 @@ export default class SphereViewer {
 
     var outputName = this.currentUnsavedHotspot.name;
 
-    var outputRotation = { 
-      "X": this.currentUnsavedHotspot.rotation.x, 
-      "Y": this.currentUnsavedHotspot.rotation.y, 
-      "Z": this.currentUnsavedHotspot.rotation.z 
+    var outputPosition = { 
+      "X": this.currentUnsavedHotspot.position.x, 
+      "Y": this.currentUnsavedHotspot.position.y, 
+      "Z": this.currentUnsavedHotspot.position.z 
     };
 
     var outputType;
@@ -248,11 +273,11 @@ export default class SphereViewer {
 
     this.currentUnsavedHotspot = undefined;
 
-    return [ outputName, outputRotation, outputType ];
+    return [ outputName, outputPosition, outputType ];
   }
 
-  changeBackgroundImage(newImage){
-    this.currentImage = testImage2;
+  changeBackgroundImage(imageURL){
+    this.currentImage = imageURL;
 
     let loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
@@ -321,22 +346,21 @@ export default class SphereViewer {
   }
 
   addAHotspot(hotspot){
-      var geom
-      var mat
+
+      var map
+      var material
       var hs
 
       if(hotspot.type === "product") {
-          geom = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.4 );
-          mat = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
+        map = new THREE.TextureLoader().load(prodHsImage);
       }
       else if (hotspot.type == "navigation") {
-          geom = new THREE.SphereGeometry( 90, 10, 10, 0, 6.3, 0, 0.2 );
-          mat = new THREE.MeshBasicMaterial( { color: 0xff8f8f, opacity: 0.5, transparent: true } );
+        map = new THREE.TextureLoader().load(navHsImage);
       }
 
-      geom.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+      material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
 
-      hs = new THREE.Mesh( geom, mat);
+      hs = new THREE.Sprite( material );
       hs.isHotspot = true;
       hs.name = hotspot.name;
 
@@ -347,9 +371,16 @@ export default class SphereViewer {
           hs.isNavigation = true;
       }
 
-      hs.rotation.y = hotspot.rotation["Y"];
-      hs.rotation.x = hotspot.rotation["X"];
-      hs.rotation.z = hotspot.rotation["Z"];
+      hs.position.y = hotspot.position["Y"];
+      hs.position.x = hotspot.position["X"];
+      hs.position.z = hotspot.position["Z"];
+
+      var hsScalar = 10;
+
+
+      hs.scale.x *= hsScalar
+      hs.scale.y *= hsScalar
+      hs.scale.z *= hsScalar
 
       this.scene.add( hs );
 
@@ -373,6 +404,7 @@ export default class SphereViewer {
           if (intersects[0].object.isHotspot){
             // console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
             // console.log(intersects[0].point);
+
             this.openModal(intersects[0].object.name);
           }
           else {
@@ -415,6 +447,25 @@ export default class SphereViewer {
 		}
     document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
 
+    function onDocumentMouseDoubleclick( event ){
+      event.preventDefault();
+
+      if(event.target == this.renderer.domElement) {
+        const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
+
+        v3MouseCoords.unproject( this.camera );
+        var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
+
+        var intersects = ray.intersectObjects( [this.sphereMesh] );
+
+        if ( intersects.length > 0 ) {
+            //console.log(intersects[0].point);
+
+            this.openNewHSModal(intersects[0].point);
+        }
+      }
+    }
+    document.addEventListener("dblclick", onDocumentMouseDoubleclick.bind(this), false);
 
   }
 
