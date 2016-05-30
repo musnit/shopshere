@@ -32,7 +32,8 @@ class Viewer extends Component {
             currentHotspot: "",
             currentProduct: "",
             isEditing:true,
-            newHSCoords:""
+            newHSCoords:"",
+            key: undefined
         };
     }
 
@@ -272,17 +273,20 @@ class Viewer extends Component {
     }
 
     changeViewpoint(vpname){
+        debugger;
         var name = vpname;
+        this.props.data[1] = name;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
         this.sphereViewer.changeBackgroundImage(imageURL);
+        this.setState({ key: Math.random() })
     }
 
 
   render() {
     return (
-        <div>
+        <div >
             <div>
                 <Grid className="grid-panel">
                     <Row className="show-grid">

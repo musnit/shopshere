@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button } from 'react-bootstrap';
+import { FormControl, ButtonInput, Modal, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { unboundDeleteShop } from '~/src/actions/shops';
 import '~/src/styles/shops.css';

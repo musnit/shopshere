@@ -37,6 +37,10 @@
 .modal-body-delete {
   display:flex;
 }
+label {
+  padding:5px;
+  margin:0;
+}
 
 .cat-button {
   border-color: transparent;
@@ -53,3 +57,4 @@
 .cat-box {
     display:inline-block;
 }
+
