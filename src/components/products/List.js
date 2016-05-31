@@ -5,8 +5,10 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
 import { fetchProducts, clearProducts, unboundPatchProduct, deleteProduct } from '~/src/actions/products';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem} from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image} from 'react-bootstrap';
 import { find, findIndex } from 'lodash';
+import S3Uploader from '~/src/components/utility/S3Uploader';
+import { productFolderURL } from '~/src/config';
 import '~/src/styles/product.css';
 
 
@@ -60,14 +62,14 @@ class List extends Component {
     super(props);
       this.state = {
         showModal: false,
-        selectedProduct: {}
+        selectedProduct: {colors:[],sizes:[],images:[]}
       };
   }
 
   close() {
     this.setState({ 
       showModal: false,
-      selectedProduct: {}
+      selectedProduct: {colors:[],sizes:[],images:[]}
     });
   }
 
@@ -84,7 +86,20 @@ class List extends Component {
     });
   }
 
+  onaColorBoxChange(){}
+  clickedAddColor(){}
+  onaSizeBoxChange(){}
+  clickedAddSize(){}
+  onaSizeBoxChange(){}
+  clickedAddImage(){}
+  imageUploadStarted(){}
+  imageUploadComplete(){}
+
   render() {
+
+    var colorLength = this.state.selectedProduct.colors.length;
+    var sizeLength = this.state.selectedProduct.sizes.length;
+    var imageLength = this.state.selectedProduct.images.length;
 
     return (
 
@@ -104,12 +119,103 @@ class List extends Component {
           </Modal.Header>
           <Modal.Body>
 
-          <Input label="Product Name" readOnly="true" type="ProductName" ref='nameBox' placeholder={this.state.selectedProduct.name} />
+          <Input label="Product Name" readOnly="true" type="ProductName" ref='nameBox' value={this.state.selectedProduct.name} />
 
-          <Input label="Product Description" type="ProductDescription" ref='descriptionBox' placeholder={this.state.selectedProduct.description}/>
+          <Input label="Product Description" type="ProductDescription" ref='descriptionBox' value={this.state.selectedProduct.description}/>
 
-          <Input label="Product Price" type="ProductPrice" ref='priceBox' placeholder={this.state.selectedProduct.price} />
+          <Input label="Product Price" type="ProductPrice" ref='priceBox' value={this.state.selectedProduct.price} />
 
+          <label htmlFor="inputProductColor">Color(s)</label>
+            <Grid fluid>
+ 
+          {this.state.selectedProduct.colors.map((color, index) =>
+                            <Row className="padded-row">
+                    <Col xs={5} md={3}>
+                    <Input className="color-box" type="productColorName" ref={'colorNameBox'+index} onChange={this.onaColorBoxChange.bind(this)}  value={color[0]} />
+                    </Col>
+                    <Col xs={5} md={3}>
+                    <Input type="productColorHex" ref={'colorHexBox'+index} onChange={this.onaColorBoxChange.bind(this)}  value={color[1]}  />
+                    </Col>
+                    { index==colorLength-1 ?
+                    <div  key={index}>
+                        <Col xs={1} md={1}>
+                        <div>
+                            <OverlayTrigger overlay={
+                            <Tooltip id="add-color" >Add another color.</Tooltip>
+                            }>
+                            <Button bsStyle="success" onClick = {this.clickedAddColor.bind(this)}><b>+</b></Button>
+                            </OverlayTrigger>
+                        </div>
+                        </Col> 
+                    </div>
+                    : null}
+                </Row>
+
+          )}
+            </Grid>
+<label htmlFor="inputProductSize">Size(s)</label>
+            <Grid fluid ref='sizeBox'>
+
+          {this.state.selectedProduct.sizes.map((size, index) =>
+
+                <Row className="padded-row">
+                    <Col xs={5} md={3}>
+                    <Input className="size-box" type="productSize" onChange={this.onaSizeBoxChange.bind(this, index)} ref={'sizeBox'+index} value={size} />
+                    </Col>
+                    { index==sizeLength-1 ?
+                    <div  key={index}>
+                        <Col xs={1} md={1}>
+                        <div>
+                            <OverlayTrigger overlay={
+                            <Tooltip id="add-size">Add another size.</Tooltip>
+                            }>
+                            <Button bsStyle="success" onClick={this.clickedAddSize.bind(this)}><b>+</b></Button>
+                            </OverlayTrigger>
+                        </div>
+                        </Col>
+                    </div>
+                    : null}
+                </Row>
+
+          )}
+            </Grid>
+
+
+            <label htmlFor="inputProductImage">Image(s)</label>
+            <Grid fluid>
+
+          {this.state.selectedProduct.images.map((image, index) =>
+                <div>
+                    <Row className="padded-row">
+                        <Col >
+                            <Image src={image} responsive />
+                        </Col>
+                    </Row>
+                    <Row className="padded-row">
+                        <Col >
+                        <S3Uploader ref={'imageBox'+index}
+                            onUploadStart={this.imageUploadStarted.bind(this)}
+                            onUploadFinish={this.imageUploadComplete.bind(this)}
+                            folderURL={productFolderURL}/>
+                        </Col>
+                    </Row>
+                </div>
+          )}
+                 <Row className="padded-row">
+                    <Col xs={1} md={1}>
+                    <div>
+                        <OverlayTrigger overlay={
+                        <Tooltip id="add-image">Add another image.</Tooltip>
+                        }>
+                        <Button bsStyle="success" onClick={this.clickedAddImage.bind(this)}><b>+</b></Button>
+                        </OverlayTrigger>
+                    </div>
+                    </Col>
+                </Row>
+            </Grid>
+
+
+            
 
           </Modal.Body>
           <Modal.Footer>

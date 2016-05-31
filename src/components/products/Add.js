@@ -18,6 +18,7 @@ class Add extends Component {
     var addObject = {
       name: this.refs.nameBox.getValue(),
       key: this.refs.keyBox.getValue(),
+      sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
       price: this.refs.priceBox.getValue(),
       shop: this.props.data,
@@ -216,15 +217,17 @@ class Add extends Component {
             <Modal.Title>Add a new Product:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <label htmlFor="inputProductName">Product Name</label>
+            <label htmlFor="inputProductName">Name</label>
             <Input type="ProductName" ref='nameBox'  placeholder="Name..." required />
-            <label htmlFor="inputProductKey">Product Key</label>
+            <label htmlFor="inputProductKey">Key</label>
             <Input type="ProductKey" ref='keyBox' placeholder="Key..." />
-            <label htmlFor="inputProductDescription">Product Description</label>
+            <label htmlFor="inputProductSKU">SKU</label>
+            <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
+            <label htmlFor="inputProductDescription">Description</label>
             <Input type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
-            <label htmlFor="inputProductPrice">Product Price</label>
+            <label htmlFor="inputProductPrice">Price</label>
             <Input type="ProductPrice" ref='priceBox' placeholder="Price..." />
-            <label htmlFor="inputProductColor">Product Color</label>
+            <label htmlFor="inputProductColor">Color(s)</label>
             <Grid fluid>
                 {this.state.colors.map((item, index) => 
                 <Row className="padded-row">
@@ -250,7 +253,7 @@ class Add extends Component {
                 </Row>
                 )}
             </Grid>
-            <label htmlFor="inputProductSize">Product Size</label>
+            <label htmlFor="inputProductSize">Size(s)</label>
             <Grid fluid ref='sizeBox'>
                 {this.state.sizes.map((item, index) => 
                 <Row className="padded-row">
@@ -273,7 +276,7 @@ class Add extends Component {
                 </Row>
                 )}
             </Grid>
-            <label htmlFor="inputProductImage">Product Image</label>
+            <label htmlFor="inputProductImage">Image(s)</label>
             <Grid fluid>
                 <Row className="padded-row">
                     <Col xs={1} md={1}>
