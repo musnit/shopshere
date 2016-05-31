@@ -31,7 +31,6 @@ class Viewer extends Component {
 
             currentHotspot: "",
             currentProduct: "",
-            isEditing:true,
             newHSCoords:"",
             key: undefined
         };
@@ -134,27 +133,6 @@ class Viewer extends Component {
         };
     }
 
-    connectProductToHotspot(name) {
-
-        let selected = _.find(this.props.products, function(o) {
-            return o.name == name.target.innerText;
-        });
-
-        this.props.connectProductToHotspot({
-            name: this.state.currentHotspot,
-            shop: this.props.data[0],
-            product: selected.name
-        });
-
-
-        this.setState({
-        	modalMode: this.state.modalMode,
-            showModal: false,
-            currentHotspot: "",
-            currentProduct: this.state.currentProduct
-        });
-
-    }
 
     clickedDeleteHotspot() {
 
@@ -171,10 +149,6 @@ class Viewer extends Component {
             currentHotspot: "",
             currentProduct: this.state.currentProduct
         });
-    }
-
-    addNewHotspot() {
-        this.setState({ isEditing: true});        
     }
 
     addNewHotspotModal(Coords) {
@@ -208,39 +182,39 @@ class Viewer extends Component {
     }  
 
     addNewNavigationHotspot(name) {
-        this.setState({ isEditing: true});
         var inputName = name.target.innerText;
+        var outputName = this.props.data[1]+"To"+inputName;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewNavigationHotspot(inputName, this.state.newHSCoords);
-        this.saveHotspot();
+        this.sphereViewer.addNewNavigationHotspot(outputName, this.state.newHSCoords);
+        this.saveHotspot(inputName);
     }
 
     addNewProductHotspot(name) {
-        this.setState({ isEditing: true});
         var inputName = name.target.innerText;
+        var outputName = this.props.data[1]+"Sells"+inputName;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewProductHotspot(inputName, this.state.newHSCoords);   
-        this.saveHotspot();     
+        this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);   
+        this.saveHotspot(inputName);     
     }
 
-    saveHotspot(){
+    saveHotspot(inputName){
         this.sphereViewer.saveNewHotspotLocation.bind(this.sphereViewer);
         var savedParams = this.sphereViewer.saveNewHotspotLocation();
 
-        this.addHotspot( savedParams );
-        this.setState({ isEditing: true});
+        this.addHotspot( savedParams, inputName );
+
     }
 
-    addHotspot( params ) {
+    addHotspot( params, inputName ) {
         this.props.boundAddHotspot({
 
           name: params[0],
 
           shop: this.props.data[0],
 
-          prodview: params[0],
+          prodview: inputName,
 
           viewpoint: this.props.data[1],
 
@@ -273,7 +247,6 @@ class Viewer extends Component {
     }
 
     changeViewpoint(vpname){
-        debugger;
         var name = vpname;
         this.props.data[1] = name;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
@@ -294,34 +267,8 @@ class Viewer extends Component {
                                 <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
                             </Col>
                     </Row>
-                    {/*
-                    <Row className="show-grid">
-                        <Col xs={5}>
-                        <div className="view-button">
-                            <button
-                            className = "btn btn-lg btn-primary"
-                            type = "submit"
-                            onClick = {this.changeViewpoint.bind(this)} >
-                            Change Background Image
-                            </button>
-                        </div>
-                        </Col>
-                    </Row>
-                       */}
-                    { !this.state.isEditing ?
-                    <Row className="show-grid">
-                        <Col xs={10}>
-                        <div className="view-button">
-                            <button
-                                className = "btn btn-lg btn-primary"
-                                type = "submit"
-                                onClick = {this.addNewHotspot.bind(this)} >
-                            Add a new hotspot
-                            </button>
-                        </div>
-                        </Col>
-                    </Row> : null }
-                    { this.state.isEditing ?
+
+
                     <div className="edit-box">
 
 
@@ -332,7 +279,7 @@ class Viewer extends Component {
                     </Row>
 
 
-                    </div> : null }
+                    </div>
 
                 </Grid>
             </div>

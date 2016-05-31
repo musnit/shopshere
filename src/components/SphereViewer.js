@@ -25,8 +25,6 @@ export default class SphereViewer {
     this.drawingMarkers = [];
     this.Hotspots = [];
 
-    this.currentImage = testImage;
-
     this.currentUnsavedHotspot = undefined;
 
     this.setupRenderer(params.domContainerElement);
@@ -41,10 +39,10 @@ export default class SphereViewer {
     this.reRender.call(this);
   }
 
-  disableOrbit(){
-    this.controls.enabled = !this.controls.enabled;
-    //this.scene.remove(this.sphereMesh);
-	}
+ //  disableOrbit(){
+ //    this.controls.enabled = !this.controls.enabled;
+ //    //this.scene.remove(this.sphereMesh);
+	// }
 
   setupRenderer(domContainerElement) {
 		this.renderer = new THREE.WebGLRenderer();
@@ -85,7 +83,7 @@ export default class SphereViewer {
 
   setupViewerControls() {
 		//transform controls!!
-		let TControl = new TransformControls(this.camera, this.renderer.domElement);
+		// let TControl = new TransformControls(this.camera, this.renderer.domElement);
 		//TControl.addEventListener('change', this.reRender.bind(this));
 		this.camera.position.x = -0.0001;
 
@@ -106,84 +104,84 @@ export default class SphereViewer {
 	}
 
   setupHotspots(){
-		//JACKETS
-		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
-		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
-		this.hotspot1 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
-		var quaternion = new THREE.Quaternion(-0.16815593676922186,0.01700779740021236,0.9856080075829905,0.00334331928233356);
-  	this.hotspot1.rotation.setFromQuaternion(quaternion);
-		//this.scene.add( this.hotspot1 );
-    this.hotspot1.isHotspot = true;
-    this.hotspot1.name = 'jackets';
-    //this.Hotspots.push(this.hotspot1);
+    // //JACKETS
+    // var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
+    // geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    // var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+    // this.hotspot1 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
+    // var quaternion = new THREE.Quaternion(-0.16815593676922186,0.01700779740021236,0.9856080075829905,0.00334331928233356);
+    // this.hotspot1.rotation.setFromQuaternion(quaternion);
+    // //this.scene.add( this.hotspot1 );
+    // this.hotspot1.isHotspot = true;
+    // this.hotspot1.name = 'jackets';
+    // //this.Hotspots.push(this.hotspot1);
 
-		//BICYCLE
-		var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
-		geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-		var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
-		this.hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
-		var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
-		this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
-		//this.scene.add( this.hotspot2 );
-    this.hotspot2.isHotspot = true;
-    this.hotspot2.name = 'bike';
-    //this.Hotspots.push(this.hotspot2);
-
-
-    this.geometry_hs_3 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
-    this.geometry_hs_3.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
-    var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
-    this.hotspot3 = new THREE.Mesh( this.geometry_hs_3, material_hs_1 );
-
+    // //BICYCLE
+    // var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.6 );
+    // geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    // var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xfff68f, opacity: 0.5, transparent: true } );
+    // this.hotspot2 = new THREE.Mesh( geometry_hs_1, material_hs_1 );
     // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
     // this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
+    // //this.scene.add( this.hotspot2 );
+    // this.hotspot2.isHotspot = true;
+    // this.hotspot2.name = 'bike';
+    // //this.Hotspots.push(this.hotspot2);
+
+
+    // this.geometry_hs_3 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.25, 1, 0.8 );
+    // this.geometry_hs_3.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    // var material_hs_1 = new THREE.MeshBasicMaterial( { color: 0xbe8fff, opacity: 0.5, transparent: true } );
+    // this.hotspot3 = new THREE.Mesh( this.geometry_hs_3, material_hs_1 );
+
+    // // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
+    // // this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
     
-    //attempting to rotate according to xyz!
+    // //attempting to rotate according to xyz!
 
-    // var Mat = new THREE.Matrix4();
+    // // var Mat = new THREE.Matrix4();
 
-    var xPoint = -45.77134193267549;
-    var yPoint = 18.08499658268368;
-    var zPoint = -86.86518506819539;
+    // var xPoint = -45.77134193267549;
+    // var yPoint = 18.08499658268368;
+    // var zPoint = -86.86518506819539;
 
-    // var rotX;
-    // var rotY;
-    // var rotZ;
+    // // var rotX;
+    // // var rotY;
+    // // var rotZ;
 
-    // if ( xPoint < 0 ) {
-    //   rotX = Math.atan2(zPoint,yPoint) + Math.PI;
-    // }
-    // else {
-    //   rotX = Math.atan2(zPoint,yPoint);
-    // }
+    // // if ( xPoint < 0 ) {
+    // //   rotX = Math.atan2(zPoint,yPoint) + Math.PI;
+    // // }
+    // // else {
+    // //   rotX = Math.atan2(zPoint,yPoint);
+    // // }
 
-    // if ( yPoint < 0 ) {
-    //   rotY = Math.atan2(xPoint,zPoint) + Math.PI;
-    // }
-    // else {
-    //   rotY = Math.atan2(xPoint,zPoint);
-    // }
+    // // if ( yPoint < 0 ) {
+    // //   rotY = Math.atan2(xPoint,zPoint) + Math.PI;
+    // // }
+    // // else {
+    // //   rotY = Math.atan2(xPoint,zPoint);
+    // // }
 
-    // if ( zPoint < 0 ) {
-    //   rotZ = Math.atan2(yPoint,xPoint) + Math.PI;
-    // }
-    // else {
-    //   rotZ = Math.atan2(yPoint,xPoint);
-    // }
+    // // if ( zPoint < 0 ) {
+    // //   rotZ = Math.atan2(yPoint,xPoint) + Math.PI;
+    // // }
+    // // else {
+    // //   rotZ = Math.atan2(yPoint,xPoint);
+    // // }
 
-    // var Quat = new THREE.Quaternion();
+    // // var Quat = new THREE.Quaternion();
 
-    // var Rot = new THREE.Euler( rotX, rotY, rotZ );
-    // Quat.setFromEuler( Rot );
-    // this.hotspot3.rotation.setFromQuaternion( Quat );
+    // // var Rot = new THREE.Euler( rotX, rotY, rotZ );
+    // // Quat.setFromEuler( Rot );
+    // // this.hotspot3.rotation.setFromQuaternion( Quat );
 
-    var vect = new THREE.Vector3( xPoint, yPoint, zPoint );
-    //this.hotspot3.lookAt(vect);
+    // var vect = new THREE.Vector3( xPoint, yPoint, zPoint );
+    // //this.hotspot3.lookAt(vect);
 
-    //this.scene.add( this.hotspot3 );
-    this.hotspot3.isHotspot = true;
-    this.hotspot3.name = 'test';
+    // //this.scene.add( this.hotspot3 );
+    // this.hotspot3.isHotspot = true;
+    // this.hotspot3.name = 'test';
 
   }
 
@@ -203,7 +201,6 @@ export default class SphereViewer {
     prodhs.isProduct = true;
     prodhs.name = name;
 
-
     this.scene.add( prodhs );
 
     this.currentUnsavedHotspot = prodhs;
@@ -213,15 +210,10 @@ export default class SphereViewer {
     prodhs.scale.x *= prodhsScalar
     prodhs.scale.y *= prodhsScalar
     prodhs.scale.z *= prodhsScalar
-    
-    
 
     this.Hotspots.push(prodhs);
+  };
 
-    
-
-
-  }
   addNewNavigationHotspot(name, coords) {
 
     var map = new THREE.TextureLoader().load(navHsImage);
@@ -231,7 +223,6 @@ export default class SphereViewer {
     navhs.position.x = coords.x
     navhs.position.y = coords.y
     navhs.position.z = coords.z
-
 
     navhs.isHotspot = true;
     navhs.isNavigation = true;
@@ -249,10 +240,10 @@ export default class SphereViewer {
 
     this.Hotspots.push(navhs);
 
-  }
+  };  
+
 
   saveNewHotspotLocation() {
-
 
     var outputName = this.currentUnsavedHotspot.name;
 
@@ -277,11 +268,9 @@ export default class SphereViewer {
   }
 
   changeBackgroundImage(imageURL){
-    this.currentImage = imageURL;
-
     let loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
-    this.sphereMaterial.map = loader.load(this.currentImage);
+    this.sphereMaterial.map = loader.load(imageURL);
   }
 
   someOtherControlsCode(){
@@ -321,23 +310,6 @@ export default class SphereViewer {
     }
   }
 
-  sliderYChange(value) {
-    if (this.currentUnsavedHotspot){
-      this.currentUnsavedHotspot.rotation.y = (Math.PI * 2 )  - value;
-    }
-  }
-
-  sliderXChange(value) {
-    if (this.currentUnsavedHotspot){
-      this.currentUnsavedHotspot.rotation.x = (Math.PI * 2 )  - value;
-    }
-  }
-
-  sliderZChange(value) {
-    if (this.currentUnsavedHotspot){
-      this.currentUnsavedHotspot.rotation.z = (Math.PI * 2 )  - value;
-    }
-  }
 
   removeHotspots(){
     var viewportScene = this.scene;
@@ -402,45 +374,10 @@ export default class SphereViewer {
 
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
-            // console.log("hit " + intersects[0].object.name + " at " + intersects[0].point);
-            // console.log(intersects[0].point);
-
             this.openModal(intersects[0].object.name);
           }
           else {
-            //this.drawingPoints.push(intersects[0].point);
-            // console.log(intersects[0].point);
-            // console.log(this.hotspot3.rotation);
-            // this.geometry_hs_3.verticesNeedUpdate = true;
-            // console.log(this.geometry_hs_3.vertices);
 
-            // var lookatpoint = this.geometry_hs_3.vertices[Math.floor(this.geometry_hs_3.vertices.length / 2)];
-
-            // console.log(lookatpoint);
-
-
-            // this.camera.position.x = 0;
-            // this.camera.position.y = 0;
-            // this.camera.position.z = 0;
-            // console.log(this.camera);
-            // this.camera.lookAt( lookatpoint );
-
-            //console.log(this.hotspot3.rotation)
-            // this.hotspot3.lookAt(intersects[0].point);
-            // var axis = new THREE.Vector3(0,1,0);
-            // var rad = (3*Math.PI) / 4;
-            //this.hotspot3.rotateOnAxis( axis, rad);
-
-            // console.log(this.hotspot3.rotation)
-
-            // var geometry = new THREE.SphereGeometry(2, 2, 2);
-            // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-            // var cube = new THREE.Mesh( geometry, material );
-            // this.scene.add( cube );
-            // cube.position.x = intersects[0].point.x;
-            // cube.position.y = intersects[0].point.y;
-            // cube.position.z = intersects[0].point.z;
-            // this.drawingMarkers.push(cube)
           }
         }
 	    }

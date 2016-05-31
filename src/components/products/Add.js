@@ -298,6 +298,17 @@ class Add extends Component {
                     </Row>
                 </div>
                 )}
+                 <Row className="padded-row">
+                    <Col xs={1} md={1}>
+                    <div>
+                        <OverlayTrigger overlay={
+                        <Tooltip id="add-image">Add another image.</Tooltip>
+                        }>
+                        <Button bsStyle="success" onClick={this.clickedAddImage.bind(this)}><b>+</b></Button>
+                        </OverlayTrigger>
+                    </div>
+                    </Col>
+                </Row>
             </Grid>
         </Modal.Body>
         <Modal.Footer>
