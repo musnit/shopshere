@@ -38,6 +38,7 @@ class Add extends Component {
       colors: [0],
       sizes: [0],
       images: [0],
+      submitDisabled:false,
       imageFiles: [],
       sizeOptions: [],
       colorOptions: []
@@ -63,6 +64,7 @@ class Add extends Component {
   close() {
     this.setState({ 
       showModal: false,
+      submitDisabled: false,
       colors: [0],
       sizes: [0],
       images: [0],
@@ -147,7 +149,7 @@ class Add extends Component {
     });
   }
 
-    imageUploadStarted(){
+  imageUploadStarted(){
     this.setState({ submitDisabled: true });
   }
 
