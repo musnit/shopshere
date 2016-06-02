@@ -58,3 +58,10 @@ label {
     display:inline-block;
 }
 
+.contact-inner {
+  margin-left: 10%
+}
+
+.contact-outer {
+  margin: 0 auto;
+}

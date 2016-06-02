@@ -237,7 +237,7 @@ class Add extends Component {
                     <Input className="color-box" type="productColorName" ref={'colorNameBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Name..." />
                     </Col>
                     <Col xs={5} md={3}>
-                    <Input type="productColorHex" ref={'colorHexBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Hex value..."  />
+                    <Input type="productColorHex" ref={'colorHexBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Hex Value ex #000000..."  />
                     </Col>
                     { index==colorLength-1 ?
                     <div  key={index}>
