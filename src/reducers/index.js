@@ -73,6 +73,11 @@ const shop = (state,action) => {
 	switch (action.type) {
       case types.ADD_SHOP_FULFILLED:
 	      return action.payload;
+	  case types.EDIT_SHOP_FULFILLED:
+     		if (state.name !== action.payload.name) {
+				return state;
+			}
+			return action.payload;
     case 'ADD_VIEW_TO_SHOP':
       if (state.shopid !== action.shopid) {
 				return state;
@@ -94,6 +99,8 @@ const shops = (state=[], action) => {
           ...state,
           shop(undefined, action)
           ];
+    case types.EDIT_SHOP_FULFILLED:
+	    	return state.map(t => shop(t, action));
     case types.DELETE_SHOP_FULFILLED:
     	return [
     	    ...state.slice(0, action.payload.index),

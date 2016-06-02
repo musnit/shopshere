@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { fetchShopsAPI, addShopAPI, deleteShopAPI } from '~/src/helpers/ClientAPI';
+import { fetchShopsAPI, addShopAPI, deleteShopAPI, patchShopAPI } from '~/src/helpers/ClientAPI';
 
 //action creators:
 export function unboundAddShop(data) {
@@ -9,6 +9,15 @@ export function unboundAddShop(data) {
       promise: addShopAPI(data)
     }
   }
+};
+
+export function unboundPatchShop(data) {
+    return {
+        type: types.EDIT_SHOP,
+        payload: {
+            promise: patchShopAPI(data)
+        }
+    }
 };
 
 export function fetchShops(options) {

@@ -204,6 +204,10 @@ export function patchProductAPI(data) {
     return PatchAPI(data, 'product');
 };
 
+export function patchShopAPI(data) {
+    return PatchAPI(data, 'shop');
+};
+
 export function connectProductToHotspotAPI(data) {
     return PatchAPI(data, 'hotspot');
 };

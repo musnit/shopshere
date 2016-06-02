@@ -6,7 +6,7 @@ import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem } from 'rea
 import { unboundAddShop } from '~/src/actions/shops';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
-import { find} from 'lodash';
+import { find, map} from 'lodash';
 
 import '~/src/styles/shops.css';
 
@@ -38,6 +38,12 @@ class MyShopsAddShop extends Component {
       logoColor:this.refs.backgroundColorBox.getValue(),
     }
 
+    for(var key in addShopObject){
+      if (addShopObject[key] == "") {
+        addShopObject[key] = undefined;
+      }
+    }
+
     this.props.boundAddShop(addShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.keyBox.getInputDOMNode().value = '';
@@ -48,7 +54,8 @@ class MyShopsAddShop extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      logoFile:undefined
     };
   }
 
