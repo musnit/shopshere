@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import Welcome from './Welcome';
 import Viewer from './components/Viewer';
+import ViewerWidget from './components/ViewerWidget';
 import Shops from './components/Shops';
 import Shop from './components/Shop';
 import Navbar from './Navbar.js';
@@ -29,6 +30,8 @@ class RouteContainer extends Component {
         <Redirect from="/" to="shops" />
         <Route path="/" component={App}>
           <Route path="/viewer" component={Viewer}>
+          </Route>
+          <Route path="/viewerwidget" component={ViewerWidget}>
           </Route>
           <Route path="/shops" component={Shops}>
             <Route path="/shops/:name" component={Shop}>

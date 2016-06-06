@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "rm -rf dist; NODE_ENV=production webpack --config webpack.config.prod.js; cp prodIndex.html dist/index.html; cp -r public/* dist;",
+    "build:widget": "rm -rf dist; NODE_ENV=production webpack --config webpack.config.widget.js; cp widgetIndex.html dist/index.html; mkdir dist/public; mkdir dist/public/images; cp -r public/images/*_hs* dist/public/images;",
     "build": "npm run clean && npm run build:webpack",
     "dev": "node devServer.js",
     "start": "node prodServer.js",
