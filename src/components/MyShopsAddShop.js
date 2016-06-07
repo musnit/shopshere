@@ -21,11 +21,11 @@ class MyShopsAddShop extends Component {
 
     var catval = this.refs.catBox.getValue();
 
-    var cat = _.find(this.props.data, function(o) { return o.text == catval});
+    var cat = _.find(this.props.categories, function(o) { return o.text == catval});
 
     var addShopObject = {
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue(),
+
       email: this.refs.shopContactEmailBox.getValue(),
       url: this.refs.shopContactURLBox.getValue(),
       phone: this.refs.shopContactPhoneBox.getValue(),
@@ -33,7 +33,7 @@ class MyShopsAddShop extends Component {
       address2: this.refs.shopAddressLine2Box.getValue(),
       city: this.refs.shopAddressCityBox.getValue(),
       province: this.refs.shopAddressProvinceBox.getValue(),
-      category: cat["name"],
+      category: cat["id"],
       logoFile: this.state.logoFile,
       logoColor:this.refs.backgroundColorBox.getValue(),
     }
@@ -46,7 +46,7 @@ class MyShopsAddShop extends Component {
 
     this.props.boundAddShop(addShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.keyBox.getInputDOMNode().value = '';
+
     this.refs.catBox.getInputDOMNode().value = '';
     this.setState({ showModal: false, logoFile: undefined  });
   }
@@ -82,7 +82,7 @@ class MyShopsAddShop extends Component {
 
   render() {
 
-    var categories = this.props.data;
+    var categories = this.props.categories;
 
     return (
         <div className="force-to-bottom">
@@ -101,7 +101,7 @@ class MyShopsAddShop extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Input label="Name" type="ShopName" ref='nameBox' placeholder="Name..." required />
-                    <Input label="Key" type="ShopKey" ref='keyBox' placeholder="Key..." />
+
                     <div className="contact-outer">
                         <label >Contact Details:</label>
                         <div className="contact-inner">

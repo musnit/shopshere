@@ -13,19 +13,12 @@ export function unboundAddViewpoint(data) {
 
 export function fetchViewpoints(options) {
 
-    var nameForFetch;
-
-    if (typeof(options.data) == "string") {
-        nameForFetch = options.data;
-    }
-    else {
-        nameForFetch = options.data.name;
-    }
+    var shopIDForFetch = options.shopID;
 
     return {
         type: types.FETCH_VIEWPOINTS,
         payload: {
-            promise: fetchViewpointsAPI(nameForFetch)
+            promise: fetchViewpointsAPI(shopIDForFetch)
         }
     }
 };

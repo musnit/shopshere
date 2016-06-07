@@ -10,12 +10,12 @@ import '~/src/styles/shops.css';
 
 class MyShopsDeleteShop extends Component {
 
-  clickedDeleteShop(name) {
+  clickedDeleteShop(shopID) {
 
-    let index = _.findIndex(this.props.shops, function(o) { return o.name == name});
+    let index = _.findIndex(this.props.shops, function(o) { return o.id == shopID});
 
     let deleteObject = {
-      name: name,
+      shopID: shopID,
       index: index
     };
 
@@ -41,6 +41,10 @@ class MyShopsDeleteShop extends Component {
 
   render() {
 
+    var shopID = this.props.shopID;
+
+    var selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+
     return (
       <div className="force-to-bottom">
         <div className="add-shop-btn">
@@ -49,19 +53,19 @@ class MyShopsDeleteShop extends Component {
             bsSize="large"
             onClick={this.open.bind(this)}
           >
-            Delete <b>{this.props.data}</b>
+            Delete <b>{selected.name}</b>
           </Button>
         </div>
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
-            <Modal.Title>Permanently delete <b>{this.props.data}</b> ?</Modal.Title>
+            <Modal.Title>Permanently delete <b>{selected.name}</b> ?</Modal.Title>
           </Modal.Header>
           <Modal.Body className="modal-body-delete">
 
             <ButtonInput className="delete-modal-button" type="submit" bsStyle="primary" onClick = {this.close.bind(this)} >No, close this window.</ButtonInput>
             <LinkContainer to={{ pathname: `/shops/` }}>
-              <ButtonInput className="delete-modal-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteShop.bind(this, this.props.data)} >Yes, delete this shop!</ButtonInput>
+              <ButtonInput className="delete-modal-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteShop.bind(this, this.props.shopID)} >Yes, delete this shop!</ButtonInput>
             </LinkContainer>
 
           </Modal.Body>

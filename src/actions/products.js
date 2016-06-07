@@ -22,12 +22,12 @@ export function unboundPatchProduct(data) {
 
 export function fetchProducts(options) {
 
-    const nameForFetch = options.data;
+    const shopIDForFetch = options.shopID;
 
     return {
         type: types.FETCH_PRODUCTS,
         payload: {
-            promise: fetchProductsAPI(nameForFetch)
+            promise: fetchProductsAPI(shopIDForFetch)
         }
     }
 };

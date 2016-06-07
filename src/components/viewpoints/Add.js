@@ -16,7 +16,7 @@ class Add extends Component {
     this.props.boundAddViewpoint({
       name: this.refs.nameBox.getValue(),
       key: this.refs.keyBox.getValue(),
-      shop: this.props.data,
+      shop: this.props.shopID,
       imageFile: this.state.imageFile
     });
     this.refs.nameBox.getInputDOMNode().value = '';

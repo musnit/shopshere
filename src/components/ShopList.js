@@ -38,7 +38,7 @@ class ShopList extends Component {
             </LinkContainer>
           )}
         </Nav>
-        <MyShopsAddShop data={this.props.categories}/>
+        <MyShopsAddShop categories={this.props.categories}/>
       </div>
     );
   }

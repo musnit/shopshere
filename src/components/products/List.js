@@ -19,9 +19,9 @@ class List extends Component {
     }
 
    componentWillReceiveProps(nextProps) {
-   if(nextProps.data !== this.props.data){
+   if(nextProps.shopID !== this.props.shopID){
     this.props.clearProducts();
-    this.props.fetchProducts({data: nextProps.data});
+    this.props.fetchProducts({shopID: nextProps.shopID});
    }
   }
 
@@ -35,7 +35,7 @@ class List extends Component {
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
       price: this.refs.priceBox.getValue(),
-      shop: this.props.data,
+      shop: this.props.shopID,
 
       colors: this.state.selectedProduct.colors,
       images: imageObjects,

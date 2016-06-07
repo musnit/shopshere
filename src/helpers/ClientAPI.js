@@ -16,7 +16,7 @@ function PostAPI(data, table) {
                     console.log('Oh no! error' + JSON.stringify(err));
                 } else {
                     //console.log('yay posted ' + JSON.stringify(res.text));
-                    resolve(JSON.parse(res.text)["Item"]);
+                    resolve(JSON.parse(res.text));
                 }
             })
     });
@@ -45,7 +45,7 @@ export function addHotspotAPI(data) {
 function DeleteAPI(object, table) {
     return new Promise((resolve, reject) => {
         var getResult = (() => {
-            request.del(UrlAPI + table + '/' + object.name)
+            request.del(UrlAPI + table + '/' + object.shopID)
                 .set('Content-Type', 'application/json')
                 .end(function(err, res) {
                     if (err || !res.ok) {
@@ -74,11 +74,11 @@ export function deleteShopAPI(object) {
 
 ////////////////////////////////////// GET API /////////////////////////////////
 
-function GetPerShopAPI(name, table) {
+function GetPerShopAPI(shopID, table) {
     return new Promise((resolve, reject) => {
         var getResult = (() => {
             request.get(UrlAPI + table + '/')
-                .query({ 'filter[shop]': String(name) })
+                .query({ 'filter[shop]': String(shopID) })
                 .set('Content-Type', 'application/json')
                 .end(function(err, res) {
                     if (err || !res.ok) {
@@ -115,12 +115,12 @@ export function fetchHotspotsAPI(shop, viewpoint) {
     return GetPerViewpointAPI(shop, viewpoint, 'hotspot');
 };
 
-export function fetchProductsAPI(name) {
-    return GetPerShopAPI(name, 'product');
+export function fetchProductsAPI(shopID) {
+    return GetPerShopAPI(shopID, 'product');
 };
 
-export function fetchViewpointsAPI(name) {
-    return GetPerShopAPI(name, 'viewpoint');
+export function fetchViewpointsAPI(shopID) {
+    return GetPerShopAPI(shopID, 'viewpoint');
 };
 
 
@@ -184,9 +184,9 @@ export function fetchAllViewpointsAPI() {
 
 function PatchAPI(data, table) {
     return new Promise((resolve, reject) => {
-        const name = data.name;
-        delete(data.name);
-        request.patch(UrlAPI + table + '/' + name)
+        const id = data.id;
+        delete(data.id);
+        request.patch(UrlAPI + table + '/' + id)
             .set('Content-Type', 'application/json')
             .send(data)
             .end(function(err, res) {

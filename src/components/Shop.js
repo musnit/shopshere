@@ -6,21 +6,28 @@ import Viewpoints from '~/src/components/Viewpoints';
 import Products from '~/src/components/Products';
 import Admin from '~/src/components/Admin';
 import { Tabs, Tab } from 'react-bootstrap';
+import { find } from 'lodash';
+
 
 class Shop extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      viewpointsShowing: true,
-      productsShowing: false
-    };
   }
 
   render() {
 
     var name = this.props.params.name;
 
+    var shopID;
+
+    if(typeof this.props.shops != "undefined" && this.props.shops != null && this.props.shops.length > 0){
+      shopID = _.find(this.props.shops, function(o){ return o.name == name }).id;
+    }
+    else {
+      shopID = 0;
+    }
+    
     return (
       <div>
         <div>
@@ -28,13 +35,13 @@ class Shop extends Component {
         </div>
         <Tabs defaultActiveKey={1}>
           <Tab eventKey={1} title="Viewpoints">
-            <Viewpoints data={name} />
+            <Viewpoints shopID={shopID} />
           </Tab>
           <Tab eventKey={2} title="Products">
-            <Products data={name} />
+            <Products shopID={shopID} />
           </Tab>
           <Tab eventKey={3} title="Admin">
-            <Admin data={name} />
+            <Admin shopID={shopID} />
           </Tab>
         </Tabs>
       </div>

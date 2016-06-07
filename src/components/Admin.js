@@ -10,8 +10,8 @@ class Admin extends Component {
     return (
         <div>
 			<h3> Shop Admin: </h3>
-			<MyShopsEditShop data={this.props.data} />
-			<MyShopsDeleteShop data={this.props.data} />
+			<MyShopsEditShop shopID={this.props.shopID} />
+			<MyShopsDeleteShop shopID={this.props.shopID} />
         </div>
     );
   }

@@ -21,7 +21,7 @@ class Add extends Component {
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
       price: this.refs.priceBox.getValue(),
-      shop: this.props.data,
+      shop: this.props.shopID,
       colors: this.state.colorOptions,
       images: this.state.imageFiles,
       sizes: this.state.sizeOptions

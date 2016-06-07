@@ -24,7 +24,7 @@ class MyShopsEditShop extends Component {
 
     var catval = this.refs.catBox.getValue();
 
-    var cat = _.find(this.props.categories, function(o) { return o.name == catval});
+    var cat = _.find(this.props.categories, function(o) { return o.text == catval});
 
     var logo;
 
@@ -36,8 +36,8 @@ class MyShopsEditShop extends Component {
     }
 
     var patchShopObject = {
+      id: this.state.selectedShop.id,
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue(),
       email: this.refs.shopContactEmailBox.getValue(),
       url: this.refs.shopContactURLBox.getValue(),
       phone: this.refs.shopContactPhoneBox.getValue(),
@@ -45,7 +45,7 @@ class MyShopsEditShop extends Component {
       address2: this.refs.shopAddressLine2Box.getValue(),
       city: this.refs.shopAddressCityBox.getValue(),
       province: this.refs.shopAddressProvinceBox.getValue(),
-      category: cat["name"],
+      category: cat["id"],
       logoFile: logo,
       logoColor:this.refs.backgroundColorBox.getValue(),
     }
@@ -58,7 +58,6 @@ class MyShopsEditShop extends Component {
 
     this.props.boundPatchShop(patchShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.keyBox.getInputDOMNode().value = '';
     this.refs.catBox.getInputDOMNode().value = '';
     this.setState({ showModal: false, logoFile: undefined, changeImage:false, selectedShop: {}  });
   }
@@ -79,9 +78,9 @@ class MyShopsEditShop extends Component {
 
   open() {
 
-    var shopName = this.props.data;
+    var shopID = this.props.shopID;
 
-    let selected = _.find(this.props.shops, function(o) { return o.name == shopName;});
+    let selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
 
     this.setState({ 
       showModal: true,
@@ -110,6 +109,14 @@ class MyShopsEditShop extends Component {
 
   render() {
 
+    var shopID = this.props.shopID;
+
+    var selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+
+    var catID = selected.category;
+
+    var catText = _.find(this.props.categories, function(o) { return o.id == catID}).text;
+
     return (
         <div className="force-to-bottom">
             <div className="add-shop-btn">
@@ -118,7 +125,7 @@ class MyShopsEditShop extends Component {
                     bsSize="large"
                     onClick={this.open.bind(this)}
                     >
-                Edit <b>{this.props.data}</b>
+                Edit <b>{selected.name}</b>
                 </Button>
             </div>
             <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
@@ -126,8 +133,7 @@ class MyShopsEditShop extends Component {
                     <Modal.Title>Add a new shop:</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Input label="Name" type="ShopName" readOnly="true" ref='nameBox' defaultValue={this.state.selectedShop.name} required />
-                    <Input label="Key" type="ShopKey" ref='keyBox' defaultValue={this.state.selectedShop.key} />
+                    <Input label="Name" type="ShopName" ref='nameBox' defaultValue={this.state.selectedShop.name} required />
                     <div className="contact-outer">
                         <label >Contact Details:</label>
                         <div className="contact-inner">
@@ -149,12 +155,12 @@ class MyShopsEditShop extends Component {
                     <div className="cat-button">
                         <DropdownButton bsStyle={'primary'} title={'Select a category'} id="catbutton">
                             {this.props.categories.map((categories, index) =>
-                            <MenuItem eventKey={index} key={index} onClick={this.clickCategory.bind(this)}> {categories.name} </MenuItem>
+                            <MenuItem eventKey={index} key={index} onClick={this.clickCategory.bind(this)}> {categories.text} </MenuItem>
                             )}
                         </DropdownButton>
                     </div>
                     <div className="cat-box">
-                        <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   defaultValue={this.state.selectedShop.category} />
+                        <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   defaultValue={catText} />
                     </div>
                     <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label><br/>
                     {!this.state.changeImage                                 ?

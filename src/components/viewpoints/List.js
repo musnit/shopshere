@@ -24,9 +24,9 @@ class List extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-   if(nextProps.data !== this.props.data){
+   if(nextProps.shopID !== this.props.shopID){
     this.props.clearViewpoints();
-    this.props.fetchViewpoints({data: nextProps.data});
+    this.props.fetchViewpoints({shopID: nextProps.shopID});
    }
   }
 
@@ -46,7 +46,7 @@ class List extends Component {
 
         </DropdownButton>
 
-        { this.state.selectedViewpoint ? <Viewer data={[this.props.data,this.state.selectedViewpoint]}/> : null }
+        { this.state.selectedViewpoint ? <Viewer data={[this.props.shopID,this.state.selectedViewpoint]}/> : null }
         
       </div>
     );

@@ -8,8 +8,8 @@ class Products extends Component {
   render() {
     return (
         <div>
-          <List data={this.props.data} />
-          <Add data={this.props.data} />
+          <List shopID={this.props.shopID} />
+          <Add shopID={this.props.shopID} />
         </div>
     );
   }
