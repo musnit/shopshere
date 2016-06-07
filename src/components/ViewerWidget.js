@@ -48,7 +48,7 @@ class ViewerWidget extends Component {
       this.setState({ hotspots, loadingHotspots: false });
       this.setState( {
         currentHotspots: hotspots.filter((hotspot) => {
-          return hotspot.prodview === this.state.currentViewpoint;
+          return hotspot.viewpoint === this.state.currentViewpoint.name;
         })
       })
       this.initializeViewer();
@@ -96,6 +96,7 @@ class ViewerWidget extends Component {
   }
 
   initializeViewer() {
+    debugger;
     this.sphereViewer = new SphereViewer({
       domContainerElement: document.getElementById('viewer-placeholder'),
       openModal: this.open.bind(this),
