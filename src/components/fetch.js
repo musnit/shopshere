@@ -7,10 +7,10 @@ export default function fetch(Wrapped, options) {
   class Fetch extends Component {
 
     componentDidMount() {
-      const {dispatch, location, params, data} = this.props;
+      const {dispatch, location, params, shopID, viewpoint} = this.props;
 
       options.actions.forEach((action) =>
-        dispatch(action({location, params, data, actionParams: options.actionParams}))
+        dispatch(action({location, params, shopID, viewpoint, actionParams: options.actionParams}))
       );
     }
 

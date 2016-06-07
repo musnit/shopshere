@@ -27,7 +27,7 @@ class Shop extends Component {
     else {
       shopID = 0;
     }
-    
+
     return (
       <div>
         <div>

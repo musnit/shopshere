@@ -28,7 +28,7 @@ class Viewer extends Component {
             showNewHotspotModal: false,
             showNewProductHotspotModal: false,
             showNewNavigationHotspotModal: false,
-
+            currentViewpoint: this.props.viewpoint,
             currentHotspot: "",
             currentProduct: "",
             newHSCoords:"",
@@ -189,7 +189,7 @@ class Viewer extends Component {
 
     addNewNavigationHotspot(name) {
         var inputName = name.target.innerText;
-        var outputName = this.props.viewpoint+"To"+inputName;
+        var outputName = this.state.currentViewpoint  +" To "+inputName;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewNavigationHotspot(outputName, this.state.newHSCoords);
@@ -198,7 +198,7 @@ class Viewer extends Component {
 
     addNewProductHotspot(name) {
         var inputName = name.target.innerText;
-        var outputName = this.props.viewpoint+"Sells"+inputName;
+        var outputName = this.state.currentViewpoint + " Sells " + inputName;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);   
@@ -222,7 +222,7 @@ class Viewer extends Component {
 
           prodview: inputName,
 
-          viewpoint: this.props.viewpoint,
+          viewpoint: this.state.currentViewpoint,
 
           position: params[1],
 
@@ -257,12 +257,13 @@ class Viewer extends Component {
 
     changeViewpoint(vpname){
         var name = vpname;
-        //this.props.viewpoint = name;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
         this.sphereViewer.changeBackgroundImage(imageURL);
-        this.setState({ key: Math.random() })
+        this.setState({ 
+            key: Math.random(),
+            currentViewpoint: name })
     }
 
 
@@ -273,7 +274,7 @@ class Viewer extends Component {
                 <Grid className="grid-panel">
                     <Row className="show-grid">
                             <Col xs={5}>
-                                <h3> Viewpoint: <b>{this.props.viewpoint}</b></h3>
+                                <h3> Viewpoint: <b>{this.state.currentViewpoint}</b></h3>
                             </Col>
                     </Row>
 
