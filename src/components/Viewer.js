@@ -39,16 +39,22 @@ class Viewer extends Component {
     componentWillReceiveProps(nextProps) {
 
         //if change to new shop:
-	   if(nextProps.data[0] !== this.props.data[0]){
+	   if(nextProps.shopID !== this.props.shopID){
 	    this.props.clearProducts();
         this.props.clearHotspots();
-	    this.props.fetchProducts({data: nextProps.data[0]});
-	    this.props.fetchHotspots({data: nextProps.data});
+	    this.props.fetchProducts({shopID: nextProps.shopID});
+	    this.props.fetchHotspots({
+            shopID: nextProps.shopID,
+            viewpoint: nextProps.viewpoint
+        });
 	   } //if change to new viewpoint:
-       else if ( nextProps.data[1] !== this.props.data[1] ){
+       else if ( nextProps.viewpoint !== this.props.viewpoint ){
         this.props.clearHotspots();
-        this.props.fetchHotspots({data: nextProps.data});
-        this.changeViewpoint(nextProps.data[1]);
+        this.props.fetchHotspots({
+            shopID: nextProps.shopID,
+            viewpoint: nextProps.viewpoint
+        });
+        this.changeViewpoint(nextProps.viewpoint);
        }
 
        if(nextProps.hotspots !== this.props.hotspots){
@@ -58,7 +64,7 @@ class Viewer extends Component {
 	  }
 
     componentDidMount() {
-        var name = this.props.data[1];
+        var name = this.props.viewpoint;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer = new SphereViewer({
@@ -183,7 +189,7 @@ class Viewer extends Component {
 
     addNewNavigationHotspot(name) {
         var inputName = name.target.innerText;
-        var outputName = this.props.data[1]+"To"+inputName;
+        var outputName = this.props.viewpoint+"To"+inputName;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewNavigationHotspot(outputName, this.state.newHSCoords);
@@ -192,7 +198,7 @@ class Viewer extends Component {
 
     addNewProductHotspot(name) {
         var inputName = name.target.innerText;
-        var outputName = this.props.data[1]+"Sells"+inputName;
+        var outputName = this.props.viewpoint+"Sells"+inputName;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);   
@@ -212,11 +218,11 @@ class Viewer extends Component {
 
           name: params[0],
 
-          shop: this.props.data[0],
+          shop: this.props.shopID,
 
           prodview: inputName,
 
-          viewpoint: this.props.data[1],
+          viewpoint: this.props.viewpoint,
 
           position: params[1],
 
@@ -229,7 +235,10 @@ class Viewer extends Component {
 
         this.removeAllHotspots();
         this.props.clearHotspots();
-        this.props.fetchHotspots({data: [navigateTo.shop ,navigateTo.name]});
+        this.props.fetchHotspots({
+            shopID: navigateTo.shop,
+            viewpoint: navigateTo.name
+        });
         this.changeViewpoint(navigateTo.name);
     
     }
@@ -248,7 +257,7 @@ class Viewer extends Component {
 
     changeViewpoint(vpname){
         var name = vpname;
-        this.props.data[1] = name;
+        //this.props.viewpoint = name;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
@@ -264,7 +273,7 @@ class Viewer extends Component {
                 <Grid className="grid-panel">
                     <Row className="show-grid">
                             <Col xs={5}>
-                                <h3> Viewpoint: <b>{this.props.data[1]}</b></h3>
+                                <h3> Viewpoint: <b>{this.props.viewpoint}</b></h3>
                             </Col>
                     </Row>
 

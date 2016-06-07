@@ -40,13 +40,13 @@ class List extends Component {
       <div className="view-button">
         <DropdownButton bsStyle={'primary'} title={'Select a viewpoint to view'} id="viewpoint">
 
-          {this.props.viewpoints.map((viewpoints, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.clickViewpoint.bind(this)}> {viewpoints.name} </MenuItem>
+          {this.props.viewpoints.map((viewpoint, index) =>
+            <MenuItem eventKey={index} key={index} onClick={this.clickViewpoint.bind(this)}> {viewpoint.name} </MenuItem>
                 )}
 
         </DropdownButton>
 
-        { this.state.selectedViewpoint ? <Viewer data={[this.props.shopID,this.state.selectedViewpoint]}/> : null }
+        { this.state.selectedViewpoint ? <Viewer shopID={this.props.shopID} viewpoint={this.state.selectedViewpoint} /> : null }
         
       </div>
     );
