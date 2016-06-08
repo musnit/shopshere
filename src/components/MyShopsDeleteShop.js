@@ -41,9 +41,20 @@ class MyShopsDeleteShop extends Component {
 
   render() {
 
-    var shopID = this.props.shopID;
+    var shopID;
+    var selected;
 
-    var selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+    if (this.props.shops.length == 0 || this.props.shopID == 0 ){
+      selected = { name:"Loading..." };
+    }
+    else{
+      shopID = this.props.shopID;
+
+      selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+
+    }
+
+
 
     return (
       <div className="force-to-bottom">

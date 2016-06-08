@@ -102,6 +102,16 @@ class List extends Component {
 
     selected.index = index
 
+    if ( !selected.colors ) {
+      selected.colors = [0];
+    }
+    if ( !selected.sizes ) {
+      selected.sizes = [""];
+    }
+    if ( !selected.images ) {
+      selected.images = [];
+    }
+
     this.setState({ 
       showModal: true ,
       selectedProduct: selected
@@ -262,7 +272,7 @@ class List extends Component {
                     <label htmlFor="inputProductSize">Size(s)</label>
                     <Grid fluid ref='sizeBox'>
                         {this.state.selectedProduct.sizes.map((size, index) =>
-                        <Row className="padded-row">
+                        <Row key={index} className="padded-row">
                             <Col xs={5} md={3}>
                             <Input className="size-box" type="productSize" ref={'sizeBox'+index} onChange={this.onaSizeBoxChange.bind(this, index)} defaultValue={size} />
                             </Col>
@@ -294,7 +304,7 @@ class List extends Component {
                     <label htmlFor="inputProductImage">Image(s)</label>
                     <Grid fluid>
                         {this.state.selectedProduct.images.map((image, index) =>
-                        <div>
+                        <div key={index}>
                             <Row className="padded-row">
                                 <Col xs={8} md={8}>
                                 <Image src={image} responsive />

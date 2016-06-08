@@ -46,7 +46,7 @@ class List extends Component {
 
         </DropdownButton>
 
-        { this.state.selectedViewpoint ? <Viewer shopID={this.props.shopID} viewpointID={this.state.selectedViewpoint} /> : null }
+        { this.state.selectedViewpoint ? <Viewer shopID={this.props.shopID} viewpointID={this.state.selectedViewpoint} thisShop={this.props.thisShop} /> : null }
         
       </div>
     );

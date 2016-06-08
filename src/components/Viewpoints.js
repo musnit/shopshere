@@ -9,7 +9,7 @@ class Viewpoints extends Component {
   render() {
     return (
         <div>
-          <List shopID={this.props.shopID} />
+          <List shopID={this.props.shopID} thisShop={this.props.thisShop} />
           <Add shopID={this.props.shopID} />
         </div>
     );

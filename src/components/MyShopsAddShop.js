@@ -36,6 +36,7 @@ class MyShopsAddShop extends Component {
       category: cat["id"],
       logoFile: this.state.logoFile,
       logoColor:this.refs.backgroundColorBox.getValue(),
+      entranceViewpoint:undefined
     }
 
     for(var key in addShopObject){

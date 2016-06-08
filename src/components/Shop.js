@@ -20,11 +20,14 @@ class Shop extends Component {
     var name = this.props.params.name;
 
     var shopID;
+    var thisShop;
 
     if(typeof this.props.shops != "undefined" && this.props.shops != null && this.props.shops.length > 0){
-      shopID = _.find(this.props.shops, function(o){ return o.name == name }).id;
+      thisShop = _.find(this.props.shops, function(o){ return o.name == name });
+      shopID = thisShop.id;
     }
     else {
+      thisShop = {};
       shopID = 0;
     }
 
@@ -35,7 +38,7 @@ class Shop extends Component {
         </div>
         <Tabs defaultActiveKey={1}>
           <Tab eventKey={1} title="Viewpoints">
-            <Viewpoints shopID={shopID} />
+            <Viewpoints shopID={shopID} thisShop={thisShop} />
           </Tab>
           <Tab eventKey={2} title="Products">
             <Products shopID={shopID} />

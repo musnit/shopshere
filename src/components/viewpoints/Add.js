@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button} from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, Radio} from 'react-bootstrap';
 import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 import '~/src/styles/viewpoint.css';
 
@@ -15,19 +15,17 @@ class Add extends Component {
   clickedAddViewpoint() {
     this.props.boundAddViewpoint({
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue(),
       shop: this.props.shopID,
       imageFile: this.state.imageFile
     });
     this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.keyBox.getInputDOMNode().value = '';
     this.setState({ showModal: false, submitDisabled: false, imageFile: undefined });
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
     };
   }
 
@@ -68,8 +66,7 @@ class Add extends Component {
 
           <label htmlFor="inputViewpointName">Viewpoint Name</label>
           <Input type="ViewpointName" ref='nameBox' placeholder="Name..." required />
-          <label htmlFor="inputViewpointKey">Viewpoint Key</label>
-          <Input type="ViewpointKey" ref='keyBox' placeholder="Key..." />
+
           <label htmlFor="inputViewpointImageFile">Viewpoint Image</label><br/>
           <S3Uploader
             onUploadStart={this.imageUploadStarted.bind(this)}

@@ -6,6 +6,7 @@ import fetch from '~/src/components/fetch';
 import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col,ButtonGroup,ButtonToolbar,Glyphicon } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots, unboundAddHotspot, clearHotspots } from '~/src/actions/hotspots';
+import { unboundPatchShop } from '~/src/actions/shops';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
 import { find, findIndex, forEach } from 'lodash';
 
@@ -17,6 +18,7 @@ import '~/src/styles/hotspot.css';
 import '~/src/styles/viewer.css';
 import '~/src/styles/viewpoint.css';
 
+const blackFill = "/images/black.png";
 
 class Viewer extends Component {
 
@@ -32,7 +34,10 @@ class Viewer extends Component {
             currentHotspot: "",
             currentProduct: "",
             newHSCoords:"",
-            key: undefined
+            key: undefined,
+            entranceViewpointNeeded:false,
+            thisIsTheEntrance: false,
+            noSelection: false
         };
     }
 
@@ -47,6 +52,9 @@ class Viewer extends Component {
             shopID: nextProps.shopID,
             viewpointID: nextProps.viewpointID
         });
+        this.checkForEntranceViewpoint(nextProps.viewpointID);
+        this.setState({ currentViewpoint: 0, noSelection: true });
+        this.blackViewpoint(blackFill);
 	   } //if change to new viewpoint:
        else if ( nextProps.viewpointID !== this.props.viewpointID ){
         this.props.clearHotspots();
@@ -55,6 +63,8 @@ class Viewer extends Component {
             viewpointID: nextProps.viewpointID
         });
         this.changeViewpoint(nextProps.viewpointID);
+        this.checkForEntranceViewpoint(nextProps.viewpointID);
+        this.setState({ noSelection: false });
        }
 
        if(nextProps.hotspots !== this.props.hotspots){
@@ -73,11 +83,24 @@ class Viewer extends Component {
             openNewHSModal: this.addNewHotspotModal.bind(this),
             imageURL:imageURL
         });
+        this.checkForEntranceViewpoint(viewpointID);
     }
 
     componentWillUnmount() {
         let canvasElement = document.getElementsByTagName("canvas");
         canvasElement[0].remove();
+    }
+
+    checkForEntranceViewpoint(viewpointID){
+        if (!this.props.thisShop.entranceViewpoint) {
+            this.setState( { entranceViewpointNeeded: true, thisIsTheEntrance: false } );
+        }
+        else if (this.props.thisShop.entranceViewpoint == viewpointID) {
+            this.setState( { entranceViewpointNeeded: false, thisIsTheEntrance: true } );
+        }
+        else {
+            this.setState( { entranceViewpointNeeded: false, thisIsTheEntrance: false } );
+        }
     }
 
     close() {
@@ -240,6 +263,7 @@ class Viewer extends Component {
             viewpointID: navigateTo.id
         });
         this.changeViewpoint(navigateTo.id);
+        this.checkForEntranceViewpoint(navigateTo.id);
     
     }
 
@@ -255,6 +279,15 @@ class Viewer extends Component {
         _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
 
+    blackViewpoint(imageURL){
+
+        this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
+        this.sphereViewer.changeBackgroundImage(imageURL);
+        this.setState({ 
+            key: Math.random()
+            })
+    }
+
     changeViewpoint(vpid){
         var vpID = vpid;
         var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.id == vpID });
@@ -266,42 +299,128 @@ class Viewer extends Component {
             currentViewpoint: vpID })
     }
 
+    clickedSetToEntranceViewpoint(){
+        var thisShopObject = _.cloneDeep(this.props.thisShop);
+        var viewpointID = this.state.currentViewpoint;
+        thisShopObject.entranceViewpoint = viewpointID;
+        this.props.boundPatchShop(thisShopObject);
+        this.setState( { entranceViewpointNeeded: false, thisIsTheEntrance: true } );
+    }
+
 
   render() {
 
     var currentViewpointID = this.state.currentViewpoint;
 
-    var viewpointName = _.find(this.props.viewpoints, function(o) { return o.id == currentViewpointID }).name;
+    var viewpointName;
+
+    if(typeof this.props.viewpoints != "undefined" && this.props.viewpoints != null && this.props.viewpoints.length > 0 && currentViewpointID != 0){
+      viewpointName = _.find(this.props.viewpoints, function(o) { return o.id == currentViewpointID }).name;
+    }
+    else {
+      viewpointName = "No viewpoint selected"
+    }
+
+    var shopName = this.props.thisShop.name;
 
     return (
         <div >
             <div>
                 <Grid className="grid-panel">
                     <Row className="show-grid">
-                            <Col xs={5}>
+                            <Col xs={12}>
                                 <h3> Viewpoint: <b>{viewpointName}</b></h3>
                             </Col>
                     </Row>
 
+                    {!this.state.noSelection ? 
+                        <div>
 
+                    { this.state.entranceViewpointNeeded ?                     
+                    <div className="entrance-view-box">
+
+                    <Row className="show-grid">
+                        <Col xs={12} className="entrance-view-text">
+                        <h4>This shop has not yet set an entrance viewpoint!</h4>
+                        </Col>
+                        </Row>
+                        <Row>
+                        <Col xs={12}>
+                        <div className="entrance-view-button">
+                            <Button
+                            bsStyle="warning"
+                                
+                                type = "submit"
+                                onClick = {this.clickedSetToEntranceViewpoint.bind(this)} >
+                            Set <b>{viewpointName}</b> as <b>{shopName}&#8217;s</b> entrance viewpoint.
+                            </Button>
+                        </div>
+                        </Col>
+
+                    </Row> 
+
+
+                    </div> : null }
+
+                    
                     <div className="edit-box">
 
 
                     <Row className="show-grid">
                         <Col xs={12} className="edit-text">
-                        <h4>Double-Click anywhere on the viewpoint below to add a hotspot.</h4>
+                        <h4><Glyphicon glyph="hand-down" /> Double-Click anywhere on the viewpoint below to add a hotspot.</h4>
                         </Col>
                     </Row>
 
 
                     </div>
 
+                    </div> : null }
+
                 </Grid>
             </div>
             
+
+
             <div id='viewer-placeholder'></div>
 
+            {!this.state.noSelection ? 
+
                 <Grid className="grid-panel">
+
+                { !this.state.entranceViewpointNeeded && this.state.thisIsTheEntrance ?                     
+                    <div className="entrance-view-box">
+
+                    <Row className="show-grid">
+                        <p className="entrance-view-text"> <Glyphicon glyph="info-sign" /> This is <b>{shopName}&#8217;s</b> entrance viewpoint. </p>
+                    </Row> 
+
+
+                    </div> : null}
+
+
+                    { !this.state.entranceViewpointNeeded && !this.state.thisIsTheEntrance ?    
+
+                     <div className="entrance-view-box">
+
+                    <Row className="show-grid">
+
+                        <div className="entrance-view-button">
+                            <Button
+                            bsStyle="warning"
+                                
+                                type = "submit"
+                                onClick = {this.clickedSetToEntranceViewpoint.bind(this)} >
+                            Set <b>{viewpointName}</b> as <b>{shopName}&#8217;s</b> entrance viewpoint.
+                            </Button>
+                        </div>
+
+                    </Row> 
+
+
+                    </div> : null}
+
+
                     <Row className="show-grid">
                         <Col xs={5}>
                         <div className="view-button">
@@ -324,7 +443,7 @@ class Viewer extends Component {
                         </div>
                         </Col>
                     </Row>
-                </Grid>
+                </Grid> : null }
 
             <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
             <Modal.Header closeButton>
@@ -434,7 +553,8 @@ function mapDispatchToProps(dispatch) {
     clearProducts: bindActionCreators(clearProducts, dispatch),
     fetchProducts: bindActionCreators(fetchProducts, dispatch),
     boundAddHotspot: bindActionCreators(unboundAddHotspot, dispatch),
-    clearHotspots: bindActionCreators(clearHotspots, dispatch)
+    clearHotspots: bindActionCreators(clearHotspots, dispatch),
+    boundPatchShop: bindActionCreators(unboundPatchShop, dispatch)
   };
 }
 

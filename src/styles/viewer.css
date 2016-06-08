@@ -50,3 +50,46 @@
     top: 50%;
     left: 50%;
 }
+
+
+
+.entrance-view-box{
+        background-color: #fcf8e3;
+            background-clip: content-box;
+                margin: 20px;
+                border-color: #faebcc;
+                border-style:solid;
+                border-width:2px;
+}
+
+.entrance-view-text {
+    color: #8a6d3b;
+    text-align: center;
+    margin:auto;
+}
+
+.entrance-view-button{
+    text-align: center;
+    margin: 1%;
+
+}
+
+.entrance-view-button-inner {
+        border-color: #faebcc;
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+}
+
+.entrance-view-button-inner:hover {
+color: #3a87ad;
+    background-color: #d9edf7;
+     border-color: #bce8f1;
+
+}
+
+.entrance-view-button-inner:active {
+        border-color: #faebcc;
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+
+}

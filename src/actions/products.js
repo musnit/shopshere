@@ -39,7 +39,6 @@ export function clearProducts() {
 };
 
 export function deleteProduct(object) {
-
     return {
         type: types.DELETE_PRODUCT,
         payload: {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem,Grid, Row, Col, OverlayTrigger, Tooltip, Image } from 'react-bootstrap';
+import { fetchViewpoints } from '~/src/actions/viewpoints';
 import { unboundPatchShop } from '~/src/actions/shops';
 import { fetchCategories } from '~/src/actions/categories';
 import { fetchShops } from '~/src/actions/shops';
@@ -26,6 +27,10 @@ class MyShopsEditShop extends Component {
 
     var cat = _.find(this.props.categories, function(o) { return o.text == catval});
 
+    var entVPval = this.refs.entranceViewpointBox.getValue();
+
+    var viewp = _.find(this.props.viewpoints, function(o) { return o.name == entVPval});
+
     var logo;
 
     if (this.state.logoFile) {
@@ -48,6 +53,7 @@ class MyShopsEditShop extends Component {
       category: cat["id"],
       logoFile: logo,
       logoColor:this.refs.backgroundColorBox.getValue(),
+      entranceViewpoint: viewp["id"]
     }
 
     for(var key in patchShopObject){
@@ -99,8 +105,12 @@ class MyShopsEditShop extends Component {
     this.setState({ submitDisabled: false, logoFile: logoFile });
   }
 
-  clickCategory(name){
-    this.refs.catBox.getInputDOMNode().value = name.target.innerText;
+  clickCategory(event){
+    this.refs.catBox.getInputDOMNode().value = event.target.innerText;
+  }
+
+  clickViewpoint(event){
+    this.refs.entranceViewpointBox.getInputDOMNode().value = event.target.innerText;
   }
 
   clickedDeleteImage(){
@@ -109,13 +119,37 @@ class MyShopsEditShop extends Component {
 
   render() {
 
-    var shopID = this.props.shopID;
+    var shopID;
+    var selected;
+    var catID;
+    var catText;
+    var entVPID;
+    var entVPText;
 
-    var selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+    if (this.props.shops.length == 0 || this.props.categories.length == 0 || this.props.viewpoints.length == 0 || this.props.shopID == 0 ) {
+      selected = { name:"Loading..." };
+    }
+    else{
 
-    var catID = selected.category;
+      shopID = this.props.shopID;
 
-    var catText = _.find(this.props.categories, function(o) { return o.id == catID}).text;
+      selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+
+      catID = selected.category;
+
+      catText = _.find(this.props.categories, function(o) { return o.id == catID}).text;
+
+      entVPID = selected.entranceViewpoint;
+
+      if (entVPID) {
+        entVPText = _.find(this.props.viewpoints, function(o) { return o.id == entVPID}).name;
+      }
+
+      
+
+    }
+
+
 
     return (
         <div className="force-to-bottom">
@@ -151,6 +185,7 @@ class MyShopsEditShop extends Component {
                             <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox"  defaultValue={this.state.selectedShop.province}  />
                         </div>
                     </div>
+
                     <label htmlFor="inputShopCategory" className="form-element">Category</label>
                     <div className="cat-button">
                         <DropdownButton bsStyle={'primary'} title={'Select a category'} id="catbutton">
@@ -162,6 +197,19 @@ class MyShopsEditShop extends Component {
                     <div className="cat-box">
                         <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   defaultValue={catText} />
                     </div>
+
+                    <label htmlFor="inputShopEntranceViewpoint" className="form-element">Entrance Viewpoint</label>
+                    <div className="cat-button">
+                        <DropdownButton bsStyle={'primary'} title={'Select an entrance viewpoint'} id="catbutton">
+                            {this.props.viewpoints.map((viewpoint, index) =>
+                            <MenuItem eventKey={index} key={index} data={viewpoint.id} onClick={this.clickViewpoint.bind(this)}> {viewpoint.name} </MenuItem>
+                            )}
+                        </DropdownButton>
+                    </div>
+                    <div className="cat-box">
+                        <Input type="ShopEntranceViewpoint" readOnly ref='entranceViewpointBox' bsClass="input-group"   defaultValue={entVPText} />
+                    </div>
+
                     <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label><br/>
                     {!this.state.changeImage                                 ?
                     <Grid fluid>
@@ -203,15 +251,17 @@ class MyShopsEditShop extends Component {
 }
 
 const FetchedCategoryEditShopList = fetch(MyShopsEditShop, {
-  actions: [fetchCategories]
+  actions: [fetchCategories, fetchViewpoints]
 });
 
 function mapStateToProps(state) {
   const categories = state.categories;
   const shops = state.shops;
+  const viewpoints = state.viewpoints;
   return { 
     categories,
-    shops
+    shops,
+    viewpoints
     };
 };
 
@@ -220,6 +270,7 @@ function mapDispatchToProps(dispatch) {
     fetchCategories: bindActionCreators(fetchCategories, dispatch),
     fetchShops: bindActionCreators(fetchShops, dispatch),
     boundPatchShop: bindActionCreators(unboundPatchShop, dispatch),
+    fetchViewpoints: bindActionCreators(fetchViewpoints, dispatch)
   };
 };
 
