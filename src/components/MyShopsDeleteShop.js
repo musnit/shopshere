@@ -15,7 +15,7 @@ class MyShopsDeleteShop extends Component {
     let index = _.findIndex(this.props.shops, function(o) { return o.id == shopID});
 
     let deleteObject = {
-      shopID: shopID,
+      ID: shopID,
       index: index
     };
 

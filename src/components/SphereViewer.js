@@ -245,8 +245,6 @@ export default class SphereViewer {
 
   saveNewHotspotLocation() {
 
-    var outputName = this.currentUnsavedHotspot.name;
-
     var outputPosition = { 
       "X": this.currentUnsavedHotspot.position.x, 
       "Y": this.currentUnsavedHotspot.position.y, 
@@ -264,7 +262,7 @@ export default class SphereViewer {
 
     this.currentUnsavedHotspot = undefined;
 
-    return [ outputName, outputPosition, outputType ];
+    return [ outputPosition, outputType ];
   }
 
   changeBackgroundImage(imageURL){
@@ -334,7 +332,7 @@ export default class SphereViewer {
 
       hs = new THREE.Sprite( material );
       hs.isHotspot = true;
-      hs.name = hotspot.name;
+      hs.hotspotID = hotspot.id;
 
       if(hotspot.type === "product") {
           hs.isProduct = true;
@@ -374,7 +372,7 @@ export default class SphereViewer {
 
         if ( intersects.length > 0 ) {
           if (intersects[0].object.isHotspot){
-            this.openModal(intersects[0].object.name);
+            this.openModal(intersects[0].object.hotspotID);
           }
           else {
 

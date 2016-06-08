@@ -30,8 +30,8 @@ class List extends Component {
    }
   }
 
-  clickViewpoint(name) {
-    this.setState({ selectedViewpoint: name.target.innerText });
+  clickViewpoint(event) {
+    this.setState({ selectedViewpoint: event.currentTarget.attributes.data.value });
   }
 
   render() {
@@ -41,12 +41,12 @@ class List extends Component {
         <DropdownButton bsStyle={'primary'} title={'Select a viewpoint to view'} id="viewpoint">
 
           {this.props.viewpoints.map((viewpoint, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.clickViewpoint.bind(this)}> {viewpoint.name} </MenuItem>
+            <MenuItem eventKey={index} key={index} data={viewpoint.id} onClick={this.clickViewpoint.bind(this)}> {viewpoint.name} </MenuItem>
                 )}
 
         </DropdownButton>
 
-        { this.state.selectedViewpoint ? <Viewer shopID={this.props.shopID} viewpoint={this.state.selectedViewpoint} /> : null }
+        { this.state.selectedViewpoint ? <Viewer shopID={this.props.shopID} viewpointID={this.state.selectedViewpoint} /> : null }
         
       </div>
     );

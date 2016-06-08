@@ -30,13 +30,12 @@ class List extends Component {
     var imageObjects = this.state.selectedProduct.images.concat(this.state.imageFiles);
 
     var patchObject = {
-      name: this.state.selectedProduct.name,
-      key: this.state.selectedProduct.key,
+      id: this.state.selectedProduct.id,
+      name: this.refs.nameBox.getValue(),
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
       price: this.refs.priceBox.getValue(),
       shop: this.props.shopID,
-
       colors: this.state.selectedProduct.colors,
       images: imageObjects,
       sizes: this.state.selectedProduct.sizes
@@ -57,7 +56,7 @@ class List extends Component {
   clickedDeleteProduct() {
 
     let deleteObject = {
-      name: this.state.selectedProduct.name,
+      ID: this.state.selectedProduct.id,
       index: this.state.selectedProduct.index
     };
 
@@ -221,7 +220,7 @@ class List extends Component {
                     <Modal.Title>Edit <b>{this.state.selectedProduct.name}</b> by modifying it below and then click Edit product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Input label="Product Name" readOnly="true" type="ProductName" ref='nameBox' value={this.state.selectedProduct.name} />
+                    <Input label="Product Name" type="ProductName" ref='nameBox' defaultValue={this.state.selectedProduct.name} />
                     <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
                     <Input label="Product Description" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description}/>
                     <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />

@@ -28,7 +28,7 @@ class Viewer extends Component {
             showNewHotspotModal: false,
             showNewProductHotspotModal: false,
             showNewNavigationHotspotModal: false,
-            currentViewpoint: this.props.viewpoint,
+            currentViewpoint: this.props.viewpointID,
             currentHotspot: "",
             currentProduct: "",
             newHSCoords:"",
@@ -45,16 +45,16 @@ class Viewer extends Component {
 	    this.props.fetchProducts({shopID: nextProps.shopID});
 	    this.props.fetchHotspots({
             shopID: nextProps.shopID,
-            viewpoint: nextProps.viewpoint
+            viewpointID: nextProps.viewpointID
         });
 	   } //if change to new viewpoint:
-       else if ( nextProps.viewpoint !== this.props.viewpoint ){
+       else if ( nextProps.viewpointID !== this.props.viewpointID ){
         this.props.clearHotspots();
         this.props.fetchHotspots({
             shopID: nextProps.shopID,
-            viewpoint: nextProps.viewpoint
+            viewpointID: nextProps.viewpointID
         });
-        this.changeViewpoint(nextProps.viewpoint);
+        this.changeViewpoint(nextProps.viewpointID);
        }
 
        if(nextProps.hotspots !== this.props.hotspots){
@@ -64,8 +64,8 @@ class Viewer extends Component {
 	  }
 
     componentDidMount() {
-        var name = this.props.viewpoint;
-        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
+        var viewpointID = this.props.viewpointID;
+        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.id == viewpointID });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer = new SphereViewer({
             domContainerElement: document.getElementById('viewer-placeholder'),
@@ -89,15 +89,15 @@ class Viewer extends Component {
         });
     }
 
-    open(name) {
+    open(id) {
 
         var thisProduct;
-		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.name == name });
+		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.id == id });
 		if (thisHotspot.type === "product") {
 			thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.prodview });
 		}
         else if (thisHotspot.type === "navigation") {
-            var navigateTo = _.find(this.props.viewpoints, function(o) { return o.name == thisHotspot.prodview });
+            var navigateTo = _.find(this.props.viewpoints, function(o) { return o.id == thisHotspot.prodview });
             this.navigateToViewpoint( navigateTo );
             this.setState({ 
                 modalMode: this.state.modalMode,
@@ -114,7 +114,7 @@ class Viewer extends Component {
         this.setState({
         	modalMode: this.state.modalMode,
             showModal: true,
-            currentHotspot: name,
+            currentHotspot: thisHotspot.name,
             currentProduct: thisProduct
         });
 
@@ -143,7 +143,7 @@ class Viewer extends Component {
     clickedDeleteHotspot() {
 
         let deleteObject = {
-            name: this.state.currentHotspot,
+            ID: this.state.currentHotspot.id,
             index: 0 //fix this value later
         };
 
@@ -187,13 +187,14 @@ class Viewer extends Component {
         this.setState({ showNewNavigationHotspotModal: false});
     }  
 
-    addNewNavigationHotspot(name) {
-        var inputName = name.target.innerText;
+    addNewNavigationHotspot(event) {
+        var inputName = event.target.innerText;
+        var viewpointID = event.currentTarget.attributes.data.value;
         var outputName = this.state.currentViewpoint  +" To "+inputName;
         this.closeNewNavigationHotspotModal();
         this.sphereViewer.addNewNavigationHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewNavigationHotspot(outputName, this.state.newHSCoords);
-        this.saveHotspot(inputName);
+        this.saveHotspot(viewpointID);
     }
 
     addNewProductHotspot(name) {
@@ -205,28 +206,27 @@ class Viewer extends Component {
         this.saveHotspot(inputName);     
     }
 
-    saveHotspot(inputName){
+    saveHotspot(viewpointID){
         this.sphereViewer.saveNewHotspotLocation.bind(this.sphereViewer);
         var savedParams = this.sphereViewer.saveNewHotspotLocation();
 
-        this.addHotspot( savedParams, inputName );
+        this.addHotspot( savedParams, viewpointID );
 
     }
 
-    addHotspot( params, inputName ) {
-        this.props.boundAddHotspot({
+    addHotspot( params, linktoID ) {
 
-          name: params[0],
+        this.props.boundAddHotspot({
 
           shop: this.props.shopID,
 
-          prodview: inputName,
+          prodview: linktoID,
 
           viewpoint: this.state.currentViewpoint,
 
-          position: params[1],
+          position: params[0],
 
-          type: params[2]
+          type: params[1]
 
         });
     }
@@ -237,9 +237,9 @@ class Viewer extends Component {
         this.props.clearHotspots();
         this.props.fetchHotspots({
             shopID: navigateTo.shop,
-            viewpoint: navigateTo.name
+            viewpointID: navigateTo.id
         });
-        this.changeViewpoint(navigateTo.name);
+        this.changeViewpoint(navigateTo.id);
     
     }
 
@@ -255,26 +255,31 @@ class Viewer extends Component {
         _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
 
-    changeViewpoint(vpname){
-        var name = vpname;
-        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.name == name });
+    changeViewpoint(vpid){
+        var vpID = vpid;
+        var viewpointImage = _.find(this.props.viewpoints, function(o) { return o.id == vpID });
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
         this.sphereViewer.changeBackgroundImage(imageURL);
         this.setState({ 
             key: Math.random(),
-            currentViewpoint: name })
+            currentViewpoint: vpID })
     }
 
 
   render() {
+
+    var currentViewpointID = this.state.currentViewpoint;
+
+    var viewpointName = _.find(this.props.viewpoints, function(o) { return o.id == currentViewpointID }).name;
+
     return (
         <div >
             <div>
                 <Grid className="grid-panel">
                     <Row className="show-grid">
                             <Col xs={5}>
-                                <h3> Viewpoint: <b>{this.state.currentViewpoint}</b></h3>
+                                <h3> Viewpoint: <b>{viewpointName}</b></h3>
                             </Col>
                     </Row>
 
@@ -395,7 +400,7 @@ class Viewer extends Component {
                     <div className="product-button">
                         <DropdownButton bsStyle={'primary'} title={'Select a viewpoint to link to this hotspot'} id="product-view-edit">
                             {this.props.viewpoints.map((viewpoint, index) =>
-                            <MenuItem eventKey={index} key={index} onClick={this.addNewNavigationHotspot.bind(this) }> {viewpoint.name} </MenuItem>
+                            <MenuItem eventKey={index} key={index} data={viewpoint.id} onClick={this.addNewNavigationHotspot.bind(this) }> {viewpoint.name} </MenuItem>
                             )}
                         </DropdownButton>
                     </div>

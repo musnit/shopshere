@@ -48,7 +48,7 @@ class ViewerWidget extends Component {
       this.setState({ hotspots, loadingHotspots: false });
       this.setState( {
         currentHotspots: hotspots.filter((hotspot) => {
-          return hotspot.viewpoint === this.state.currentViewpoint.name;
+          return hotspot.viewpoint === this.state.currentViewpoint.id;
         })
       })
       this.initializeViewer();
@@ -96,7 +96,6 @@ class ViewerWidget extends Component {
   }
 
   initializeViewer() {
-    debugger;
     this.sphereViewer = new SphereViewer({
       domContainerElement: document.getElementById('viewer-placeholder'),
       openModal: this.open.bind(this),
@@ -106,10 +105,10 @@ class ViewerWidget extends Component {
     this.addHotspotsToViewpoint(this.state.currentHotspots);
   }
 
-  open(hotspotId) {
+  open(hotspotID) {
     const openProductModal = this.props.openProductModal || dummyOpenProductModal;
 		const hotspot = _.find(this.state.currentHotspots, (hotspot) => {
-      return hotspot.id == hotspotId
+      return hotspot.id == hotspotID;
     });
 		if (hotspot.type === "product") {
 			const product = _.find(this.state.products, (product) => {
@@ -118,7 +117,7 @@ class ViewerWidget extends Component {
       openProductModal(product);
 		}
     else if (hotspot.type === "navigation") {
-      const viewpoint = _.find(this.props.viewpoints, (viewpoint) => {
+      const viewpoint = _.find(this.state.viewpoints, (viewpoint) => {
         return viewpoint.id == hotspot.prodview
       });
       this.navigateToViewpoint( viewpoint );
@@ -126,10 +125,20 @@ class ViewerWidget extends Component {
   }
 
   navigateToViewpoint(viewpoint) {
+
     this.removeAllHotspots();
-    this.props.clearHotspots();
-    this.props.fetchHotspots({ data: [viewpoint.shop ,viewpoint.name] });
-    this.changeViewpoint(viewpoint.id);
+
+    this.setState({ currentViewpoint: viewpoint });
+
+    this.changeViewpoint(viewpoint);
+
+    var newHotspots = _.filter(this.state.hotspots, function(o){return o.viewpoint == viewpoint.id});
+
+    this.setState({ currentHotspots: newHotspots });
+
+    this.addHotspotsToViewpoint(newHotspots);
+
+    
   }
 
   removeAllHotspots() {
@@ -142,10 +151,7 @@ class ViewerWidget extends Component {
     _.forEach(hotspots, (o) => { addAHotspot(o); });
   }
 
-  changeViewpoint(viewpointId){
-    var viewpoint = _.find(this.props.viewpoints, (viewpoint) => {
-      return viewpoint.viewpointId == viewpointId
-    });
+  changeViewpoint(viewpoint){
     var imageURL = viewpoint.imageFile;
     this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
     this.sphereViewer.changeBackgroundImage(imageURL);

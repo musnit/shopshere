@@ -17,7 +17,7 @@ class Add extends Component {
 
     var addObject = {
       name: this.refs.nameBox.getValue(),
-      key: this.refs.keyBox.getValue(),
+
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
       price: this.refs.priceBox.getValue(),
@@ -30,7 +30,6 @@ class Add extends Component {
     this.props.boundAddProduct(addObject);
 
     this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.keyBox.getInputDOMNode().value = '';
     this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
     this.setState({ 
@@ -221,8 +220,6 @@ class Add extends Component {
         <Modal.Body>
             <label htmlFor="inputProductName">Name</label>
             <Input type="ProductName" ref='nameBox'  placeholder="Name..." required />
-            <label htmlFor="inputProductKey">Key</label>
-            <Input type="ProductKey" ref='keyBox' placeholder="Key..." />
             <label htmlFor="inputProductSKU">SKU</label>
             <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">Description</label>

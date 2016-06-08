@@ -45,7 +45,7 @@ export function addHotspotAPI(data) {
 function DeleteAPI(object, table) {
     return new Promise((resolve, reject) => {
         var getResult = (() => {
-            request.del(UrlAPI + table + '/' + object.shopID)
+            request.del(UrlAPI + table + '/' + object.ID)
                 .set('Content-Type', 'application/json')
                 .end(function(err, res) {
                     if (err || !res.ok) {
@@ -92,12 +92,12 @@ function GetPerShopAPI(shopID, table) {
     });
 }
 
-function GetPerViewpointAPI(shopName, viewpointName, table) {
+function GetPerViewpointAPI(shopID, viewpointID, table) {
     return new Promise((resolve, reject) => {
         var getResult = (() => {
             request.get(UrlAPI + table + '/')
-                .query({ 'filter[shop]': String(shopName) })
-                .query({ 'filter[viewpoint]': String(viewpointName) })
+                .query({ 'filter[shop]': String(shopID) })
+                .query({ 'filter[viewpoint]': String(viewpointID) })
                 .set('Content-Type', 'application/json')
                 .end(function(err, res) {
                     if (err || !res.ok) {
@@ -111,8 +111,8 @@ function GetPerViewpointAPI(shopName, viewpointName, table) {
     });
 }
 
-export function fetchHotspotsAPI(shop, viewpoint) {
-    return GetPerViewpointAPI(shop, viewpoint, 'hotspot');
+export function fetchHotspotsAPI(shopID, viewpointID) {
+    return GetPerViewpointAPI(shopID, viewpointID, 'hotspot');
 };
 
 export function fetchProductsAPI(shopID) {
