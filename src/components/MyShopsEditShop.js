@@ -151,7 +151,7 @@ class MyShopsEditShop extends Component {
 
       entVPID = selected.entranceViewpoint;
 
-      if (entVPID) {
+      if (entVPID.id) {
         entVPText = _.find(this.props.viewpoints, function(o) { return o.id == entVPID}).name;
       }
 

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
 import { fetchProducts, clearProducts, unboundPatchProduct, deleteProduct } from '~/src/actions/products';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image} from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert} from 'react-bootstrap';
 import { find, findIndex } from 'lodash';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
@@ -27,6 +27,16 @@ class List extends Component {
 
   clickedPatchProduct() {
 
+        var priceValue = this.refs.priceBox.getValue();
+
+    if (Number(priceValue) != priceValue) {
+      this.handleAlertShow();
+      return;
+    }
+    else {
+      this.handleAlertDismiss();
+    }
+
     var imageObjects = this.state.selectedProduct.images.concat(this.state.imageFiles);
 
     var patchObject = {
@@ -34,7 +44,7 @@ class List extends Component {
       name: this.refs.nameBox.getValue(),
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
-      price: this.refs.priceBox.getValue(),
+      price: priceValue,
       shop: this.props.shopID,
       colors: this.state.selectedProduct.colors,
       images: imageObjects,
@@ -45,6 +55,7 @@ class List extends Component {
 
     this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
+        this.handleAlertDismiss();
     this.setState({ 
       showModal: false,
       colorOptions: [],
@@ -52,6 +63,15 @@ class List extends Component {
       imageFiles: [],
       images: [0], });
   }
+
+    handleAlertDismiss() {
+    this.setState({alertVisible: false});
+  }
+
+  handleAlertShow() {
+    this.setState({alertVisible: true});
+  }
+
 
   clickedDeleteProduct() {
 
@@ -81,6 +101,7 @@ class List extends Component {
         submitDisabled: false,
         imageFiles: [],
         images: [0],
+        alertVisible: false
       };
   }
 
@@ -92,6 +113,7 @@ class List extends Component {
       submitDisabled: false,
       imageFiles: [],
       images: [0],
+      alertVisible: false
     });
   }
 
@@ -234,6 +256,13 @@ class List extends Component {
                     <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
                     <Input label="Product Description" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description}/>
                     <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />
+
+                                {this.state.alertVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+                              <h4>Invalid Input!</h4>
+                              <p>Product price can only be a decimal number example  1  50  50.00  65.89  etc.</p>
+                            </Alert> : null}
+
                     <label htmlFor="inputProductColor">Color(s)</label>
                     <Grid fluid>
                         {this.state.selectedProduct.colors.map((color, index) =>

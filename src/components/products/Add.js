@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Alert } from 'react-bootstrap';
 import { unboundAddProduct } from '~/src/actions/products';
 import { filter, cloneDeep, forEach } from 'lodash';
 import S3Uploader from '~/src/components/utility/S3Uploader';
@@ -14,13 +14,23 @@ class Add extends Component {
 
   clickedAddProduct() {
 
+    var priceValue = this.refs.priceBox.getValue();
+
+    if (Number(priceValue) != priceValue) {
+      this.handleAlertShow();
+      return;
+    }
+    else {
+      this.handleAlertDismiss();
+    }
+
 
     var addObject = {
       name: this.refs.nameBox.getValue(),
 
       sku: this.refs.SKUBox.getValue(),
       description: this.refs.descriptionBox.getValue(),
-      price: this.refs.priceBox.getValue(),
+      price: priceValue,
       shop: this.props.shopID,
       colors: this.state.colorOptions,
       images: this.state.imageFiles,
@@ -38,6 +48,7 @@ class Add extends Component {
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
+    this.handleAlertDismiss();
     this.setState({ 
       showModal: false,
       colors: [0],
@@ -62,11 +73,21 @@ class Add extends Component {
       imageFiles: [],
       nameValue:undefined,
       sizeOptions: [],
-      colorOptions: []
+      colorOptions: [],
+      alertVisible: false
     };
   }
 
+  handleAlertDismiss() {
+    this.setState({alertVisible: false});
+  }
+
+  handleAlertShow() {
+    this.setState({alertVisible: true});
+  }
+
   close() {
+    this.handleAlertDismiss();
     this.setState({ 
       showModal: false,
       submitDisabled: false,
@@ -213,6 +234,7 @@ class Add extends Component {
   }
 
 
+
   render() {
     var colorLength = this.state.colors.length;
     var sizeLength = this.state.sizes.length;
@@ -233,14 +255,28 @@ class Add extends Component {
             <Modal.Title>Add a new Product:</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+
+
+
+
             <label htmlFor="inputProductName">Name</label>
             <Input type="ProductName" ref='nameBox'  placeholder="Name..." required />
             <label htmlFor="inputProductSKU">SKU</label>
             <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">Description</label>
             <Input type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
+
             <label htmlFor="inputProductPrice">Price</label>
-            <Input type="ProductPrice" ref='priceBox' placeholder="Price..." />
+            <Input type="ProductPrice" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
+
+            {this.state.alertVisible ? 
+              <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+          <h4>Invalid Input!</h4>
+          <p>Product price can only be a decimal number example  1  50  50.00  65.89  etc.</p>
+
+    </Alert> : null}
+
+
             <label htmlFor="inputProductColor">Color(s)</label>
             <Grid fluid>
                 {this.state.colors.map((item, index) => 
@@ -334,6 +370,8 @@ class Add extends Component {
             </Button>
         </Modal.Footer>
     </Modal>
+
+
 </div>
     );
   }
