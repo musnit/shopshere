@@ -254,7 +254,10 @@ class List extends Component {
                 <Modal.Body>
                     <Input label="Product Name" type="ProductName" ref='nameBox' defaultValue={this.state.selectedProduct.name} />
                     <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
-                    <Input label="Product Description" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description}/>
+
+                    <label htmlFor="inputProductDescription">Description</label>
+                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description} />
+
                     <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />
 
                                 {this.state.alertVisible ? 

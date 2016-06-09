@@ -264,17 +264,17 @@ class Add extends Component {
             <label htmlFor="inputProductSKU">SKU</label>
             <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">Description</label>
-            <Input type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
+            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
 
             <label htmlFor="inputProductPrice">Price</label>
             <Input type="ProductPrice" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
 
             {this.state.alertVisible ? 
               <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
-          <h4>Invalid Input!</h4>
-          <p>Product price can only be a decimal number example  1  50  50.00  65.89  etc.</p>
+                    <h4>Invalid Input!</h4>
+                    <p>Product price can only be a decimal number example  1  50  50.00  65.89  etc.</p>
 
-    </Alert> : null}
+              </Alert> : null}
 
 
             <label htmlFor="inputProductColor">Color(s)</label>
