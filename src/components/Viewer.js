@@ -117,7 +117,7 @@ class Viewer extends Component {
         var thisProduct;
 		var thisHotspot = _.find(this.props.hotspots, function(o) { return o.id == id });
 		if (thisHotspot.type === "product") {
-			thisProduct = _.find(this.props.products, function(o) { return o.name == thisHotspot.prodview });
+			thisProduct = _.find(this.props.products, function(o) { return o.id == thisHotspot.prodview });
 		}
         else if (thisHotspot.type === "navigation") {
             var navigateTo = _.find(this.props.viewpoints, function(o) { return o.id == thisHotspot.prodview });
@@ -220,13 +220,14 @@ class Viewer extends Component {
         this.saveHotspot(viewpointID);
     }
 
-    addNewProductHotspot(name) {
-        var inputName = name.target.innerText;
+    addNewProductHotspot(event) {
+        var inputName = event.target.innerText;
+        var productID = event.currentTarget.attributes.data.value;
         var outputName = this.state.currentViewpoint + " Sells " + inputName;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
         this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);   
-        this.saveHotspot(inputName);     
+        this.saveHotspot(productID);     
     }
 
     saveHotspot(viewpointID){
@@ -505,7 +506,7 @@ class Viewer extends Component {
                     <div className="product-button">
                         <DropdownButton bsStyle={'primary'} title={'Select a product to link to this hotspot'} id="product-view-edit">
                             {this.props.products.map((product, index) =>
-                            <MenuItem eventKey={index} key={index} onClick={this.addNewProductHotspot.bind(this)}> {product.name} </MenuItem>
+                            <MenuItem eventKey={index} key={index} data={product.id} onClick={this.addNewProductHotspot.bind(this)}> {product.name} </MenuItem>
                             )}
                         </DropdownButton>
                     </div>

@@ -1,5 +1,5 @@
-const dummyShopID = '8e93ed4e-dab6-46e3-99fa-674decf69486';
-const dummyOpenProductModal = (id) => { alert('Open product: ' + id)};
+const dummyShopID = '4f0d81dc-06dd-4bb9-bd00-279d84e7caaf';
+const dummyOpenProductModal = (productObject) => { alert('Open product: ' + productObject.name)};
 
 import React, { Component, PropTypes } from 'react';
 import SphereViewer from './SphereViewer.js';

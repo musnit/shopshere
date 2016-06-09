@@ -8,7 +8,7 @@ import * as types from '../constants/ActionTypes';
 > call non-pure functions
 */
 
-///////////////////  USERS  ///////////////////
+///////////////////////  USERS  ///////////////////////
 
 const user = (state, action) => {
   switch (action.type) {
@@ -67,14 +67,14 @@ const users = (state=[], action) => {
 	}
 };
 
-///////////////////  SHOPS REDUCERS ///////////////////
+///////////////////////  SHOPS REDUCERS ///////////////////////
 
 const shop = (state,action) => {
 	switch (action.type) {
       case types.ADD_SHOP_FULFILLED:
 	      return action.payload;
 	  case types.EDIT_SHOP_FULFILLED:
-     		if (state.name !== action.payload.name) {
+     		if (state.id !== action.payload.id) {
 				return state;
 			}
 			return action.payload;
@@ -113,7 +113,7 @@ const shops = (state=[], action) => {
 	}
 };
 
-///////////////////  VIEWS  ///////////////////
+///////////////////////  VIEWS  ///////////////////////
 
 const viewpoint = (state, action) => {
 	switch (action.type) {
@@ -140,14 +140,14 @@ const viewpoints = (state=[], action) => {
     }
 };
 
-///////////////////  PRODUCTS  ///////////////////
+///////////////////////  PRODUCTS  ///////////////////////
 
 const product = (state, action) => {
 	switch (action.type) {
 		case types.ADD_PRODUCT_FULFILLED:
 	        return action.payload;
 	    case types.EDIT_PRODUCT_FULFILLED:
-     		if (state.name !== action.payload.name) {
+     		if (state.id !== action.payload.id) {
 				return state;
 			}
 			return action.payload;
@@ -179,7 +179,7 @@ const products = (state=[], action) => {
     }
 };
 
-///////////////////  HOTSPOTS  ///////////////////
+///////////////////////  HOTSPOTS  ///////////////////////
 
 const hotspot = (state, action) => {
 	switch (action.type) {
@@ -207,7 +207,7 @@ const hotspots = (state=[], action) => {
 };
 
 
-//////////////// CATEGORIES ///////////////////////
+/////////////////////// CATEGORIES ///////////////////////
 
 const category = (state, action) => {
 	switch (action.type) {
@@ -233,7 +233,7 @@ const categories = (state=[], action) => {
 };
 
 
-///////////////////////////////////ROOT
+/////////////////////// ROOT ///////////////////////
 
 const rootReducer = combineReducers({
   routing: routerReducer,

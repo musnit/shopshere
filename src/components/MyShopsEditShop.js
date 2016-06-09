@@ -126,18 +126,28 @@ class MyShopsEditShop extends Component {
     var entVPID;
     var entVPText;
 
-    if (this.props.shops.length == 0 || this.props.categories.length == 0 || this.props.viewpoints.length == 0 || this.props.shopID == 0 ) {
+    if (this.props.shops.length == 0 || this.props.shopID == 0 ) {
       selected = { name:"Loading..." };
     }
-    else{
-
+    else {
       shopID = this.props.shopID;
 
       selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+    }
 
+    if (this.props.categories.length == 0 || !selected.category) {
+      catText = ""
+    }
+    else {
       catID = selected.category;
 
       catText = _.find(this.props.categories, function(o) { return o.id == catID}).text;
+    }
+
+    if ( this.props.viewpoints.length == 0 || !selected.entranceViewpoint ) {
+      entVPText = ""
+    }
+    else{ 
 
       entVPID = selected.entranceViewpoint;
 
@@ -145,11 +155,7 @@ class MyShopsEditShop extends Component {
         entVPText = _.find(this.props.viewpoints, function(o) { return o.id == entVPID}).name;
       }
 
-      
-
     }
-
-
 
     return (
         <div className="force-to-bottom">

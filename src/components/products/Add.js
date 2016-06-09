@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { unboundAddProduct } from '~/src/actions/products';
-import { filter, cloneDeep } from 'lodash';
+import { filter, cloneDeep, forEach } from 'lodash';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
 import '~/src/styles/product.css';
@@ -25,6 +25,12 @@ class Add extends Component {
       colors: this.state.colorOptions,
       images: this.state.imageFiles,
       sizes: this.state.sizeOptions
+    }
+
+    for(var key in addObject){
+      if (addObject[key] == "") {
+        addObject[key] = undefined;
+      }
     }
 
     this.props.boundAddProduct(addObject);
@@ -193,7 +199,16 @@ class Add extends Component {
       }
     };
 
-     this.setState({ colorOptions: currentColorOptions });
+    _(currentColorOptions).forEach( (o) => {
+      if (o[0] == "") {
+        o[0] = undefined;
+      }
+      if (o[1] == "") {
+        o[1] = undefined;
+      }
+    });
+
+    this.setState({ colorOptions: currentColorOptions });
 
   }
 
