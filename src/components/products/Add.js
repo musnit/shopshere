@@ -29,7 +29,7 @@ class Add extends Component {
       name: this.refs.nameBox.getValue(),
 
       sku: this.refs.SKUBox.getValue(),
-      description: this.refs.descriptionBox.getValue(),
+      description: this.state.description,
       price: priceValue,
       shop: this.props.shopID,
       colors: this.state.colorOptions,
@@ -46,7 +46,6 @@ class Add extends Component {
     this.props.boundAddProduct(addObject);
 
     this.refs.nameBox.getInputDOMNode().value = '';
-    this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
     this.handleAlertDismiss();
     this.setState({ 
@@ -57,7 +56,8 @@ class Add extends Component {
       submitDisabled:false,
       imageFiles: [],
       sizeOptions: [],
-      colorOptions: []
+      colorOptions: [],
+      description:undefined
        });
 
   }
@@ -74,7 +74,8 @@ class Add extends Component {
       nameValue:undefined,
       sizeOptions: [],
       colorOptions: [],
-      alertVisible: false
+      alertVisible: false,
+      description:undefined
     };
   }
 
@@ -84,6 +85,10 @@ class Add extends Component {
 
   handleAlertShow() {
     this.setState({alertVisible: true});
+  }
+
+    onDescriptionBoxChange(event){
+    this.setState( { description: event.target.value } );
   }
 
   close() {
@@ -96,7 +101,8 @@ class Add extends Component {
       images: [0],
       imageFiles: [],
       sizeOptions: [],
-      colorOptions: [] });
+      colorOptions: [],
+      description:undefined });
   }
 
   open() {
@@ -264,7 +270,7 @@ class Add extends Component {
             <label htmlFor="inputProductSKU">SKU</label>
             <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">Description</label>
-            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' placeholder="Description..." />
+            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={this.onDescriptionBoxChange.bind(this)}  placeholder="Description..." />
 
             <label htmlFor="inputProductPrice">Price</label>
             <Input type="ProductPrice" ref='priceBox' placeholder="Price (Only decimal numbers)..." />

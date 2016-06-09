@@ -39,11 +39,13 @@ class List extends Component {
 
     var imageObjects = this.state.selectedProduct.images.concat(this.state.imageFiles);
 
+
+
     var patchObject = {
       id: this.state.selectedProduct.id,
       name: this.refs.nameBox.getValue(),
       sku: this.refs.SKUBox.getValue(),
-      description: this.refs.descriptionBox.getValue(),
+      description: this.state.description,
       price: priceValue,
       shop: this.props.shopID,
       colors: this.state.selectedProduct.colors,
@@ -51,9 +53,9 @@ class List extends Component {
       sizes: this.state.selectedProduct.sizes
     }
 
+
     this.props.boundPatchProduct(patchObject);
 
-    this.refs.descriptionBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
         this.handleAlertDismiss();
     this.setState({ 
@@ -61,7 +63,8 @@ class List extends Component {
       colorOptions: [],
       submitDisabled: false,
       imageFiles: [],
-      images: [0], });
+      images: [0],
+      description:undefined });
   }
 
     handleAlertDismiss() {
@@ -88,6 +91,7 @@ class List extends Component {
       imageFiles: [],
       submitDisabled: false,
       images: [0],
+      description:undefined
      });
   }
 
@@ -101,7 +105,8 @@ class List extends Component {
         submitDisabled: false,
         imageFiles: [],
         images: [0],
-        alertVisible: false
+        alertVisible: false,
+        description:undefined
       };
   }
 
@@ -113,7 +118,8 @@ class List extends Component {
       submitDisabled: false,
       imageFiles: [],
       images: [0],
-      alertVisible: false
+      alertVisible: false,
+      description:undefined
     });
   }
 
@@ -138,6 +144,10 @@ class List extends Component {
       showModal: true ,
       selectedProduct: selected
     });
+  }
+
+  onDescriptionBoxChange(event){
+    this.setState( { description: event.target.value } );
   }
 
 
@@ -256,7 +266,7 @@ class List extends Component {
                     <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
 
                     <label htmlFor="inputProductDescription">Description</label>
-                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description} />
+                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={this.onDescriptionBoxChange.bind(this)} defaultValue={this.state.selectedProduct.description} />
 
                     <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />
 
