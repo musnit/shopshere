@@ -53,6 +53,11 @@ class List extends Component {
       sizes: this.state.selectedProduct.sizes
     }
 
+    for(var key in patchObject){
+      if (patchObject[key] == "") {
+        patchObject[key] = undefined;
+      }
+    }
 
     this.props.boundPatchProduct(patchObject);
 
