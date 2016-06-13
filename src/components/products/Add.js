@@ -5,9 +5,11 @@ import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Alert } from 'react-bootstrap';
 import { unboundAddProduct } from '~/src/actions/products';
 import { filter, cloneDeep, forEach } from 'lodash';
+import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
 import '~/src/styles/product.css';
+
 
 
 class Add extends Component {
@@ -68,6 +70,8 @@ class Add extends Component {
         addObject[key] = " ";
       }
     }
+
+    debugger;
 
     this.props.boundAddProduct(addObject);
 
@@ -265,6 +269,26 @@ class Add extends Component {
 
   }
 
+  handleChangeComplete(color, index) {
+    var refstring = 'colorHexBox' + String(index);
+    var refstring2 = 'colorDisplayBox' + String(index);
+
+    this.refs[refstring].refs.input.value = color.hex;
+
+    this.refs[refstring2].style.backgroundColor = color.hex;
+    this.refs[refstring2].style.height = '30px';
+    this.refs[refstring2].style.width = '30px';
+    this.refs[refstring2].style.borderRadius = '20px';
+
+    
+  }
+
+  handleColorClose(index){
+    this.onaColorBoxChange(index);
+  }
+
+
+
 
 
   render() {
@@ -282,6 +306,7 @@ class Add extends Component {
         Add a new product
         </Button>
     </div>
+    
     <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
         <Modal.Header closeButton>
             <Modal.Title>Add a new Product:</Modal.Title>
@@ -313,11 +338,23 @@ class Add extends Component {
             <Grid fluid>
                 {this.state.colors.map((item, index) => 
                 <Row className="padded-row">
-                    <Col xs={5} md={3}>
+                    <Col xs={3} md={3}>
                     <Input className="color-box" type="productColorName" ref={'colorNameBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Name..." />
                     </Col>
-                    <Col xs={5} md={3}>
-                    <Input type="productColorHex" ref={'colorHexBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Hex Value ex #000000..."  />
+                    <Col xs={3} md={3}>
+
+                      <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index={item}/>
+
+                    </Col>
+                    <Col  xs={1} md={1}>
+
+                      <div ref={'colorDisplayBox'+item} >
+
+                      </div>
+
+                    </Col>
+                    <Col xs={3} md={3}>
+                    <Input type="productColorHex" ref={'colorHexBox'+item} onChange={this.onaColorBoxChange.bind(this)} readOnly  placeholder="Hex Value"  />
                     </Col>
                     { index==colorLength-1 ?
                     <div  key={index}>

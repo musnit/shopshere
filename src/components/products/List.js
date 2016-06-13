@@ -6,7 +6,8 @@ import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
 import { fetchProducts, clearProducts, unboundPatchProduct, deleteProduct } from '~/src/actions/products';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert} from 'react-bootstrap';
-import { find, findIndex } from 'lodash';
+import { find, findIndex, forEach } from 'lodash';
+import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
 import '~/src/styles/product.css';
@@ -159,6 +160,23 @@ class List extends Component {
       showModal: true ,
       selectedProduct: selected
     });
+
+  }
+
+
+  setColorBoxes(){
+
+
+      var refToThis = this;
+
+        _.forEach(this.state.selectedProduct.colors, function(value, index) {
+      var refstring2 = 'colorDisplayBox' + String(index);
+      refToThis.refs[refstring2].style.backgroundColor = value[1];
+      refToThis.refs[refstring2].style.height = '30px';
+      refToThis.refs[refstring2].style.width = '30px';
+      refToThis.refs[refstring2].style.borderRadius = '20px';
+    });
+
   }
 
   onDescriptionBoxChange(event){
@@ -210,7 +228,19 @@ class List extends Component {
   clickedDeleteColor(){
 
     if (this.state.selectedProduct.colors.length == 1) {
-      return
+      var refstring = 'colorHexBox0';
+      var refstring2 = 'colorDisplayBox0';
+      var refstring3 = 'colorNameBox0';
+
+      this.refs[refstring].refs.input.value = "";
+      this.refs[refstring3].refs.input.value = "";
+
+      this.refs[refstring2].style.backgroundColor = "#fff";
+      this.refs[refstring2].style.height = '30px';
+      this.refs[refstring2].style.width = '30px';
+      this.refs[refstring2].style.borderRadius = '20px';
+      this.onaColorBoxChange(0);
+      return;
     }
 
     var updateProduct = JSON.parse(JSON.stringify(this.state.selectedProduct));
@@ -260,6 +290,23 @@ class List extends Component {
     this.setState({ submitDisabled: false, imageFiles: images });
   }
 
+    handleChangeComplete(color, index) {
+    var refstring = 'colorHexBox' + String(index);
+    var refstring2 = 'colorDisplayBox' + String(index);
+
+    this.refs[refstring].refs.input.value = color.hex;
+
+    this.refs[refstring2].style.backgroundColor = color.hex;
+    this.refs[refstring2].style.height = '30px';
+    this.refs[refstring2].style.width = '30px';
+    this.refs[refstring2].style.borderRadius = '20px';
+  }
+
+
+  handleColorClose(index){
+    this.onaColorBoxChange(index);
+  }
+
   render() {
 
     var colorLength = this.state.selectedProduct.colors.length;
@@ -273,7 +320,7 @@ class List extends Component {
             <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {product.name} </MenuItem>
             )}
             </DropdownButton>
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+            <Modal show={this.state.showModal} onHide={this.close.bind(this)} onEntered={this.setColorBoxes.bind(this)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit <b>{this.state.selectedProduct.name}</b> by modifying it below and then click Edit product</Modal.Title>
                 </Modal.Header>
@@ -299,8 +346,24 @@ class List extends Component {
                             <Col xs={5} md={3}>
                             <Input className="color-box" type="productColorName" ref={'colorNameBox'+index} onChange={this.onaColorBoxChange.bind(this)} defaultValue={color[0]} />
                             </Col>
+
+                                <Col xs={3} md={3}>
+
+                                  <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index={index}/>
+
+                                </Col>
+                                <Col  xs={1} md={1}>
+
+                                  <div ref={'colorDisplayBox'+index} >
+
+                                  </div>
+
+                                </Col>
+
+
+
                             <Col xs={5} md={3}>
-                            <Input type="productColorHex" ref={'colorHexBox'+index} onChange={this.onaColorBoxChange.bind(this)}  defaultValue={color[1]}  />
+                            <Input type="productColorHex" ref={'colorHexBox'+index} onChange={this.onaColorBoxChange.bind(this)} readOnly  defaultValue={color[1]}  />
                             </Col>
                             { index==colorLength-1 ?
                             <div  key={index}>
