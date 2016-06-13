@@ -27,7 +27,7 @@ class List extends Component {
 
   clickedPatchProduct() {
 
-        var priceValue = this.refs.priceBox.getValue();
+    var priceValue = this.refs.priceBox.getValue();
 
     if (Number(priceValue) != priceValue) {
       this.handleAlertShow();
@@ -37,6 +37,7 @@ class List extends Component {
       this.handleAlertDismiss();
     }
 
+
     var imageObjects = this.state.selectedProduct.images.concat(this.state.imageFiles);
 
 
@@ -45,7 +46,7 @@ class List extends Component {
       id: this.state.selectedProduct.id,
       name: this.refs.nameBox.getValue(),
       sku: this.refs.SKUBox.getValue(),
-      description: this.state.description,
+      description: this.refs.descriptionBox.value,
       price: priceValue,
       shop: this.props.shopID,
       colors: this.state.selectedProduct.colors,
@@ -54,15 +55,24 @@ class List extends Component {
     }
 
     for(var key in patchObject){
-      if (patchObject[key] == "") {
-        patchObject[key] = undefined;
+      if (key === 'images' && patchObject[key] == "" ) {
+        patchObject[key] = [];
+      }
+      else if (key === 'sizes' && patchObject[key] == "") {
+        patchObject[key] = [];
+      }
+      else if (key === 'colors' && (patchObject[key][0][0] == "" && patchObject[key][0][1] == "" ) ) {
+        patchObject[key] = [];
+      }
+      else if (patchObject[key] == "") {
+        patchObject[key] = " ";
       }
     }
 
     this.props.boundPatchProduct(patchObject);
 
     this.refs.priceBox.getInputDOMNode().value = '';
-        this.handleAlertDismiss();
+    this.handleAlertDismiss();
     this.setState({ 
       showModal: false,
       colorOptions: [],
@@ -135,10 +145,10 @@ class List extends Component {
 
     selected.index = index
 
-    if ( !selected.colors ) {
-      selected.colors = [0];
+    if ( !selected.colors || selected.colors.length === 0  ) {
+      selected.colors = [[[],[]]];
     }
-    if ( !selected.sizes ) {
+    if ( !selected.sizes || selected.sizes.length === 0 ) {
       selected.sizes = [""];
     }
     if ( !selected.images ) {
@@ -178,6 +188,7 @@ class List extends Component {
         currentColorOptions.colors[nameind][0] = nameval;
       }
     };
+
 
      this.setState({ selectedProduct: currentColorOptions });
 
@@ -271,7 +282,7 @@ class List extends Component {
                     <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
 
                     <label htmlFor="inputProductDescription">Description</label>
-                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={this.onDescriptionBoxChange.bind(this)} defaultValue={this.state.selectedProduct.description} />
+                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description} />
 
                     <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />
 

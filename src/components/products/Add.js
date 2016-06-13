@@ -14,6 +14,22 @@ class Add extends Component {
 
   clickedAddProduct() {
 
+    if (this.refs.nameBox.getValue() == "") {
+      this.handleAlertDismiss();
+      this.setState({ 
+        showModal: false,
+        colors: [0],
+        sizes: [0],
+        images: [0],
+        submitDisabled:false,
+        imageFiles: [],
+        sizeOptions: [],
+        colorOptions: [],
+        description:undefined
+      });
+      return;
+    }
+
     var priceValue = this.refs.priceBox.getValue();
 
     if (Number(priceValue) != priceValue) {
@@ -37,9 +53,19 @@ class Add extends Component {
       sizes: this.state.sizeOptions
     }
 
+
     for(var key in addObject){
-      if (addObject[key] == "") {
-        addObject[key] = undefined;
+      if (key === 'images' && addObject[key] == "") {
+        addObject[key] = [];
+      }
+      else if (key === 'sizes' && addObject[key] == "") {
+        addObject[key] = [];
+      }
+      else if (key === 'colors' && addObject[key] == "") {
+        addObject[key] = [];
+      }
+      else if (addObject[key] == "") {
+        addObject[key] = " ";
       }
     }
 
