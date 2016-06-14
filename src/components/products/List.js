@@ -62,13 +62,24 @@ class List extends Component {
       else if (key === 'sizes' && patchObject[key] == "") {
         patchObject[key] = [];
       }
-      else if (key === 'colors' && (patchObject[key][0][0] == "" && patchObject[key][0][1] == "" ) ) {
-        patchObject[key] = [];
+      else if (key === 'colors') {
+
+        _.forEach(patchObject[key], function(item){
+          if (item[0] == ""){
+            item[0] = " "
+          }
+          if (item[1] == ""){
+            item[1] = " "
+          }
+        })
       }
       else if (patchObject[key] == "") {
         patchObject[key] = " ";
       }
     }
+
+    debugger;
+
 
     this.props.boundPatchProduct(patchObject);
 
@@ -152,9 +163,30 @@ class List extends Component {
     if ( !selected.sizes || selected.sizes.length === 0 ) {
       selected.sizes = [""];
     }
-    if ( !selected.images ) {
+    if ( !selected.images || selected.images.length === 0 ) {
       selected.images = [];
     }
+
+    if (selected.sku == " ") {
+      selected.sku = ""
+    }
+    if (selected.price == " ") {
+      selected.price = ""
+    }
+
+    if (selected.description == " ") {
+      selected.description = ""
+    }
+
+    _.forEach(selected.colors, function(item){
+          if (item[0] == " "){
+            item[0] = ""
+          }
+          if (item[1] == " "){
+            item[1] = ""
+          }
+        })
+
 
     this.setState({ 
       showModal: true ,
@@ -291,6 +323,7 @@ class List extends Component {
   }
 
     handleChangeComplete(color, index) {
+
     var refstring = 'colorHexBox' + String(index);
     var refstring2 = 'colorDisplayBox' + String(index);
 
@@ -325,13 +358,13 @@ class List extends Component {
                     <Modal.Title>Edit <b>{this.state.selectedProduct.name}</b> by modifying it below and then click Edit product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Input label="Product Name" type="ProductName" ref='nameBox' defaultValue={this.state.selectedProduct.name} />
-                    <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku}/>
+                    <Input label="Product Name" type="ProductName" ref='nameBox' defaultValue={this.state.selectedProduct.name} placeholder="Name..."  />
+                    <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={this.state.selectedProduct.sku} placeholder="SKU..." />
 
                     <label htmlFor="inputProductDescription">Description</label>
-                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description} />
+                    <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={this.state.selectedProduct.description} placeholder="Description..." />
 
-                    <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price} />
+                    <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={this.state.selectedProduct.price}  placeholder="Price (Only decimal numbers)..." />
 
                                 {this.state.alertVisible ? 
                             <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
@@ -343,15 +376,16 @@ class List extends Component {
                     <Grid fluid>
                         {this.state.selectedProduct.colors.map((color, index) =>
                         <Row className="padded-row">
-                            <Col xs={5} md={3}>
-                            <Input className="color-box" type="productColorName" ref={'colorNameBox'+index} onChange={this.onaColorBoxChange.bind(this)} defaultValue={color[0]} />
-                            </Col>
+                            
 
                                 <Col xs={3} md={3}>
 
                                   <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index={index}/>
 
                                 </Col>
+                                <Col xs={5} md={3}>
+                            <Input className="color-box" type="productColorName" ref={'colorNameBox'+index} onChange={this.onaColorBoxChange.bind(this)} defaultValue={color[0]} placeholder="Name..." />
+                            </Col>
                                 <Col  xs={1} md={1}>
 
                                   <div ref={'colorDisplayBox'+index} >
@@ -395,7 +429,7 @@ class List extends Component {
                         {this.state.selectedProduct.sizes.map((size, index) =>
                         <Row key={index} className="padded-row">
                             <Col xs={5} md={3}>
-                            <Input className="size-box" type="productSize" ref={'sizeBox'+index} onChange={this.onaSizeBoxChange.bind(this, index)} defaultValue={size} />
+                            <Input className="size-box" type="productSize" ref={'sizeBox'+index} onChange={this.onaSizeBoxChange.bind(this, index)} defaultValue={size}  placeholder="Size..." />
                             </Col>
                             { index==sizeLength-1 ?
                             <div  key={index}>

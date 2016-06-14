@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
 import { unboundAddShop } from '~/src/actions/shops';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
 import { find, map} from 'lodash';
 
 import '~/src/styles/shops.css';
+import ColorPick from '~/src/components/utility/ColorPick';
 
 import S3Uploader from '~/src/components/utility/S3Uploader';
 
@@ -35,7 +36,7 @@ class MyShopsAddShop extends Component {
       province: this.refs.shopAddressProvinceBox.getValue(),
       category: cat["id"],
       logoFile: this.state.logoFile,
-      logoColor:this.refs.backgroundColorBox.getValue(),
+      logoColor:this.refs.colorHexBox.getValue(),
       entranceViewpoint:undefined
     }
 
@@ -44,6 +45,8 @@ class MyShopsAddShop extends Component {
         addShopObject[key] = undefined;
       }
     }
+
+    debugger;
 
     this.props.boundAddShop(addShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
@@ -81,6 +84,24 @@ class MyShopsAddShop extends Component {
     this.refs.catBox.getInputDOMNode().value = name.target.innerText;
   }
 
+  handleChangeComplete(color) {
+
+    var refstring = 'colorHexBox'
+    var refstring2 = 'colorDisplayBox'
+
+    this.refs[refstring].refs.input.value = color.hex;
+
+    this.refs[refstring2].style.backgroundColor = color.hex;
+    this.refs[refstring2].style.height = '30px';
+    this.refs[refstring2].style.width = '30px';
+    this.refs[refstring2].style.borderRadius = '20px';
+  }
+
+
+  handleColorClose(){
+    return;
+  }
+
   render() {
 
     var categories = this.props.categories;
@@ -102,7 +123,6 @@ class MyShopsAddShop extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Input label="Name" type="ShopName" ref='nameBox' placeholder="Name..." required />
-
                     <div className="contact-outer">
                         <label >Contact Details:</label>
                         <div className="contact-inner">
@@ -136,8 +156,21 @@ class MyShopsAddShop extends Component {
                         onUploadStart={this.imageUploadStarted.bind(this)}
                         onUploadFinish={this.imageUploadComplete.bind(this)}
                         folderURL={logoFolderURL}/>
-                    <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color (Hex Value)</label>
-                    <Input type="ShopLogoBackground" ref='backgroundColorBox' placeholder="Hex Value ex #000000..." />
+                    <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color </label>
+                    <Grid fluid>
+                        <Row className="padded-row">
+                            <Col xs={3} md={3}>
+                            <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index='0'/>
+                            </Col>
+                            <Col  xs={1} md={1}>
+                            <div ref='colorDisplayBox'>
+                            </div>
+                            </Col>
+                            <Col xs={3} md={3}>
+                            <Input type="productColorHex" ref='colorHexBox'  readOnly  placeholder="Hex Value"  />
+                            </Col>
+                        </Row>
+                    </Grid>
                 </Modal.Body>
                 <Modal.Footer>
                     <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedAddShop.bind(this)} disabled={this.state.submitDisabled} >
