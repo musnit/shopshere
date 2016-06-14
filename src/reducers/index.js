@@ -213,6 +213,12 @@ const category = (state, action) => {
 	switch (action.type) {
 		case types.ADD_CATEGORY_FULFILLED:
 	        return action.payload;
+	    case types.EDIT_CATEGORY_FULFILLED:
+	    debugger;
+     		if (state.id !== action.payload.id) {
+				return state;
+			}
+			return action.payload;
     default:
       return state;
 	}
@@ -227,6 +233,13 @@ const categories = (state=[], action) => {
 	          ];
 	    case types.FETCH_CATEGORIES_FULFILLED:
 	        return action.payload;
+	    case types.EDIT_CATEGORY_FULFILLED:
+	    	return state.map(t => category(t, action));
+	    case types.DELETE_CATEGORY_FULFILLED:
+	    	return [
+	    	    ...state.slice(0, action.payload.index),
+   			    ...state.slice(action.payload.index + 1)
+	    	]
     default:
       return state;
     }

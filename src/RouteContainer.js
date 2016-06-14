@@ -13,6 +13,7 @@ import App from './App.js';
 import Home from './components/user/Home.js';
 import DirectoryList from './components/user/DirectoryList.js';
 import CategoryShopList from './components/user/CategoryShopList.js';
+import ManageCategories from '~/src/components/categories/ManageCategories.js';
 
 
 
@@ -36,6 +37,8 @@ class RouteContainer extends Component {
           <Route path="/shops" component={Shops}>
             <Route path="/shops/:name" component={Shop}>
             </Route>
+          </Route>
+          <Route path="/categories" component={ManageCategories}>
           </Route>
           <Route path="/user" component={Home}>
             <Route path="/user/directory" component={DirectoryList}>

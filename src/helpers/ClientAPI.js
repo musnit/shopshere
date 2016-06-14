@@ -39,6 +39,10 @@ export function addHotspotAPI(data) {
     return PostAPI(data, 'hotspot');
 };
 
+export function addCategoryAPI(data) {
+    return PostAPI(data, 'category');
+};
+
 ////////////////////////////////////// DELETE API /////////////////////////////////
 
 
@@ -69,6 +73,10 @@ export function deleteProductAPI(object) {
 
 export function deleteShopAPI(object) {
     return DeleteAPI(object, 'shop');
+};
+
+export function deleteCategoryAPI(object) {
+    return DeleteAPI(object, 'category');
 };
 
 
@@ -206,6 +214,10 @@ export function patchProductAPI(data) {
 
 export function patchShopAPI(data) {
     return PatchAPI(data, 'shop');
+};
+
+export function patchCategoryAPI(data) {
+    return PatchAPI(data, 'category');
 };
 
 export function connectProductToHotspotAPI(data) {

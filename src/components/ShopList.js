@@ -8,6 +8,7 @@ import fetch from '~/src/components/fetch';
 import { Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import MyShopsAddShop from '~/src/components/MyShopsAddShop';
+import CategoryLink from '~/src/components/categories/CategoryLink';
 import '~/src/styles/shops.css';
 
 class ShopList extends Component {
@@ -39,6 +40,7 @@ class ShopList extends Component {
           )}
         </Nav>
         <MyShopsAddShop categories={this.props.categories}/>
+        <CategoryLink />
       </div>
     );
   }

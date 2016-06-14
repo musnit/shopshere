@@ -87,7 +87,7 @@ class MyShopsAddShop extends Component {
       }
     }
 
-    // this.props.boundAddShop(addShopObject);
+    this.props.boundAddShop(addShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
 
     this.refs.catBox.getInputDOMNode().value = '';
