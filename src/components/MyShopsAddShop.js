@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, Alert } from 'react-bootstrap';
 import { unboundAddShop } from '~/src/actions/shops';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
@@ -18,16 +18,57 @@ import { logoFolderURL } from '~/src/config';
 
 class MyShopsAddShop extends Component {
 
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
   clickedAddShop() {
+
+    var shortCircuit = 0;
+
+    //validate email
+
+    var emailInput = this.refs.shopContactEmailBox.getValue();
+
+    if (!this.validateEmail(emailInput)) {
+      this.handleAlertBadEmailShow();
+      shortCircuit = 1;
+    }
+    else {
+      this.handleAlertBadEmailDismiss();
+    }
+
+
+
+    //validate category
 
     var catval = this.refs.catBox.getValue();
 
+    
+
+    if (catval == "") {
+      this.handleAlertNoCatShow();
+      shortCircuit = 1;
+    }
+    else {
+      this.handleAlertNoCatDismiss();
+    }
+
+
+    if (shortCircuit == 1) {
+      return;
+    }
+
+
+
     var cat = _.find(this.props.categories, function(o) { return o.text == catval});
+
 
     var addShopObject = {
       name: this.refs.nameBox.getValue(),
 
-      email: this.refs.shopContactEmailBox.getValue(),
+      email: emailInput,
       url: this.refs.shopContactURLBox.getValue(),
       phone: this.refs.shopContactPhoneBox.getValue(),
       address1: this.refs.shopAddressLine1Box.getValue(),
@@ -46,12 +87,12 @@ class MyShopsAddShop extends Component {
       }
     }
 
-    debugger;
-
-    this.props.boundAddShop(addShopObject);
+    // this.props.boundAddShop(addShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
 
     this.refs.catBox.getInputDOMNode().value = '';
+    this.handleAlertNoCatDismiss();
+    this.handleAlertBadEmailDismiss();
     this.setState({ showModal: false, logoFile: undefined  });
   }
 
@@ -59,12 +100,19 @@ class MyShopsAddShop extends Component {
     super(props);
     this.state = {
       showModal: false,
-      logoFile:undefined
+      logoFile:undefined,
+      alertNoCatVisible: false,
+      alertBadEmailVisible: false
     };
   }
 
   close() {
-    this.setState({ showModal: false, logoFile: undefined });
+    this.setState({ 
+      showModal: false, 
+      logoFile: undefined,
+      alertNoCatVisible: false,
+      alertBadEmailVisible: false
+       });
   }
 
   open() {
@@ -102,6 +150,23 @@ class MyShopsAddShop extends Component {
     return;
   }
 
+  handleAlertNoCatDismiss(){
+    this.setState({alertNoCatVisible: false});
+  }
+
+  handleAlertNoCatShow() {
+    this.setState({alertNoCatVisible: true});
+  }
+
+  handleAlertBadEmailDismiss(){
+    this.setState({alertBadEmailVisible: false});
+  }
+
+  handleAlertBadEmailShow() {
+    this.setState({alertBadEmailVisible: true});
+  }
+
+
   render() {
 
     var categories = this.props.categories;
@@ -127,6 +192,13 @@ class MyShopsAddShop extends Component {
                         <label >Contact Details:</label>
                         <div className="contact-inner">
                             <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox"  placeholder="Email..."  />
+
+                            {this.state.alertBadEmailVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertBadEmailDismiss.bind(this)}>
+                              <h4>Please add a valid email address.</h4>
+                              <p>The email address entered is either invalid or empty.</p>
+                            </Alert> : null}
+
                             <Input type="shopContactURL" label="URL" ref="shopContactURLBox"  placeholder="URL..." />
                             <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox"  placeholder="Phone..."  />
                         </div>
@@ -151,6 +223,14 @@ class MyShopsAddShop extends Component {
                     <div className="cat-box">
                         <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   placeholder="Category..." />
                     </div>
+
+                            {this.state.alertNoCatVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertNoCatDismiss.bind(this)}>
+                              <h4>Please select a category.</h4>
+                              <p>You have not yet selected a category for this shop.</p>
+                            </Alert> : null}
+
+
                     <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label><br/>
                     <S3Uploader
                         onUploadStart={this.imageUploadStarted.bind(this)}

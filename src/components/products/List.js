@@ -78,9 +78,6 @@ class List extends Component {
       }
     }
 
-    debugger;
-
-
     this.props.boundPatchProduct(patchObject);
 
     this.refs.priceBox.getInputDOMNode().value = '';
@@ -322,7 +319,7 @@ class List extends Component {
     this.setState({ submitDisabled: false, imageFiles: images });
   }
 
-    handleChangeComplete(color, index) {
+  handleChangeComplete(color, index) {
 
     var refstring = 'colorHexBox' + String(index);
     var refstring2 = 'colorDisplayBox' + String(index);

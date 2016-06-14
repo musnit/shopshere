@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem,Grid, Row, Col, OverlayTrigger, Tooltip, Image } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem,Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
 import { fetchViewpoints } from '~/src/actions/viewpoints';
 import { unboundPatchShop } from '~/src/actions/shops';
 import { fetchCategories } from '~/src/actions/categories';
 import { fetchShops } from '~/src/actions/shops';
 import fetch from '~/src/components/fetch';
+import ColorPick from '~/src/components/utility/ColorPick';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
 import { find} from 'lodash';
@@ -21,13 +22,53 @@ import { logoFolderURL } from '~/src/config';
 
 class MyShopsEditShop extends Component {
 
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
   clickedEditShop() {
 
+    var shortCircuit = 0;
+
+    //validate email
+
+    var emailInput = this.refs.shopContactEmailBox.getValue();
+
+    if (!this.validateEmail(emailInput)) {
+      this.handleAlertBadEmailShow();
+      shortCircuit = 1;
+    }
+    else {
+      this.handleAlertBadEmailDismiss();
+    }
+
     var catval = this.refs.catBox.getValue();
+
+    if (catval == "") {
+      this.handleAlertNoCatShow();
+      shortCircuit = 1;
+    }
+    else {
+      this.handleAlertNoCatDismiss();
+    }
 
     var cat = _.find(this.props.categories, function(o) { return o.text == catval});
 
     var entVPval = this.refs.entranceViewpointBox.getValue();
+
+    if (entVPval == "") {
+      this.handleAlertNoEVPShow();
+      shortCircuit = 1;
+    }
+    else {
+      this.handleAlertNoEVPDismiss();
+    }
+
+    if (shortCircuit == 1) {
+      return;
+    }
 
     var viewp = _.find(this.props.viewpoints, function(o) { return o.name == entVPval});
 
@@ -43,7 +84,7 @@ class MyShopsEditShop extends Component {
     var patchShopObject = {
       id: this.state.selectedShop.id,
       name: this.refs.nameBox.getValue(),
-      email: this.refs.shopContactEmailBox.getValue(),
+      email: emailInput,
       url: this.refs.shopContactURLBox.getValue(),
       phone: this.refs.shopContactPhoneBox.getValue(),
       address1: this.refs.shopAddressLine1Box.getValue(),
@@ -52,7 +93,7 @@ class MyShopsEditShop extends Component {
       province: this.refs.shopAddressProvinceBox.getValue(),
       category: cat["id"],
       logoFile: logo,
-      logoColor:this.refs.backgroundColorBox.getValue(),
+      logoColor:this.refs.colorHexBox.getValue(),
       entranceViewpoint: viewp["id"]
     }
 
@@ -65,6 +106,9 @@ class MyShopsEditShop extends Component {
     this.props.boundPatchShop(patchShopObject);
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.catBox.getInputDOMNode().value = '';
+    this.handleAlertNoCatDismiss();
+    this.handleAlertBadEmailDismiss();
+    this.handleAlertNoEVPDismiss();
     this.setState({ showModal: false, logoFile: undefined, changeImage:false, selectedShop: {}  });
   }
 
@@ -74,12 +118,22 @@ class MyShopsEditShop extends Component {
       showModal: false,
       selectedShop: {},
       changeImage:false,
-      logoFile:undefined
+      logoFile:undefined,
+      alertNoCatVisible: false,
+      alertBadEmailVisible: false,
+      alertNoEVPVisible:false
     };
   }
 
   close() {
-    this.setState({ showModal: false, logoFile: undefined, changeImage:false, selectedShop: {}  });
+    this.setState({ 
+      showModal: false, 
+      logoFile: undefined, 
+      changeImage:false, 
+      selectedShop: {},
+      alertNoCatVisible: false,
+      alertBadEmailVisible: false,
+      alertNoEVPVisible:false });
   }
 
   open() {
@@ -116,6 +170,61 @@ class MyShopsEditShop extends Component {
   clickedDeleteImage(){
     this.setState({ changeImage: true });
   }
+
+  handleChangeComplete(color) {
+
+    var refstring = 'colorHexBox'
+    var refstring2 = 'colorDisplayBox'
+
+    this.refs[refstring].refs.input.value = color.hex;
+
+    this.refs[refstring2].style.backgroundColor = color.hex;
+    this.refs[refstring2].style.height = '30px';
+    this.refs[refstring2].style.width = '30px';
+    this.refs[refstring2].style.borderRadius = '20px';
+  }
+
+
+  handleColorClose(){
+    return;
+  }
+
+  setColorBoxes(){
+          
+      var refToThis = this;
+      var refstring2 = 'colorDisplayBox'
+      refToThis.refs[refstring2].style.backgroundColor = this.state.selectedShop.logoColor;
+      refToThis.refs[refstring2].style.height = '30px';
+      refToThis.refs[refstring2].style.width = '30px';
+      refToThis.refs[refstring2].style.borderRadius = '20px';
+
+  }
+
+  handleAlertNoCatDismiss(){
+    this.setState({alertNoCatVisible: false});
+  }
+
+  handleAlertNoCatShow() {
+    this.setState({alertNoCatVisible: true});
+  }
+
+  handleAlertBadEmailDismiss(){
+    this.setState({alertBadEmailVisible: false});
+  }
+
+  handleAlertBadEmailShow() {
+    this.setState({alertBadEmailVisible: true});
+  }
+
+  handleAlertNoEVPDismiss(){
+    this.setState({alertNoEVPVisible: false});
+  }
+
+  handleAlertNoEVPShow() {
+    this.setState({alertNoEVPVisible: true});
+  }
+
+  
 
   render() {
 
@@ -168,9 +277,9 @@ class MyShopsEditShop extends Component {
                 Edit <b>{selected.name}</b>
                 </Button>
             </div>
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+            <Modal show={this.state.showModal} onHide={this.close.bind(this)} onEntered={this.setColorBoxes.bind(this)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add a new shop:</Modal.Title>
+                    <Modal.Title>Edit <b>{this.state.selectedShop.name}</b>:</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Input label="Name" type="ShopName" ref='nameBox' defaultValue={this.state.selectedShop.name} required />
@@ -178,6 +287,13 @@ class MyShopsEditShop extends Component {
                         <label >Contact Details:</label>
                         <div className="contact-inner">
                             <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox"  defaultValue={this.state.selectedShop.email}  />
+
+                            {this.state.alertBadEmailVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertBadEmailDismiss.bind(this)}>
+                              <h4>Please add a valid email address.</h4>
+                              <p>The email address entered is either invalid or empty.</p>
+                            </Alert> : null}
+
                             <Input type="shopContactURL" label="URL" ref="shopContactURLBox"  defaultValue={this.state.selectedShop.url} />
                             <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox"  defaultValue={this.state.selectedShop.phone}  />
                         </div>
@@ -204,6 +320,12 @@ class MyShopsEditShop extends Component {
                         <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   defaultValue={catText} />
                     </div>
 
+                            {this.state.alertNoCatVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertNoCatDismiss.bind(this)}>
+                              <h4>Please select a category.</h4>
+                              <p>You have not yet selected a category for this shop.</p>
+                            </Alert> : null}
+
                     <label htmlFor="inputShopEntranceViewpoint" className="form-element">Entrance Viewpoint</label>
                     <div className="cat-button">
                         <DropdownButton bsStyle={'primary'} title={'Select an entrance viewpoint'} id="catbutton">
@@ -215,6 +337,12 @@ class MyShopsEditShop extends Component {
                     <div className="cat-box">
                         <Input type="ShopEntranceViewpoint" readOnly ref='entranceViewpointBox' bsClass="input-group"   defaultValue={entVPText} />
                     </div>
+
+                           {this.state.alertNoEVPVisible ? 
+                            <Alert bsStyle="danger" onDismiss={this.handleAlertNoEVPDismiss.bind(this)}>
+                              <h4>Please select an entrance viewpoint.</h4>
+                              <p>You have not yet selected an entrance viewpoint for this shop.</p>
+                            </Alert> : null}
 
                     <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label><br/>
                     {!this.state.changeImage                                 ?
@@ -242,8 +370,21 @@ class MyShopsEditShop extends Component {
                         onUploadFinish={this.imageUploadComplete.bind(this)}
                         folderURL={logoFolderURL}/>
                       }
-                    <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color (Hex Value)</label>
-                    <Input type="ShopLogoBackground" ref='backgroundColorBox' defaultValue={this.state.selectedShop.logoColor} />
+                    <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color </label>
+                    <Grid fluid>
+                        <Row className="padded-row">
+                            <Col xs={3} md={3}>
+                            <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index='0'/>
+                            </Col>
+                            <Col  xs={1} md={1}>
+                            <div ref='colorDisplayBox'>
+                            </div>
+                            </Col>
+                            <Col xs={3} md={3}>
+                            <Input type="productColorHex" ref='colorHexBox'  readOnly defaultValue={this.state.selectedShop.logoColor}  placeholder="Hex Value"  />
+                            </Col>
+                        </Row>
+                    </Grid>
                 </Modal.Body>
                 <Modal.Footer>
                     <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedEditShop.bind(this)} disabled={this.state.submitDisabled} >

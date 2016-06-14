@@ -532,7 +532,7 @@ class Viewer extends Component {
 };
 
 const FetchedHotspots = fetch(Viewer, {
-  actions: [fetchHotspots]
+  actions: [fetchHotspots, fetchProducts]
 });
 
 function mapStateToProps(state) {
