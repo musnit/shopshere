@@ -22,11 +22,12 @@ class Shop extends Component {
     var shopID;
     var thisShop;
 
-    if(typeof this.props.shops != "undefined" && this.props.shops != null && this.props.shops.length > 0){
-      thisShop = _.find(this.props.shops, function(o){ return o.name == name });
+    if (typeof this.props.shops != "undefined" && this.props.shops != null && this.props.shops.length > 0) {
+      thisShop = _.find(this.props.shops, function(o) {
+        return o.name == name
+      });
       shopID = thisShop.id;
-    }
-    else {
+    } else {
       thisShop = {};
       shopID = 0;
     }
@@ -34,27 +35,29 @@ class Shop extends Component {
     return (
       <div>
         <div>
-          <h1>Shop: <b>{name}</b></h1>
+          <h1>Shop: <b>{ name }</b></h1>
         </div>
-        <Tabs defaultActiveKey={1}>
-          <Tab eventKey={1} title="Viewpoints">
-            <Viewpoints shopID={shopID} thisShop={thisShop} />
+        <Tabs defaultActiveKey={ 1 }>
+          <Tab eventKey={ 1 } title="Viewpoints">
+            <Viewpoints shopID={ shopID } thisShop={ thisShop } />
           </Tab>
-          <Tab eventKey={2} title="Products">
-            <Products shopID={shopID} />
+          <Tab eventKey={ 2 } title="Products">
+            <Products shopID={ shopID } />
           </Tab>
-          <Tab eventKey={3} title="Admin">
-            <Admin shopID={shopID} />
+          <Tab eventKey={ 3 } title="Admin">
+            <Admin shopID={ shopID } />
           </Tab>
         </Tabs>
       </div>
-    );
+      );
   }
 }
 
 function mapStateToProps(state) {
   const shops = state.shops;
-  return { shops };
+  return {
+    shops
+  };
 }
 
 export default connect(mapStateToProps)(Shop);

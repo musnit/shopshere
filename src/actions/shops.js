@@ -9,16 +9,18 @@ export function unboundAddShop(data) {
       promise: addShopAPI(data)
     }
   }
-};
+}
+;
 
 export function unboundPatchShop(data) {
-    return {
-        type: types.EDIT_SHOP,
-        payload: {
-            promise: patchShopAPI(data)
-        }
+  return {
+    type: types.EDIT_SHOP,
+    payload: {
+      promise: patchShopAPI(data)
     }
-};
+  }
+}
+;
 
 export function fetchShops(options) {
   return {
@@ -27,7 +29,8 @@ export function fetchShops(options) {
       promise: fetchShopsAPI()
     }
   }
-};
+}
+;
 
 export function unboundDeleteShop(object) {
   return {

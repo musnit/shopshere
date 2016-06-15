@@ -3,46 +3,50 @@ import { addProductAPI, fetchProductsAPI, patchProductAPI, deleteProductAPI } fr
 
 //action creators:
 export function unboundAddProduct(data) {
-    return {
-        type: types.ADD_PRODUCT,
-        payload: {
-            promise: addProductAPI(data)
-        }
+  return {
+    type: types.ADD_PRODUCT,
+    payload: {
+      promise: addProductAPI(data)
     }
-};
+  }
+}
+;
 
 export function unboundPatchProduct(data) {
-    return {
-        type: types.EDIT_PRODUCT,
-        payload: {
-            promise: patchProductAPI(data)
-        }
+  return {
+    type: types.EDIT_PRODUCT,
+    payload: {
+      promise: patchProductAPI(data)
     }
-};
+  }
+}
+;
 
 export function fetchProducts(options) {
 
-    const shopIDForFetch = options.shopID;
+  const shopIDForFetch = options.shopID;
 
-    return {
-        type: types.FETCH_PRODUCTS,
-        payload: {
-            promise: fetchProductsAPI(shopIDForFetch)
-        }
+  return {
+    type: types.FETCH_PRODUCTS,
+    payload: {
+      promise: fetchProductsAPI(shopIDForFetch)
     }
-};
+  }
+}
+;
 
 export function clearProducts() {
-    return {
-        type: types.CLEAR_PRODUCTS
-    }
-};
+  return {
+    type: types.CLEAR_PRODUCTS
+  }
+}
+;
 
 export function deleteProduct(object) {
-    return {
-        type: types.DELETE_PRODUCT,
-        payload: {
-            promise: deleteProductAPI(object)
-        }
+  return {
+    type: types.DELETE_PRODUCT,
+    payload: {
+      promise: deleteProductAPI(object)
     }
+  }
 }

@@ -15,30 +15,32 @@ class ManageCategories extends Component {
 
   render() {
     return (
-        <div className="container">
-          <div className="side">
-            <h1>Manage Categories</h1>
-          </div>
-          <div className="side">
-            <BackLink />
-          </div>
-          <br/>
-          <br/>
-          <Edit />
-          <Add />
+      <div className="container">
+        <div className="side">
+          <h1>Manage Categories</h1>
         </div>
-    );
+        <div className="side">
+          <BackLink />
+        </div>
+        <br/>
+        <br/>
+        <Edit />
+        <Add />
+      </div>
+      );
   }
 }
 
 
 
 function mapStateToProps(state) {
- return {};
-};
+  return {};
+}
+;
 
 function mapDispatchToProps(dispatch) {
   return {};
-};
+}
+;
 
-export default connect(mapStateToProps,mapDispatchToProps)(ManageCategories);
+export default connect(mapStateToProps, mapDispatchToProps)(ManageCategories);

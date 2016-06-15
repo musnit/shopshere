@@ -14,11 +14,11 @@ class Shops extends Component {
         <div className="row shops-section">
           <ShopList />
           <div className="shop-details">
-            {this.props.children}
+            { this.props.children }
           </div>
         </div>
       </div>
-    );
+      );
   }
 }
 

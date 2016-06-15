@@ -7,7 +7,7 @@ import ViewerWidget from './components/ViewerWidget';
 
 window.createSphereWidget = (shopID, openProductModal, domElementID) => {
   render(
-    <ViewerWidget shopID={shopID} openProductModal={openProductModal} />,
+    <ViewerWidget shopID={ shopID } openProductModal={ openProductModal } />,
     document.getElementById(domElementID)
   );
 }

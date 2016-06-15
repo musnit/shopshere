@@ -9,8 +9,13 @@ export default function fetch(Wrapped, options) {
     componentDidMount() {
       const {dispatch, location, params, shopID, viewpointID} = this.props;
 
-      options.actions.forEach((action) =>
-        dispatch(action({location, params, shopID, viewpointID, actionParams: options.actionParams}))
+      options.actions.forEach((action) => dispatch(action({
+        location,
+        params,
+        shopID,
+        viewpointID,
+        actionParams: options.actionParams
+      }))
       );
     }
 
@@ -18,7 +23,8 @@ export default function fetch(Wrapped, options) {
       return <Wrapped {...this.props} />;
     }
 
-  };
+  }
+  ;
 
   Fetch.propTypes = {
     dispatch: PropTypes.func,
@@ -28,4 +34,5 @@ export default function fetch(Wrapped, options) {
 
   return connect()(Fetch);
 
-};
+}
+;

@@ -7,11 +7,11 @@ import Add from '~/src/components/products/Add';
 class Products extends Component {
   render() {
     return (
-        <div>
-          <List shopID={this.props.shopID} />
-          <Add shopID={this.props.shopID} />
-        </div>
-    );
+      <div>
+        <List shopID={ this.props.shopID } />
+        <Add shopID={ this.props.shopID } />
+      </div>
+      );
   }
 }
 

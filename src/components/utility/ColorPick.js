@@ -2,21 +2,25 @@ import React, { Component, PropTypes } from 'react';
 import { ChromePicker } from 'react-color'
 
 class ColorPick extends Component {
-      
 
-      constructor(props) {
+
+  constructor(props) {
     super(props);
-  this.state = {
-    displayColorPicker: false,
-  };
-}
+    this.state = {
+      displayColorPicker: false,
+    };
+  }
 
   handleClick() {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    this.setState({
+      displayColorPicker: !this.state.displayColorPicker
+    })
   };
 
   handleClose() {
-    this.setState({ displayColorPicker: false })
+    this.setState({
+      displayColorPicker: false
+    })
     this.props.onClosing(this.props.index);
   };
 
@@ -47,9 +51,9 @@ class ColorPick extends Component {
       <div>
         <button style={ styledbutton } onClick={ this.handleClick.bind(this) }>Pick a Color</button>
         { this.state.displayColorPicker ? <div style={ popover }>
-          <div style={ cover } onClick={ this.handleClose.bind(this) }/>
-          <ChromePicker onChangeComplete={ this.handleChangeComplete.bind(this) } />
-        </div> : null }
+                                            <div style={ cover } onClick={ this.handleClose.bind(this) } />
+                                            <ChromePicker onChangeComplete={ this.handleChangeComplete.bind(this) } />
+                                          </div> : null }
       </div>
     )
   }

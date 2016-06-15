@@ -21,34 +21,36 @@ class RouteContainer extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { history: syncHistoryWithStore(browserHistory, this.props.store) };
+    this.state = {
+      history: syncHistoryWithStore(browserHistory, this.props.store)
+    };
   }
 
   render() {
     return (
-      <Router ref="router" history={this.state.history}>
+      <Router ref="router" history={ this.state.history }>
         <Redirect from="/user" to="/user/directory" />
         <Redirect from="/" to="shops" />
-        <Route path="/" component={App}>
-          <Route path="/viewer" component={Viewer}>
+        <Route path="/" component={ App }>
+          <Route path="/viewer" component={ Viewer }>
           </Route>
-          <Route path="/viewerwidget" component={ViewerWidget}>
+          <Route path="/viewerwidget" component={ ViewerWidget }>
           </Route>
-          <Route path="/shops" component={Shops}>
-            <Route path="/shops/:name" component={Shop}>
+          <Route path="/shops" component={ Shops }>
+            <Route path="/shops/:name" component={ Shop }>
             </Route>
           </Route>
-          <Route path="/categories" component={ManageCategories}>
+          <Route path="/categories" component={ ManageCategories }>
           </Route>
-          <Route path="/user" component={Home}>
-            <Route path="/user/directory" component={DirectoryList}>
+          <Route path="/user" component={ Home }>
+            <Route path="/user/directory" component={ DirectoryList }>
             </Route>
-            <Route path="/user/:category" component={CategoryShopList}>
+            <Route path="/user/:category" component={ CategoryShopList }>
             </Route>
           </Route>
         </Route>
       </Router>
-    );
+      );
   }
 }
 

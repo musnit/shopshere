@@ -18,16 +18,16 @@ class Add extends Component {
 
     if (this.refs.nameBox.getValue() == "") {
       this.handleAlertDismiss();
-      this.setState({ 
+      this.setState({
         showModal: false,
         colors: [0],
         sizes: [0],
         images: [0],
-        submitDisabled:false,
+        submitDisabled: false,
         imageFiles: [],
         sizeOptions: [],
         colorOptions: [],
-        description:undefined
+        description: undefined
       });
       return;
     }
@@ -37,8 +37,7 @@ class Add extends Component {
     if (Number(priceValue) != priceValue) {
       this.handleAlertShow();
       return;
-    }
-    else {
+    } else {
       this.handleAlertDismiss();
     }
 
@@ -56,17 +55,14 @@ class Add extends Component {
     }
 
 
-    for(var key in addObject){
+    for (var key in addObject) {
       if (key === 'images' && addObject[key] == "") {
         addObject[key] = [];
-      }
-      else if (key === 'sizes' && addObject[key] == "") {
+      } else if (key === 'sizes' && addObject[key] == "") {
         addObject[key] = [];
-      }
-      else if (key === 'colors' && addObject[key] == "") {
+      } else if (key === 'colors' && addObject[key] == "") {
         addObject[key] = [];
-      }
-      else if (addObject[key] == "") {
+      } else if (addObject[key] == "") {
         addObject[key] = " ";
       }
     }
@@ -76,21 +72,21 @@ class Add extends Component {
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
     this.handleAlertDismiss();
-    this.setState({ 
+    this.setState({
       showModal: false,
       colors: [0],
       sizes: [0],
       images: [0],
-      submitDisabled:false,
+      submitDisabled: false,
       imageFiles: [],
       sizeOptions: [],
       colorOptions: [],
-      description:undefined
-       });
+      description: undefined
+    });
 
   }
 
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       showModal: false,
@@ -99,29 +95,35 @@ class Add extends Component {
       images: [0],
       submitDisabled: false,
       imageFiles: [],
-      nameValue:undefined,
+      nameValue: undefined,
       sizeOptions: [],
       colorOptions: [],
       alertVisible: false,
-      description:undefined
+      description: undefined
     };
   }
 
   handleAlertDismiss() {
-    this.setState({alertVisible: false});
+    this.setState({
+      alertVisible: false
+    });
   }
 
   handleAlertShow() {
-    this.setState({alertVisible: true});
+    this.setState({
+      alertVisible: true
+    });
   }
 
-    onDescriptionBoxChange(event){
-    this.setState( { description: event.target.value } );
+  onDescriptionBoxChange(event) {
+    this.setState({
+      description: event.target.value
+    });
   }
 
   close() {
     this.handleAlertDismiss();
-    this.setState({ 
+    this.setState({
       showModal: false,
       submitDisabled: false,
       colors: [0],
@@ -130,16 +132,19 @@ class Add extends Component {
       imageFiles: [],
       sizeOptions: [],
       colorOptions: [],
-      description:undefined });
+      description: undefined
+    });
   }
 
   open() {
-    this.setState({ showModal: true });
+    this.setState({
+      showModal: true
+    });
   }
 
   clickedAddColor() {
     var currentvalue = this.state.colors[this.state.colors.length - 1];
-    var newcolor = this.state.colors.concat( currentvalue + 1 );
+    var newcolor = this.state.colors.concat(currentvalue + 1);
     this.setState({
       colors: newcolor
     });
@@ -153,7 +158,9 @@ class Add extends Component {
 
     var lineToRemove = event.currentTarget.value;
 
-    var newcolor = _.filter(this.state.colors, function(o){return o != lineToRemove;})
+    var newcolor = _.filter(this.state.colors, function(o) {
+      return o != lineToRemove;
+    })
 
     this.setState({
       colors: newcolor
@@ -162,7 +169,7 @@ class Add extends Component {
 
   clickedAddSize() {
     var currentvalue = this.state.sizes[this.state.sizes.length - 1];
-    var newsize = this.state.sizes.concat( currentvalue + 1 );
+    var newsize = this.state.sizes.concat(currentvalue + 1);
     this.setState({
       sizes: newsize
     });
@@ -177,7 +184,9 @@ class Add extends Component {
 
     var lineToRemove = event.currentTarget.value;
 
-    var newsize = _.filter(this.state.sizes, function(o){return o != lineToRemove;})
+    var newsize = _.filter(this.state.sizes, function(o) {
+      return o != lineToRemove;
+    })
 
     this.setState({
       sizes: newsize
@@ -187,7 +196,7 @@ class Add extends Component {
 
   clickedAddImage() {
     var currentvalue = this.state.images[this.state.images.length - 1];
-    var newimage = this.state.images.concat( currentvalue + 1 );
+    var newimage = this.state.images.concat(currentvalue + 1);
     this.setState({
       images: newimage
     });
@@ -202,33 +211,44 @@ class Add extends Component {
     // var lineToRemove = event.currentTarget.value;
     var lineToRemove = this.state.images[this.state.images.length - 1];
 
-    var newimage = _.filter(this.state.images, function(o){return o != lineToRemove;})
+    var newimage = _.filter(this.state.images, function(o) {
+      return o != lineToRemove;
+    })
 
     this.setState({
       images: newimage
     });
   }
 
-  imageUploadStarted(){
-    this.setState({ submitDisabled: true });
+  imageUploadStarted() {
+    this.setState({
+      submitDisabled: true
+    });
   }
 
-  imageUploadComplete(imageFile){
+  imageUploadComplete(imageFile) {
     var imageFileName = imageFile;
     var images = _.cloneDeep(this.state.imageFiles);
     images.push(imageFileName);
-    this.setState({ submitDisabled: false, imageFiles: images });
+    this.setState({
+      submitDisabled: false,
+      imageFiles: images
+    });
   }
 
   onNameBoxChange(event) {
     let value = event.target.value;
-    this.setState({ nameValue: value  });
+    this.setState({
+      nameValue: value
+    });
   }
 
-  onaSizeBoxChange(item, event){
+  onaSizeBoxChange(item, event) {
     var currentSizeOptions = _.cloneDeep(this.state.sizeOptions);
     currentSizeOptions[item] = event.target.value;
-    this.setState({ sizeOptions: currentSizeOptions });
+    this.setState({
+      sizeOptions: currentSizeOptions
+    });
   }
 
   onaColorBoxChange(item, event) {
@@ -241,20 +261,26 @@ class Add extends Component {
         var hexval = this.refs[key].refs.input.value;
         var hexind = key.slice(-1);
         hexind = parseInt(hexind);
-        if (currentColorOptions[hexind] == undefined) { currentColorOptions[hexind] = []; };
+        if (currentColorOptions[hexind] == undefined) {
+          currentColorOptions[hexind] = [];
+        }
+        ;
         currentColorOptions[hexind][1] = hexval;
 
-      }
-      else if (key.startsWith("colorNameBox")) {
+      } else if (key.startsWith("colorNameBox")) {
         var nameval = this.refs[key].refs.input.value;
         var nameind = key.slice(-1);
         nameind = parseInt(nameind);
-        if (currentColorOptions[nameind] == undefined) { currentColorOptions[nameind] = []; };
+        if (currentColorOptions[nameind] == undefined) {
+          currentColorOptions[nameind] = [];
+        }
+        ;
         currentColorOptions[nameind][0] = nameval;
       }
-    };
+    }
+    ;
 
-    _(currentColorOptions).forEach( (o) => {
+    _(currentColorOptions).forEach((o) => {
       if (o[0] == "") {
         o[0] = undefined;
       }
@@ -263,7 +289,9 @@ class Add extends Component {
       }
     });
 
-    this.setState({ colorOptions: currentColorOptions });
+    this.setState({
+      colorOptions: currentColorOptions
+    });
 
   }
 
@@ -278,10 +306,10 @@ class Add extends Component {
     this.refs[refstring2].style.width = '30px';
     this.refs[refstring2].style.borderRadius = '20px';
 
-    
+
   }
 
-  handleColorClose(index){
+  handleColorClose(index) {
     this.onaColorBoxChange(index);
   }
 
@@ -294,164 +322,165 @@ class Add extends Component {
     var sizeLength = this.state.sizes.length;
     var imageLength = this.state.images.length;
     return (
-<div>
-    <div className="product-button">
-        <Button             
-            bsStyle="primary"
-            bsSize="large"
-            onClick={this.open.bind(this)}
-            >
-        Add a new product
-        </Button>
-    </div>
-    
-    <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-        <Modal.Header closeButton>
-            <Modal.Title>Add a new Product:</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-
-
-
-            <label htmlFor="inputProductName">Name</label>
-            <Input type="ProductName" ref='nameBox'  placeholder="Name..." required />
-            <label htmlFor="inputProductSKU">SKU</label>
+      <div>
+        <div className="product-button">
+          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
+            Add a new product
+          </Button>
+        </div>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Add a new Product:
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label htmlFor="inputProductName">
+              Name
+            </label>
+            <Input type="ProductName" ref='nameBox' placeholder="Name..." required />
+            <label htmlFor="inputProductSKU">
+              SKU
+            </label>
             <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
-            <label htmlFor="inputProductDescription">Description</label>
-            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={this.onDescriptionBoxChange.bind(this)}  placeholder="Description..." />
-
-            <label htmlFor="inputProductPrice">Price</label>
+            <label htmlFor="inputProductDescription">
+              Description
+            </label>
+            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
+            <label htmlFor="inputProductPrice">
+              Price
+            </label>
             <Input type="ProductPrice" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
-
-            {this.state.alertVisible ? 
-              <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss.bind(this)}>
-                    <h4>Invalid Input!</h4>
-                    <p>Product price can only be a decimal number example  1  50  50.00  65.89  etc.</p>
-
-              </Alert> : null}
-
-
-            <label htmlFor="inputProductColor">Color(s)</label>
+            { this.state.alertVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
+                <h4>Invalid Input!</h4>
+                <p>
+                  Product price can only be a decimal number example 1 50 50.00 65.89 etc.
+                </p>
+              </Alert> : null }
+            <label htmlFor="inputProductColor">
+              Color(s)
+            </label>
             <Grid fluid>
-                {this.state.colors.map((item, index) => 
-                <Row className="padded-row">
-                    <Col xs={3} md={3}>
-                    <Input className="color-box" type="productColorName" ref={'colorNameBox'+item} onChange={this.onaColorBoxChange.bind(this)}  placeholder="Name..." />
-                    </Col>
-                    <Col xs={3} md={3}>
-
-                      <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index={item}/>
-
-                    </Col>
-                    <Col  xs={1} md={1}>
-
-                      <div ref={'colorDisplayBox'+item} >
-
-                      </div>
-
-                    </Col>
-                    <Col xs={3} md={3}>
-                    <Input type="productColorHex" ref={'colorHexBox'+item} onChange={this.onaColorBoxChange.bind(this)} readOnly  placeholder="Hex Value"  />
-                    </Col>
-                    { index==colorLength-1 ?
-                    <div  key={index}>
-                        <Col xs={1} md={1}>
-                        <div>
-                            <OverlayTrigger overlay={
-                            <Tooltip id="add-color" >Add another color.</Tooltip>
-                            }>
-                            <Button bsStyle="success" onClick = {this.clickedAddColor.bind(this)}><b>+</b></Button>
-                            </OverlayTrigger>
-                        </div>
-                        </Col> 
-                    </div>
-                    : null}
-                </Row>
-                )}
+              { this.state.colors.map((item, index) => <Row className="padded-row">
+                                                         <Col xs={ 3 } md={ 3 }>
+                                                         <Input className="color-box" type="productColorName" ref={ 'colorNameBox' + item } onChange={ this.onaColorBoxChange.bind(this) } placeholder="Name..." />
+                                                         </Col>
+                                                         <Col xs={ 3 } md={ 3 }>
+                                                         <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index={ item } />
+                                                         </Col>
+                                                         <Col xs={ 1 } md={ 1 }>
+                                                         <div ref={ 'colorDisplayBox' + item }>
+                                                         </div>
+                                                         </Col>
+                                                         <Col xs={ 3 } md={ 3 }>
+                                                         <Input type="productColorHex" ref={ 'colorHexBox' + item } onChange={ this.onaColorBoxChange.bind(this) } readOnly placeholder="Hex Value" />
+                                                         </Col>
+                                                         { index == colorLength - 1 ?
+                                                           <div key={ index }>
+                                                             <Col xs={ 1 } md={ 1 }>
+                                                             <div>
+                                                               <OverlayTrigger overlay={ <Tooltip id="add-color">
+                                                                                           Add another color.
+                                                                                         </Tooltip> }>
+                                                                 <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this) }>
+                                                                   <b>+</b>
+                                                                 </Button>
+                                                               </OverlayTrigger>
+                                                             </div>
+                                                             </Col>
+                                                           </div>
+                                                           : null }
+                                                       </Row>
+                ) }
             </Grid>
-            <label htmlFor="inputProductSize">Size(s)</label>
+            <label htmlFor="inputProductSize">
+              Size(s)
+            </label>
             <Grid fluid ref='sizeBox'>
-                {this.state.sizes.map((item, index) => 
-                <Row className="padded-row">
-                    <Col xs={5} md={3}>
-                    <Input className="size-box" type="productSize" onChange={this.onaSizeBoxChange.bind(this, index)} ref={'sizeBox'+item} placeholder="Size..." />
-                    </Col>
-                    { index==sizeLength-1 ?
-                    <div  key={index}>
-                        <Col xs={1} md={1}>
-                        <div>
-                            <OverlayTrigger overlay={
-                            <Tooltip id="add-size">Add another size.</Tooltip>
-                            }>
-                            <Button bsStyle="success" onClick={this.clickedAddSize.bind(this)}><b>+</b></Button>
-                            </OverlayTrigger>
-                        </div>
-                        </Col>
-                    </div>
-                    : null}
-                </Row>
-                )}
+              { this.state.sizes.map((item, index) => <Row className="padded-row">
+                                                        <Col xs={ 5 } md={ 3 }>
+                                                        <Input className="size-box" type="productSize" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
+                                                        </Col>
+                                                        { index == sizeLength - 1 ?
+                                                          <div key={ index }>
+                                                            <Col xs={ 1 } md={ 1 }>
+                                                            <div>
+                                                              <OverlayTrigger overlay={ <Tooltip id="add-size">
+                                                                                          Add another size.
+                                                                                        </Tooltip> }>
+                                                                <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this) }>
+                                                                  <b>+</b>
+                                                                </Button>
+                                                              </OverlayTrigger>
+                                                            </div>
+                                                            </Col>
+                                                          </div>
+                                                          : null }
+                                                      </Row>
+                ) }
             </Grid>
-            <label htmlFor="inputProductImage">Image(s)</label>
+            <label htmlFor="inputProductImage">
+              Image(s)
+            </label>
             <Grid fluid>
-                <Row className="padded-row">
-                    <Col xs={1} md={1}>
-                    <div>
-                        <OverlayTrigger overlay={
-                        <Tooltip id="add-image">Add another image.</Tooltip>
-                        }>
-                        <Button bsStyle="success" onClick={this.clickedAddImage.bind(this)}><b>+</b></Button>
-                        </OverlayTrigger>
-                    </div>
-                    </Col>
-                </Row>
-                {this.state.images.map((item, index) => 
+              <Row className="padded-row">
+                <Col xs={ 1 } md={ 1 }>
                 <div>
-                    <Row className="padded-row">
-                        <Col >
-                        <S3Uploader ref={'imageBox'+item}
-                            onUploadStart={this.imageUploadStarted.bind(this)}
-                            onUploadFinish={this.imageUploadComplete.bind(this)}
-                            folderURL={productFolderURL}/>
-                        </Col>
-                    </Row>
+                  <OverlayTrigger overlay={ <Tooltip id="add-image">
+                                              Add another image.
+                                            </Tooltip> }>
+                    <Button bsStyle="success" onClick={ this.clickedAddImage.bind(this) }>
+                      <b>+</b>
+                    </Button>
+                  </OverlayTrigger>
                 </div>
-                )}
-                 <Row className="padded-row">
-                    <Col xs={1} md={1}>
-                    <div>
-                        <OverlayTrigger overlay={
-                        <Tooltip id="add-image">Add another image.</Tooltip>
-                        }>
-                        <Button bsStyle="success" onClick={this.clickedAddImage.bind(this)}><b>+</b></Button>
-                        </OverlayTrigger>
-                    </div>
-                    </Col>
-                </Row>
+                </Col>
+              </Row>
+              { this.state.images.map((item, index) => <div>
+                                                         <Row className="padded-row">
+                                                           <Col>
+                                                           <S3Uploader ref={ 'imageBox' + item } onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ productFolderURL } />
+                                                           </Col>
+                                                         </Row>
+                                                       </div>
+                ) }
+              <Row className="padded-row">
+                <Col xs={ 1 } md={ 1 }>
+                <div>
+                  <OverlayTrigger overlay={ <Tooltip id="add-image">
+                                              Add another image.
+                                            </Tooltip> }>
+                    <Button bsStyle="success" onClick={ this.clickedAddImage.bind(this) }>
+                      <b>+</b>
+                    </Button>
+                  </OverlayTrigger>
+                </div>
+                </Col>
+              </Row>
             </Grid>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button type="submit" bsStyle="primary" onClick = {this.clickedAddProduct.bind(this)} disabled={this.state.submitDisabled}>
-            {this.state.submitDisabled? 'Wait for upload to finish' : 'Add product'}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button type="submit" bsStyle="primary" onClick={ this.clickedAddProduct.bind(this) } disabled={ this.state.submitDisabled }>
+              { this.state.submitDisabled ? 'Wait for upload to finish' : 'Add product' }
             </Button>
-        </Modal.Footer>
-    </Modal>
-
-
-</div>
-    );
+          </Modal.Footer>
+        </Modal>
+      </div>
+      );
   }
 }
 
 function mapStateToProps(state) {
   return {};
-};
+}
+;
 
 function mapDispatchToProps(dispatch) {
   return {
     boundAddProduct: bindActionCreators(unboundAddProduct, dispatch),
   };
-};
+}
+;
 
-export default connect(mapStateToProps,mapDispatchToProps)(Add);
+export default connect(mapStateToProps, mapDispatchToProps)(Add);

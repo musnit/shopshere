@@ -16,7 +16,7 @@ const imageAspectRatio = 2;
 
 export default class SphereViewer {
 
-  constructor(params){
+  constructor(params) {
     this.mouse = {};
     this.openModal = params.openModal;
     this.openNewHSModal = params.openNewHSModal;
@@ -31,7 +31,7 @@ export default class SphereViewer {
     this.setupScene();
     this.setupCamera();
     this.setupSphereProjection(params.imageURL);
-		this.setupViewerControls();
+    this.setupViewerControls();
     this.setupHotspots();
     this.someOtherControlsCode();
     this.setupMouseTracker();
@@ -39,71 +39,71 @@ export default class SphereViewer {
     this.reRender.call(this);
   }
 
- //  disableOrbit(){
- //    this.controls.enabled = !this.controls.enabled;
- //    //this.scene.remove(this.sphereMesh);
-	// }
+  //  disableOrbit(){
+  //    this.controls.enabled = !this.controls.enabled;
+  //    //this.scene.remove(this.sphereMesh);
+  // }
 
   setupRenderer(domContainerElement) {
-		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setSize(viewerSizeX, viewerSizeY);
-		domContainerElement.appendChild(this.renderer.domElement);
-	}
-
-  setupScene(){
-		this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(viewerSizeX, viewerSizeY);
+    domContainerElement.appendChild(this.renderer.domElement);
   }
 
-  setupCamera(){
-		this.camera = new THREE.PerspectiveCamera(75, viewerSizeX / viewerSizeY, 0.1, 1000);
-		//camera.target = new THREE.Vector3(0, 0, 0);
+  setupScene() {
+    this.scene = new THREE.Scene();
+  }
+
+  setupCamera() {
+    this.camera = new THREE.PerspectiveCamera(75, viewerSizeX / viewerSizeY, 0.1, 1000);
+  //camera.target = new THREE.Vector3(0, 0, 0);
   }
 
   setupSphereProjection(imageURL) {
-		// creation of a big sphere geometry
-		//THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
-		this.sphere = new THREE.SphereGeometry(sphereRadius, 40, 40);
-		this.sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
+    // creation of a big sphere geometry
+    //THREE.SphereGeometry(SPHERE RADIUS, WIDTH SEGMENTS, HEIGHT SEGMENTS)
+    this.sphere = new THREE.SphereGeometry(sphereRadius, 40, 40);
+    this.sphere.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
 
-		// creation of the sphere material
-		this.sphereMaterial = new THREE.MeshBasicMaterial();
+    // creation of the sphere material
+    this.sphereMaterial = new THREE.MeshBasicMaterial();
 
-		let loader = new THREE.TextureLoader();
-		loader.crossOrigin = "anonymous";
-		this.sphereMaterial.map = loader.load(imageURL);
+    let loader = new THREE.TextureLoader();
+    loader.crossOrigin = "anonymous";
+    this.sphereMaterial.map = loader.load(imageURL);
 
     this.sphereMaterial.depthWrite = false;
     this.sphereMaterial.depthTest = false;
 
-		// geometry + material = mesh (actual object)
-		this.sphereMesh = new THREE.Mesh(this.sphere, this.sphereMaterial);
+    // geometry + material = mesh (actual object)
+    this.sphereMesh = new THREE.Mesh(this.sphere, this.sphereMaterial);
     this.sphereMesh.renderDepth = 1e20;
-		this.scene.add(this.sphereMesh);
-	}
+    this.scene.add(this.sphereMesh);
+  }
 
   setupViewerControls() {
-		//transform controls!!
-		// let TControl = new TransformControls(this.camera, this.renderer.domElement);
-		//TControl.addEventListener('change', this.reRender.bind(this));
-		this.camera.position.x = -0.0001;
+    //transform controls!!
+    // let TControl = new TransformControls(this.camera, this.renderer.domElement);
+    //TControl.addEventListener('change', this.reRender.bind(this));
+    this.camera.position.x = -0.0001;
 
-    this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     //dont want to zoom out further than the radius of the sphere of our shopwindow
     this.controls.maxDistance = sphereRadius;
     //can only look down to 45 degrees ( dont wanna display floor)
-    this.controls.minPolarAngle = Math.PI/4.0;
+    this.controls.minPolarAngle = Math.PI / 4.0;
     //can only look up to 45 degrees (dont wanna display ceiling)
-    this.controls.maxPolarAngle  = (3.0*Math.PI)/4.0;
+    this.controls.maxPolarAngle = (3.0 * Math.PI) / 4.0;
     //this is disabled so you cant pan out of the sphere
-    this.controls.enablePan  = false;
+    this.controls.enablePan = false;
     //autorotation - can disable too
     this.controls.autoRotate = false;
-		this.controls.autoRotateSpeed = 0.5;
-		//this.controls.enabled = true;
-	}
+    this.controls.autoRotateSpeed = 0.5;
+  //this.controls.enabled = true;
+  }
 
-  setupHotspots(){
+  setupHotspots() {
     // //JACKETS
     // var geometry_hs_1 = new THREE.SphereGeometry( 90, 10, 10, 0, 0.5, 1, 0.6 );
     // geometry_hs_1.applyMatrix(new THREE.Matrix4().makeScale(-1, 1, 1));
@@ -136,7 +136,7 @@ export default class SphereViewer {
 
     // // var quaternion_hs_2 = new THREE.Quaternion(-0.16258955772340344,0.5748515026788531,-0.3753630095464339,0.708669867339882);
     // // this.hotspot2.rotation.setFromQuaternion(quaternion_hs_2);
-    
+
     // //attempting to rotate according to xyz!
 
     // // var Mat = new THREE.Matrix4();
@@ -190,8 +190,12 @@ export default class SphereViewer {
   addNewProductHotspot(name, coords) {
 
     var map = new THREE.TextureLoader().load(prodHsImage);
-    var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
-    var prodhs = new THREE.Sprite( material );
+    var material = new THREE.SpriteMaterial({
+      map: map,
+      color: 0xffffff,
+      fog: true
+    });
+    var prodhs = new THREE.Sprite(material);
 
     prodhs.position.x = coords.x
     prodhs.position.y = coords.y
@@ -201,7 +205,7 @@ export default class SphereViewer {
     prodhs.isProduct = true;
     prodhs.name = name;
 
-    this.scene.add( prodhs );
+    this.scene.add(prodhs);
 
     this.currentUnsavedHotspot = prodhs;
 
@@ -217,8 +221,12 @@ export default class SphereViewer {
   addNewNavigationHotspot(name, coords) {
 
     var map = new THREE.TextureLoader().load(navHsImage);
-    var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
-    var navhs = new THREE.Sprite( material );
+    var material = new THREE.SpriteMaterial({
+      map: map,
+      color: 0xffffff,
+      fog: true
+    });
+    var navhs = new THREE.Sprite(material);
 
     navhs.position.x = coords.x
     navhs.position.y = coords.y
@@ -228,8 +236,8 @@ export default class SphereViewer {
     navhs.isNavigation = true;
     navhs.name = name;
 
-    this.scene.add( navhs );
-    
+    this.scene.add(navhs);
+
     this.currentUnsavedHotspot = navhs;
 
     var navhsScalar = 10;
@@ -240,163 +248,167 @@ export default class SphereViewer {
 
     this.Hotspots.push(navhs);
 
-  };  
+  };
 
 
   saveNewHotspotLocation() {
 
-    var outputPosition = { 
-      "X": this.currentUnsavedHotspot.position.x, 
-      "Y": this.currentUnsavedHotspot.position.y, 
-      "Z": this.currentUnsavedHotspot.position.z 
+    var outputPosition = {
+      "X": this.currentUnsavedHotspot.position.x,
+      "Y": this.currentUnsavedHotspot.position.y,
+      "Z": this.currentUnsavedHotspot.position.z
     };
 
     var outputType;
 
-    if ( this.currentUnsavedHotspot.isProduct ) {
+    if (this.currentUnsavedHotspot.isProduct) {
       outputType = "product";
-    }
-    else if ( this.currentUnsavedHotspot.isNavigation ) {
+    } else if (this.currentUnsavedHotspot.isNavigation) {
       outputType = "navigation";
     }
 
     this.currentUnsavedHotspot = undefined;
 
-    return [ outputPosition, outputType ];
+    return [outputPosition, outputType];
   }
 
-  changeBackgroundImage(imageURL){
+  changeBackgroundImage(imageURL) {
     let loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
     this.sphereMaterial.map = loader.load(imageURL);
   }
 
-  someOtherControlsCode(){
+  someOtherControlsCode() {
     //transform controls!!
-		// TControl.attach( hotspot2 );
-		// scene.add( TControl );
-		// TControl.setMode( "rotate" );
+    // TControl.attach( hotspot2 );
+    // scene.add( TControl );
+    // TControl.setMode( "rotate" );
 
-		// listeners
-		// document.addEventListener("mousedown", onDocumentMouseDown, false);
-		// document.addEventListener("mousemove", onDocumentMouseMove, false);
+    // listeners
+    // document.addEventListener("mousedown", onDocumentMouseDown, false);
+    // document.addEventListener("mousemove", onDocumentMouseMove, false);
   }
 
   setupMouseTracker() {
-    var sphereGeom = new THREE.SphereGeometry(3,3,3);
-  	var sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({ color: 0xff0000 }));
-  	this.scene.add(sphere);
-  	this.mouseSphere = sphere;
-    document.addEventListener( 'mousemove', (event) => {
+    var sphereGeom = new THREE.SphereGeometry(3, 3, 3);
+    var sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({
+      color: 0xff0000
+    }));
+    this.scene.add(sphere);
+    this.mouseSphere = sphere;
+    document.addEventListener('mousemove', (event) => {
       const viewpointX = this.renderer.domElement.offsetLeft;
       const viewpointY = this.renderer.domElement.offsetTop - window.scrollY;
-    	this.mouse.x = ((event.clientX - viewpointX)/viewerSizeX) * 2 - 1;
-    	this.mouse.y = - ((event.clientY - viewpointY)/viewerSizeY) * 2 + 1;
-    }, false );
+      this.mouse.x = ((event.clientX - viewpointX) / viewerSizeX) * 2 - 1;
+      this.mouse.y = -((event.clientY - viewpointY) / viewerSizeY) * 2 + 1;
+    }, false);
   }
 
   updateMouseCursor() {
-    const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
+    const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
-    v3MouseCoords.unproject( this.camera );
-    var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
+    v3MouseCoords.unproject(this.camera);
+    var ray = new THREE.Raycaster(this.camera.position, v3MouseCoords.sub(this.camera.position).normalize());
 
-    var intersects = ray.intersectObjects( [this.sphereMesh] );
-    if ( intersects.length > 0 ) {
-      this.mouseSphere.position.set(intersects[0].point.x,intersects[0].point.y,intersects[0].point.z);
-      //console.log(intersects[0].point.x);
+    var intersects = ray.intersectObjects([this.sphereMesh]);
+    if (intersects.length > 0) {
+      this.mouseSphere.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
+    //console.log(intersects[0].point.x);
     }
   }
 
 
-  removeHotspots(){
+  removeHotspots() {
     var viewportScene = this.scene;
-    _.forEach(this.Hotspots, function(o) { viewportScene.remove( o ); });
+    _.forEach(this.Hotspots, function(o) {
+      viewportScene.remove(o);
+    });
     this.Hotspots = [];
   }
 
-  addAHotspot(hotspot){
+  addAHotspot(hotspot) {
 
-      var map
-      var material
-      var hs
+    var map
+    var material
+    var hs
 
-      if(hotspot.type === "product") {
-        map = new THREE.TextureLoader().load(prodHsImage);
-      }
-      else if (hotspot.type == "navigation") {
-        map = new THREE.TextureLoader().load(navHsImage);
-      }
+    if (hotspot.type === "product") {
+      map = new THREE.TextureLoader().load(prodHsImage);
+    } else if (hotspot.type == "navigation") {
+      map = new THREE.TextureLoader().load(navHsImage);
+    }
 
-      material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+    material = new THREE.SpriteMaterial({
+      map: map,
+      color: 0xffffff,
+      fog: true
+    });
 
-      hs = new THREE.Sprite( material );
-      hs.isHotspot = true;
-      hs.hotspotID = hotspot.id;
+    hs = new THREE.Sprite(material);
+    hs.isHotspot = true;
+    hs.hotspotID = hotspot.id;
 
-      if(hotspot.type === "product") {
-          hs.isProduct = true;
-      }
-      else if (hotspot.type == "navigation") {
-          hs.isNavigation = true;
-      }
+    if (hotspot.type === "product") {
+      hs.isProduct = true;
+    } else if (hotspot.type == "navigation") {
+      hs.isNavigation = true;
+    }
 
-      hs.position.y = hotspot.position["Y"];
-      hs.position.x = hotspot.position["X"];
-      hs.position.z = hotspot.position["Z"];
+    hs.position.y = hotspot.position["Y"];
+    hs.position.x = hotspot.position["X"];
+    hs.position.z = hotspot.position["Z"];
 
-      var hsScalar = 10;
+    var hsScalar = 10;
 
 
-      hs.scale.x *= hsScalar
-      hs.scale.y *= hsScalar
-      hs.scale.z *= hsScalar
+    hs.scale.x *= hsScalar
+    hs.scale.y *= hsScalar
+    hs.scale.z *= hsScalar
 
-      this.scene.add( hs );
+    this.scene.add(hs);
 
-      this.Hotspots.push( hs );
+    this.Hotspots.push(hs);
   }
 
 
   setupClickEvent() {
-    function onDocumentMouseUp( event ){
-			event.preventDefault();
+    function onDocumentMouseUp(event) {
+      event.preventDefault();
 
-			if(event.target == this.renderer.domElement) {
-        const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
+      if (event.target == this.renderer.domElement) {
+        const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
-        v3MouseCoords.unproject( this.camera );
-        var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
+        v3MouseCoords.unproject(this.camera);
+        var ray = new THREE.Raycaster(this.camera.position, v3MouseCoords.sub(this.camera.position).normalize());
 
-        var intersects = ray.intersectObjects( this.Hotspots );
+        var intersects = ray.intersectObjects(this.Hotspots);
 
-        if ( intersects.length > 0 ) {
-          if (intersects[0].object.isHotspot){
+        if (intersects.length > 0) {
+          if (intersects[0].object.isHotspot) {
             this.openModal(intersects[0].object.hotspotID);
-          }
-          else {
+          } else {
 
           }
         }
-	    }
-		}
+      }
+    }
     document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
 
-    function onDocumentMouseDoubleclick( event ){
+    function onDocumentMouseDoubleclick(event) {
       event.preventDefault();
 
-      if(event.target == this.renderer.domElement) {
-        const v3MouseCoords = new THREE.Vector3( this.mouse.x , this.mouse.y , 1 );
+      if (event.target == this.renderer.domElement) {
+        const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
-        v3MouseCoords.unproject( this.camera );
-        var ray = new THREE.Raycaster( this.camera.position, v3MouseCoords.sub( this.camera.position ).normalize() );
+        v3MouseCoords.unproject(this.camera);
+        var ray = new THREE.Raycaster(this.camera.position, v3MouseCoords.sub(this.camera.position).normalize());
 
-        var intersects = ray.intersectObjects( [this.sphereMesh] );
+        var intersects = ray.intersectObjects([this.sphereMesh]);
 
-        if ( intersects.length > 0 ) {
-            //console.log(intersects[0].point);
+        if (intersects.length > 0) {
+          //console.log(intersects[0].point);
 
-            this.openNewHSModal(intersects[0].point);
+          this.openNewHSModal(intersects[0].point);
         }
       }
     }

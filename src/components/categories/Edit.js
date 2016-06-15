@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Alert,Grid,Col,Row } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Alert, Grid, Col, Row } from 'react-bootstrap';
 import { addCategory } from '~/src/actions/categories';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 import fetch from '~/src/components/fetch';
 import { fetchCategories, unboundPatchCategory, deleteCategory } from '~/src/actions/categories';
-import { find, map} from 'lodash';
+import { find, map } from 'lodash';
 
 import '~/src/styles/shops.css';
 
@@ -17,28 +17,34 @@ import '~/src/styles/shops.css';
 class Edit extends Component {
 
 
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      alertVisible:false,
-      selectedCategory: {text:""}
+      alertVisible: false,
+      selectedCategory: {
+        text: ""
+      }
     };
   }
 
 
 
-    open(event) {
+  open(event) {
 
-    let selected = _.find(this.props.categories, function(o) { return o.text == event.target.innerText});
+    let selected = _.find(this.props.categories, function(o) {
+      return o.text == event.target.innerText
+    });
 
-    let index = _.findIndex(this.props.categories, function(o) { return o.text == event.target.innerText});
+    let index = _.findIndex(this.props.categories, function(o) {
+      return o.text == event.target.innerText
+    });
 
     selected.index = index
 
 
-    this.setState({ 
-      showModal: true ,
+    this.setState({
+      showModal: true,
       selectedCategory: selected
     });
   }
@@ -46,15 +52,17 @@ class Edit extends Component {
 
 
 
-  close(){
-    this.setState({ 
+  close() {
+    this.setState({
       showModal: false,
-      alertVisible:false,
-      selectedCategory:undefined,
-       selectedCategory: {text:""} });
+      alertVisible: false,
+      selectedCategory: {
+        text: ""
+      }
+    });
   }
 
-  clickedDeleteCategory(){
+  clickedDeleteCategory() {
     let deleteObject = {
       ID: this.state.selectedCategory.id,
       index: this.state.selectedCategory.index
@@ -62,87 +70,90 @@ class Edit extends Component {
 
     this.props.deleteCategory(deleteObject);
 
-    this.setState({ 
+    this.setState({
       showModal: false,
-      alertVisible:false,
-      selectedCategory:undefined,
-       selectedCategory: {text:""} });
+      alertVisible: false,
+      selectedCategory: {
+        text: ""
+      }
+    });
   }
 
-  clickedPatchCategory(){
+  clickedPatchCategory() {
     if (this.refs.nameBox.getValue() == "") {
       this.handleNameAlertShow();
       return;
-    }
-    else {
+    } else {
       this.handleNameAlertDismiss();
     }
 
     var patchObject = {
       id: this.state.selectedCategory.id,
-      text:this.refs.nameBox.getValue()
+      text: this.refs.nameBox.getValue()
     };
 
     this.props.boundPatchCategory(patchObject);
 
-        this.setState({ 
+    this.setState({
       showModal: false,
-      alertVisible:false });
+      alertVisible: false
+    });
   }
 
-    handleNameAlertDismiss() {
-    this.setState({alertVisible: false});
+  handleNameAlertDismiss() {
+    this.setState({
+      alertVisible: false
+    });
   }
 
   handleNameAlertShow() {
-    this.setState({alertVisible: true});
+    this.setState({
+      alertVisible: true
+    });
   }
 
 
   render() {
 
-  
+
 
     return (
       <div>
         <div className="force-to-bottom">
-            <DropdownButton bsStyle={'primary'} title={'Select a Category to View, Edit or Delete'} id="cat-list" className="add-shop-btn">
-            {this.props.categories.map((category, index) =>
-            <MenuItem eventKey={index} key={index} onClick={this.open.bind(this)}> {category.text} </MenuItem>
-            )}
-            </DropdownButton>
-            </div>
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit category:</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                             <label htmlFor="inputCategoryName">Name</label>
-                             <Input type="CategoryName" ref='nameBox' defaultValue={this.state.selectedCategory.text}  placeholder="Category Name..." required />
-
-                                         {this.state.alertVisible ? 
-              <Alert bsStyle="danger" onDismiss={this.handleNameAlertDismiss.bind(this)}>
-                    <p>Please enter a category name to continue.</p>
-
-              </Alert> : null}
-
-                </Modal.Body>
-                <Modal.Footer>
-                      <Grid fluid>
-                        <Row className="padded-row">
-                            <Col xs={6} md={4}>
-                            <ButtonInput className="product-button" type="submit" bsStyle="danger" onClick = {this.clickedDeleteCategory.bind(this)} >Delete category</ButtonInput>
-                            </Col>
-                            <Col xs={6} md={4}>
-                            <ButtonInput className="product-button" type="submit" bsStyle="primary" onClick = {this.clickedPatchCategory.bind(this)}  >Edit category</ButtonInput>
-                            </Col>
-                        </Row>
-                    </Grid>
-                </Modal.Footer>
-            </Modal>
+          <DropdownButton bsStyle={ 'primary' } title={ 'Select a Category to View, Edit or Delete' } id="cat-list" className="add-shop-btn">
+            { this.props.categories.map((category, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.open.bind(this) }>
+                                                             { category.text } </MenuItem>
+              ) }
+          </DropdownButton>
         </div>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit category:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label htmlFor="inputCategoryName">Name</label>
+            <Input type="CategoryName" ref='nameBox' defaultValue={ this.state.selectedCategory.text } placeholder="Category Name..." required />
+            { this.state.alertVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleNameAlertDismiss.bind(this) }>
+                <p>Please enter a category name to continue.</p>
+              </Alert> : null }
+          </Modal.Body>
+          <Modal.Footer>
+            <Grid fluid>
+              <Row className="padded-row">
+                <Col xs={ 6 } md={ 4 }>
+                <ButtonInput className="product-button" type="submit" bsStyle="danger" onClick={ this.clickedDeleteCategory.bind(this) }>Delete category</ButtonInput>
+                </Col>
+                <Col xs={ 6 } md={ 4 }>
+                <ButtonInput className="product-button" type="submit" bsStyle="primary" onClick={ this.clickedPatchCategory.bind(this) }>Edit category</ButtonInput>
+                </Col>
+              </Row>
+            </Grid>
+          </Modal.Footer>
+        </Modal>
+      </div>
 
-    );
+      );
   }
 }
 
@@ -152,10 +163,11 @@ const FetchedEdit = fetch(Edit, {
 
 function mapStateToProps(state) {
   const categories = state.categories;
-  return { 
+  return {
     categories,
-    };
-};
+  };
+}
+;
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -163,6 +175,7 @@ function mapDispatchToProps(dispatch) {
     boundPatchCategory: bindActionCreators(unboundPatchCategory, dispatch),
     deleteCategory: bindActionCreators(deleteCategory, dispatch)
   };
-};
+}
+;
 
-export default connect(mapStateToProps,mapDispatchToProps)(FetchedEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedEdit);

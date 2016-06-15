@@ -8,12 +8,12 @@ import MyShopsEditShop from '~/src/components/MyShopsEditShop';
 class Admin extends Component {
   render() {
     return (
-        <div>
-			<h3> Shop Admin: </h3>
-			<MyShopsEditShop shopID={this.props.shopID} />
-			<MyShopsDeleteShop shopID={this.props.shopID} />
-        </div>
-    );
+      <div>
+        <h3> Shop Admin: </h3>
+        <MyShopsEditShop shopID={ this.props.shopID } />
+        <MyShopsDeleteShop shopID={ this.props.shopID } />
+      </div>
+      );
   }
 }
 

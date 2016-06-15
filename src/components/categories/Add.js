@@ -6,7 +6,7 @@ import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Alert, Gly
 import { addCategory } from '~/src/actions/categories';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
-import { find, map} from 'lodash';
+import { find, map } from 'lodash';
 
 import '~/src/styles/shops.css';
 
@@ -16,97 +16,101 @@ import '~/src/styles/shops.css';
 class Add extends Component {
 
 
-    constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      alertVisible:false
+      alertVisible: false
     };
   }
 
   open() {
-    this.setState({ showModal: true });
+    this.setState({
+      showModal: true
+    });
   }
-  close(){
-    this.setState({ 
+  close() {
+    this.setState({
       showModal: false,
-      alertVisible:false });
+      alertVisible: false
+    });
   }
 
-  clickedAddCategory(){
+  clickedAddCategory() {
     if (this.refs.nameBox.getValue() == "") {
       this.handleNameAlertShow();
       return;
-    }
-    else {
+    } else {
       this.handleNameAlertDismiss();
     }
 
-    var addObject = {text:this.refs.nameBox.getValue()};
+    var addObject = {
+      text: this.refs.nameBox.getValue()
+    };
 
     this.props.addCategory(addObject);
 
-        this.setState({ 
+    this.setState({
       showModal: false,
-      alertVisible:false });
+      alertVisible: false
+    });
   }
 
-    handleNameAlertDismiss() {
-    this.setState({alertVisible: false});
+  handleNameAlertDismiss() {
+    this.setState({
+      alertVisible: false
+    });
   }
 
   handleNameAlertShow() {
-    this.setState({alertVisible: true});
+    this.setState({
+      alertVisible: true
+    });
   }
 
 
   render() {
 
     return (
-        <div className="force-to-bottom">
-            <div className="add-shop-btn">
-                <Button
-                    bsStyle="primary"
-                    bsSize="large"
-                    onClick={this.open.bind(this)}
-                    >
-                <Glyphicon glyph="plus" /> Add a new category
-                </Button>
-            </div>
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add a new category:</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                             <label htmlFor="inputCategoryName">Name</label>
-                             <Input type="CategoryName" ref='nameBox'  placeholder="Category Name..." required />
-
-                                         {this.state.alertVisible ? 
-              <Alert bsStyle="danger" onDismiss={this.handleNameAlertDismiss.bind(this)}>
-                    <p>Please enter a category name to continue.</p>
-
-              </Alert> : null}
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedAddCategory.bind(this)} disabled={this.state.submitDisabled} >
-                        Add category
-                    </ButtonInput>
-                </Modal.Footer>
-            </Modal>
+      <div className="force-to-bottom">
+        <div className="add-shop-btn">
+          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
+            <Glyphicon glyph="plus" /> Add a new category
+          </Button>
         </div>
-    );
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+          <Modal.Header closeButton>
+            <Modal.Title>Add a new category:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <label htmlFor="inputCategoryName">Name</label>
+            <Input type="CategoryName" ref='nameBox' placeholder="Category Name..." required />
+            { this.state.alertVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleNameAlertDismiss.bind(this) }>
+                <p>Please enter a category name to continue.</p>
+              </Alert> : null }
+          </Modal.Body>
+          <Modal.Footer>
+            <ButtonInput type="submit" bsStyle="primary" onClick={ this.clickedAddCategory.bind(this) } disabled={ this.state.submitDisabled }>
+              Add category
+            </ButtonInput>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      );
   }
 }
 
 function mapStateToProps(state) {
   return {};
-};
+}
+;
 
 function mapDispatchToProps(dispatch) {
   return {
     addCategory: bindActionCreators(addCategory, dispatch),
   };
-};
+}
+;
 
-export default connect(mapStateToProps,mapDispatchToProps)(Add);
+export default connect(mapStateToProps, mapDispatchToProps)(Add);

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
-import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem,Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
 import { fetchViewpoints } from '~/src/actions/viewpoints';
 import { unboundPatchShop } from '~/src/actions/shops';
 import { fetchCategories } from '~/src/actions/categories';
@@ -11,7 +11,7 @@ import fetch from '~/src/components/fetch';
 import ColorPick from '~/src/components/utility/ColorPick';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
-import { find} from 'lodash';
+import { find } from 'lodash';
 
 import '~/src/styles/shops.css';
 
@@ -39,8 +39,7 @@ class MyShopsEditShop extends Component {
     if (!this.validateEmail(emailInput)) {
       this.handleAlertBadEmailShow();
       shortCircuit = 1;
-    }
-    else {
+    } else {
       this.handleAlertBadEmailDismiss();
     }
 
@@ -49,20 +48,20 @@ class MyShopsEditShop extends Component {
     if (catval == "") {
       this.handleAlertNoCatShow();
       shortCircuit = 1;
-    }
-    else {
+    } else {
       this.handleAlertNoCatDismiss();
     }
 
-    var cat = _.find(this.props.categories, function(o) { return o.text == catval});
+    var cat = _.find(this.props.categories, function(o) {
+      return o.text == catval
+    });
 
     var entVPval = this.refs.entranceViewpointBox.getValue();
 
     if (entVPval == "") {
       this.handleAlertNoEVPShow();
       shortCircuit = 1;
-    }
-    else {
+    } else {
       this.handleAlertNoEVPDismiss();
     }
 
@@ -70,14 +69,15 @@ class MyShopsEditShop extends Component {
       return;
     }
 
-    var viewp = _.find(this.props.viewpoints, function(o) { return o.name == entVPval});
+    var viewp = _.find(this.props.viewpoints, function(o) {
+      return o.name == entVPval
+    });
 
     var logo;
 
     if (this.state.logoFile) {
       logo = this.state.logoFile;
-    }
-    else {
+    } else {
       logo = this.state.selectedShop.logoFile;
     }
 
@@ -93,11 +93,11 @@ class MyShopsEditShop extends Component {
       province: this.refs.shopAddressProvinceBox.getValue(),
       category: cat["id"],
       logoFile: logo,
-      logoColor:this.refs.colorHexBox.getValue(),
+      logoColor: this.refs.colorHexBox.getValue(),
       entranceViewpoint: viewp["id"]
     }
 
-    for(var key in patchShopObject){
+    for (var key in patchShopObject) {
       if (patchShopObject[key] == "") {
         patchShopObject[key] = undefined;
       }
@@ -109,7 +109,12 @@ class MyShopsEditShop extends Component {
     this.handleAlertNoCatDismiss();
     this.handleAlertBadEmailDismiss();
     this.handleAlertNoEVPDismiss();
-    this.setState({ showModal: false, logoFile: undefined, changeImage:false, selectedShop: {}  });
+    this.setState({
+      showModal: false,
+      logoFile: undefined,
+      changeImage: false,
+      selectedShop: {}
+    });
   }
 
   constructor(props) {
@@ -117,58 +122,68 @@ class MyShopsEditShop extends Component {
     this.state = {
       showModal: false,
       selectedShop: {},
-      changeImage:false,
-      logoFile:undefined,
+      changeImage: false,
+      logoFile: undefined,
       alertNoCatVisible: false,
       alertBadEmailVisible: false,
-      alertNoEVPVisible:false
+      alertNoEVPVisible: false
     };
   }
 
   close() {
-    this.setState({ 
-      showModal: false, 
-      logoFile: undefined, 
-      changeImage:false, 
+    this.setState({
+      showModal: false,
+      logoFile: undefined,
+      changeImage: false,
       selectedShop: {},
       alertNoCatVisible: false,
       alertBadEmailVisible: false,
-      alertNoEVPVisible:false });
+      alertNoEVPVisible: false
+    });
   }
 
   open() {
 
     var shopID = this.props.shopID;
 
-    let selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+    let selected = _.find(this.props.shops, function(o) {
+      return o.id == shopID;
+    });
 
-    this.setState({ 
+    this.setState({
       showModal: true,
       selectedShop: selected,
-      logoFile:undefined
+      logoFile: undefined
     });
   }
 
 
 
-  imageUploadStarted(){
-    this.setState({ submitDisabled: true });
+  imageUploadStarted() {
+    this.setState({
+      submitDisabled: true
+    });
   }
 
-  imageUploadComplete(logoFile){
-    this.setState({ submitDisabled: false, logoFile: logoFile });
+  imageUploadComplete(logoFile) {
+    this.setState({
+      submitDisabled: false,
+      logoFile: logoFile
+    });
   }
 
-  clickCategory(event){
+  clickCategory(event) {
     this.refs.catBox.getInputDOMNode().value = event.target.innerText;
   }
 
-  clickViewpoint(event){
+  clickViewpoint(event) {
     this.refs.entranceViewpointBox.getInputDOMNode().value = event.target.innerText;
   }
 
-  clickedDeleteImage(){
-    this.setState({ changeImage: true });
+  clickedDeleteImage() {
+    this.setState({
+      changeImage: true
+    });
   }
 
   handleChangeComplete(color) {
@@ -185,46 +200,58 @@ class MyShopsEditShop extends Component {
   }
 
 
-  handleColorClose(){
+  handleColorClose() {
     return;
   }
 
-  setColorBoxes(){
-          
-      var refToThis = this;
-      var refstring2 = 'colorDisplayBox'
-      refToThis.refs[refstring2].style.backgroundColor = this.state.selectedShop.logoColor;
-      refToThis.refs[refstring2].style.height = '30px';
-      refToThis.refs[refstring2].style.width = '30px';
-      refToThis.refs[refstring2].style.borderRadius = '20px';
+  setColorBoxes() {
+
+    var refToThis = this;
+    var refstring2 = 'colorDisplayBox'
+    refToThis.refs[refstring2].style.backgroundColor = this.state.selectedShop.logoColor;
+    refToThis.refs[refstring2].style.height = '30px';
+    refToThis.refs[refstring2].style.width = '30px';
+    refToThis.refs[refstring2].style.borderRadius = '20px';
 
   }
 
-  handleAlertNoCatDismiss(){
-    this.setState({alertNoCatVisible: false});
+  handleAlertNoCatDismiss() {
+    this.setState({
+      alertNoCatVisible: false
+    });
   }
 
   handleAlertNoCatShow() {
-    this.setState({alertNoCatVisible: true});
+    this.setState({
+      alertNoCatVisible: true
+    });
   }
 
-  handleAlertBadEmailDismiss(){
-    this.setState({alertBadEmailVisible: false});
+  handleAlertBadEmailDismiss() {
+    this.setState({
+      alertBadEmailVisible: false
+    });
   }
 
   handleAlertBadEmailShow() {
-    this.setState({alertBadEmailVisible: true});
+    this.setState({
+      alertBadEmailVisible: true
+    });
   }
 
-  handleAlertNoEVPDismiss(){
-    this.setState({alertNoEVPVisible: false});
+  handleAlertNoEVPDismiss() {
+    this.setState({
+      alertNoEVPVisible: false
+    });
   }
 
   handleAlertNoEVPShow() {
-    this.setState({alertNoEVPVisible: true});
+    this.setState({
+      alertNoEVPVisible: true
+    });
   }
 
-  
+
 
   render() {
 
@@ -235,165 +262,154 @@ class MyShopsEditShop extends Component {
     var entVPID;
     var entVPText;
 
-    if (this.props.shops.length == 0 || this.props.shopID == 0 ) {
-      selected = { name:"Loading..." };
-    }
-    else {
+    if (this.props.shops.length == 0 || this.props.shopID == 0) {
+      selected = {
+        name: "Loading..."
+      };
+    } else {
       shopID = this.props.shopID;
 
-      selected = _.find(this.props.shops, function(o) { return o.id == shopID;});
+      selected = _.find(this.props.shops, function(o) {
+        return o.id == shopID;
+      });
     }
 
     if (this.props.categories.length == 0 || !selected.category) {
       catText = ""
-    }
-    else {
+    } else {
       catID = selected.category;
 
-      catText = _.find(this.props.categories, function(o) { return o.id == catID}).text;
+      catText = _.find(this.props.categories, function(o) {
+        return o.id == catID
+      }).text;
     }
 
-    if ( this.props.viewpoints.length == 0 || !selected.entranceViewpoint ) {
+    if (this.props.viewpoints.length == 0 || !selected.entranceViewpoint) {
       entVPText = ""
-    }
-    else{ 
+    } else {
 
       entVPID = selected.entranceViewpoint;
 
       if (entVPID.id) {
-        entVPText = _.find(this.props.viewpoints, function(o) { return o.id == entVPID}).name;
+        entVPText = _.find(this.props.viewpoints, function(o) {
+          return o.id == entVPID
+        }).name;
       }
 
     }
 
     return (
-        <div className="force-to-bottom">
-            <div className="add-shop-btn">
-                <Button
-                    bsStyle="primary"
-                    bsSize="large"
-                    onClick={this.open.bind(this)}
-                    >
-                Edit <b>{selected.name}</b>
-                </Button>
-            </div>
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)} onEntered={this.setColorBoxes.bind(this)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit <b>{this.state.selectedShop.name}</b>:</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Input label="Name" type="ShopName" ref='nameBox' defaultValue={this.state.selectedShop.name} required />
-                    <div className="contact-outer">
-                        <label >Contact Details:</label>
-                        <div className="contact-inner">
-                            <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox"  defaultValue={this.state.selectedShop.email}  />
-
-                            {this.state.alertBadEmailVisible ? 
-                            <Alert bsStyle="danger" onDismiss={this.handleAlertBadEmailDismiss.bind(this)}>
-                              <h4>Please add a valid email address.</h4>
-                              <p>The email address entered is either invalid or empty.</p>
-                            </Alert> : null}
-
-                            <Input type="shopContactURL" label="URL" ref="shopContactURLBox"  defaultValue={this.state.selectedShop.url} />
-                            <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox"  defaultValue={this.state.selectedShop.phone}  />
-                        </div>
-                    </div>
-                    <div className="contact-outer">
-                        <label >Physical Address:</label>
-                        <div className="contact-inner">
-                            <Input type="shopAddressLine1" label="Address Line 1" ref="shopAddressLine1Box"  defaultValue={this.state.selectedShop.address1}  />
-                            <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box"  defaultValue={this.state.selectedShop.address2} />
-                            <Input type="shopAddressCity" label="City" ref="shopAddressCityBox"  defaultValue={this.state.selectedShop.city}  />
-                            <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox"  defaultValue={this.state.selectedShop.province}  />
-                        </div>
-                    </div>
-
-                    <label htmlFor="inputShopCategory" className="form-element">Category</label>
-                    <div className="cat-button">
-                        <DropdownButton bsStyle={'primary'} title={'Select a category'} id="catbutton">
-                            {this.props.categories.map((categories, index) =>
-                            <MenuItem eventKey={index} key={index} onClick={this.clickCategory.bind(this)}> {categories.text} </MenuItem>
-                            )}
-                        </DropdownButton>
-                    </div>
-                    <div className="cat-box">
-                        <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group"   defaultValue={catText} />
-                    </div>
-
-                            {this.state.alertNoCatVisible ? 
-                            <Alert bsStyle="danger" onDismiss={this.handleAlertNoCatDismiss.bind(this)}>
-                              <h4>Please select a category.</h4>
-                              <p>You have not yet selected a category for this shop.</p>
-                            </Alert> : null}
-
-                    <label htmlFor="inputShopEntranceViewpoint" className="form-element">Entrance Viewpoint</label>
-                    <div className="cat-button">
-                        <DropdownButton bsStyle={'primary'} title={'Select an entrance viewpoint'} id="catbutton">
-                            {this.props.viewpoints.map((viewpoint, index) =>
-                            <MenuItem eventKey={index} key={index} data={viewpoint.id} onClick={this.clickViewpoint.bind(this)}> {viewpoint.name} </MenuItem>
-                            )}
-                        </DropdownButton>
-                    </div>
-                    <div className="cat-box">
-                        <Input type="ShopEntranceViewpoint" readOnly ref='entranceViewpointBox' bsClass="input-group"   defaultValue={entVPText} />
-                    </div>
-
-                           {this.state.alertNoEVPVisible ? 
-                            <Alert bsStyle="danger" onDismiss={this.handleAlertNoEVPDismiss.bind(this)}>
-                              <h4>Please select an entrance viewpoint.</h4>
-                              <p>You have not yet selected an entrance viewpoint for this shop.</p>
-                            </Alert> : null}
-
-                    <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label><br/>
-                    {!this.state.changeImage                                 ?
-                    <Grid fluid>
-                        <div>
-                            <Row className="padded-row">
-                                <Col xs={8} md={8}>
-                                <Image src={this.state.selectedShop.logoFile} responsive />
-                                </Col>
-                                <Col xs={1} md={1}>
-                                <div>
-                                    <OverlayTrigger overlay={
-                                    <Tooltip id="remove-image" >Remove image.</Tooltip>
-                                    }>
-                                    <Button bsStyle="danger" onClick = {this.clickedDeleteImage.bind(this)}>Change Logo</Button>
-                                    </OverlayTrigger>
-                                </div>
-                                </Col> 
-                            </Row>
-                        </div>
-                    </Grid>
-                    :
-                    <S3Uploader
-                        onUploadStart={this.imageUploadStarted.bind(this)}
-                        onUploadFinish={this.imageUploadComplete.bind(this)}
-                        folderURL={logoFolderURL}/>
-                      }
-                    <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color </label>
-                    <Grid fluid>
-                        <Row className="padded-row">
-                            <Col xs={3} md={3}>
-                            <ColorPick handleChange={this.handleChangeComplete.bind(this)} onClosing={this.handleColorClose.bind(this)} index='0'/>
-                            </Col>
-                            <Col  xs={1} md={1}>
-                            <div ref='colorDisplayBox'>
-                            </div>
-                            </Col>
-                            <Col xs={3} md={3}>
-                            <Input type="productColorHex" ref='colorHexBox'  readOnly defaultValue={this.state.selectedShop.logoColor}  placeholder="Hex Value"  />
-                            </Col>
-                        </Row>
-                    </Grid>
-                </Modal.Body>
-                <Modal.Footer>
-                    <ButtonInput type="submit" bsStyle="primary" onClick = {this.clickedEditShop.bind(this)} disabled={this.state.submitDisabled} >
-                        {this.state.submitDisabled? 'Wait for upload to finish' : 'Edit shop'}
-                    </ButtonInput>
-                </Modal.Footer>
-            </Modal>
+      <div className="force-to-bottom">
+        <div className="add-shop-btn">
+          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
+            Edit <b>{ selected.name }</b>
+          </Button>
         </div>
-    );
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) }>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit <b>{ this.state.selectedShop.name }</b>:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Input label="Name" type="ShopName" ref='nameBox' defaultValue={ this.state.selectedShop.name } required />
+            <div className="contact-outer">
+              <label>Contact Details:</label>
+              <div className="contact-inner">
+                <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox" defaultValue={ this.state.selectedShop.email } />
+                { this.state.alertBadEmailVisible ?
+                  <Alert bsStyle="danger" onDismiss={ this.handleAlertBadEmailDismiss.bind(this) }>
+                    <h4>Please add a valid email address.</h4>
+                    <p>The email address entered is either invalid or empty.</p>
+                  </Alert> : null }
+                <Input type="shopContactURL" label="URL" ref="shopContactURLBox" defaultValue={ this.state.selectedShop.url } />
+                <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox" defaultValue={ this.state.selectedShop.phone } />
+              </div>
+            </div>
+            <div className="contact-outer">
+              <label>Physical Address:</label>
+              <div className="contact-inner">
+                <Input type="shopAddressLine1" label="Address Line 1" ref="shopAddressLine1Box" defaultValue={ this.state.selectedShop.address1 } />
+                <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box" defaultValue={ this.state.selectedShop.address2 } />
+                <Input type="shopAddressCity" label="City" ref="shopAddressCityBox" defaultValue={ this.state.selectedShop.city } />
+                <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" defaultValue={ this.state.selectedShop.province } />
+              </div>
+            </div>
+            <label htmlFor="inputShopCategory" className="form-element">Category</label>
+            <div className="cat-button">
+              <DropdownButton bsStyle={ 'primary' } title={ 'Select a category' } id="catbutton">
+                { this.props.categories.map((categories, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.clickCategory.bind(this) }>
+                                                                   { categories.text } </MenuItem>
+                  ) }
+              </DropdownButton>
+            </div>
+            <div className="cat-box">
+              <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group" defaultValue={ catText } />
+            </div>
+            { this.state.alertNoCatVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoCatDismiss.bind(this) }>
+                <h4>Please select a category.</h4>
+                <p>You have not yet selected a category for this shop.</p>
+              </Alert> : null }
+            <label htmlFor="inputShopEntranceViewpoint" className="form-element">Entrance Viewpoint</label>
+            <div className="cat-button">
+              <DropdownButton bsStyle={ 'primary' } title={ 'Select an entrance viewpoint' } id="catbutton">
+                { this.props.viewpoints.map((viewpoint, index) => <MenuItem eventKey={ index } key={ index } data={ viewpoint.id } onClick={ this.clickViewpoint.bind(this) }>
+                                                                  { viewpoint.name } </MenuItem>
+                  ) }
+              </DropdownButton>
+            </div>
+            <div className="cat-box">
+              <Input type="ShopEntranceViewpoint" readOnly ref='entranceViewpointBox' bsClass="input-group" defaultValue={ entVPText } />
+            </div>
+            { this.state.alertNoEVPVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoEVPDismiss.bind(this) }>
+                <h4>Please select an entrance viewpoint.</h4>
+                <p>You have not yet selected an entrance viewpoint for this shop.</p>
+              </Alert> : null }
+            <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label>
+            <br/>
+            { !this.state.changeImage ?
+              <Grid fluid>
+                <div>
+                  <Row className="padded-row">
+                    <Col xs={ 8 } md={ 8 }>
+                    <Image src={ this.state.selectedShop.logoFile } responsive />
+                    </Col>
+                    <Col xs={ 1 } md={ 1 }>
+                    <div>
+                      <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove image.</Tooltip> }>
+                        <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this) }>Change Logo</Button>
+                      </OverlayTrigger>
+                    </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Grid>
+              :
+              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ logoFolderURL } /> }
+            <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color </label>
+            <Grid fluid>
+              <Row className="padded-row">
+                <Col xs={ 3 } md={ 3 }>
+                <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index='0' />
+                </Col>
+                <Col xs={ 1 } md={ 1 }>
+                <div ref='colorDisplayBox'>
+                </div>
+                </Col>
+                <Col xs={ 3 } md={ 3 }>
+                <Input type="productColorHex" ref='colorHexBox' readOnly defaultValue={ this.state.selectedShop.logoColor } placeholder="Hex Value" />
+                </Col>
+              </Row>
+            </Grid>
+          </Modal.Body>
+          <Modal.Footer>
+            <ButtonInput type="submit" bsStyle="primary" onClick={ this.clickedEditShop.bind(this) } disabled={ this.state.submitDisabled }>
+              { this.state.submitDisabled ? 'Wait for upload to finish' : 'Edit shop' }
+            </ButtonInput>
+          </Modal.Footer>
+        </Modal>
+      </div>
+      );
   }
 }
 
@@ -405,12 +421,13 @@ function mapStateToProps(state) {
   const categories = state.categories;
   const shops = state.shops;
   const viewpoints = state.viewpoints;
-  return { 
+  return {
     categories,
     shops,
     viewpoints
-    };
-};
+  };
+}
+;
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -419,6 +436,7 @@ function mapDispatchToProps(dispatch) {
     boundPatchShop: bindActionCreators(unboundPatchShop, dispatch),
     fetchViewpoints: bindActionCreators(fetchViewpoints, dispatch)
   };
-};
+}
+;
 
-export default connect(mapStateToProps,mapDispatchToProps)(FetchedCategoryEditShopList);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedCategoryEditShopList);
