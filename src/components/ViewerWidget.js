@@ -61,6 +61,7 @@ class ViewerWidget extends Component {
           })
         })
         this.initializeViewer();
+        this.props.viewerInitialized && this.props.viewerInitialized();
       });
   }
 

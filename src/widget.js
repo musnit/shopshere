@@ -15,7 +15,8 @@ window.createSphereWidget = (shopID, callbacks, domElementID) => {
       shopLoaded={ callbacks.shopLoaded }
       productsLoaded={ callbacks.productsLoaded }
       viewpointsLoaded={ callbacks.viewpointsLoaded }
-      hotspotsLoaded={ callbacks.hotspotsLoaded } />,
+      hotspotsLoaded={ callbacks.hotspotsLoaded }
+      viewerInitialized={ callbacks.viewerInitialized } />,
     document.getElementById(domElementID)
   );
 }

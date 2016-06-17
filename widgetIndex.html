@@ -12,8 +12,18 @@
   </head>
   <body>
     <h1> widget inserted below when u click with shop id of 8e93ed4e-dab6-46e3-99fa-674decf69486. The code is run like:</h1>
-    <pre>window.createSphereWidget('8e93ed4e-dab6-46e3-99fa-674decf69486', openProductModal, 'widget-holder-div')</pre>
-    <button onclick="window.createSphereWidget('8e93ed4e-dab6-46e3-99fa-674decf69486', { openProductModal: console.log.bind(console), hoverProduct: console.log.bind(console), shopLoaded: console.log.bind(console), productsLoaded: console.log.bind(console), viewpointsLoaded: console.log.bind(console), hotspotsLoaded: console.log.bind(console) } , 'widget-holder-div')">clicky</button>
+    <pre>window.createSphereWidget('8e93ed4e-dab6-46e3-99fa-674decf69486',
+          {
+            openProductModal: console.log.bind(console),
+            hoverProduct: console.log.bind(console),
+            shopLoaded: console.log.bind(console),
+            productsLoaded: console.log.bind(console),
+            viewpointsLoaded: console.log.bind(console),
+            hotspotsLoaded: console.log.bind(console),
+            viewerInitialized: console.log.bind(console)
+          },
+          'widget-holder-div')</pre>
+    <button onclick="window.createSphereWidget('8e93ed4e-dab6-46e3-99fa-674decf69486', { openProductModal: console.log.bind(console), hoverProduct: console.log.bind(console), shopLoaded: console.log.bind(console), productsLoaded: console.log.bind(console), viewpointsLoaded: console.log.bind(console), hotspotsLoaded: console.log.bind(console), viewerInitialized: console.log.bind(console) } , 'widget-holder-div')">clicky</button>
     <div id="widget-holder-div"></div>
     <script src="/sphereWidget.js"></script>
   </body>
