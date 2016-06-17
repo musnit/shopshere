@@ -72,6 +72,7 @@ class ViewerWidget extends Component {
           if (err || !res.ok) {
             console.log('Oh no! error' + JSON.stringify(err));
           } else {
+            this.props.shopLoaded && this.props.shopLoaded(res.body);
             resolve(res.body["Items"][0]);
           }
         });
@@ -86,6 +87,15 @@ class ViewerWidget extends Component {
           if (err || !res.ok) {
             console.log('Oh no! error' + JSON.stringify(err));
           } else {
+            if (type === 'product'){
+              this.props.productsLoaded && this.props.productsLoaded(res.body);
+            }
+            else if (type === 'viewpoint'){
+              this.props.viewpointsLoaded && this.props.viewpointsLoaded(res.body);
+            }
+            else if (type === 'hotspot'){
+              this.props.hotspotsLoaded && this.props.hotspotsLoaded(res.body);
+            }
             resolve(res.body["Items"]);
           }
         });
@@ -174,10 +184,14 @@ class ViewerWidget extends Component {
   }
 
   render() {
-    const loadingStore = this.state.loadingStore && <div>Loading store...</div>;
-    const loadingProducts = this.state.loadingProducts && <div>Loading products...</div>;
-    const loadingViewpoints = this.state.loadingViewpoints && <div>Loading viewpoints...</div>;
-    const loadingHotspots = this.state.loadingHotspots && <div>Loading hotspots...</div>;
+    const loadingStore = this.state.loadingStore &&
+      <div className='loading-text' id='loading-store'>Loading store...</div>;
+    const loadingProducts = this.state.loadingProducts &&
+      <div className='loading-text' id='loading-products'>Loading products...</div>;
+    const loadingViewpoints = this.state.loadingViewpoints &&
+      <div className='loading-text' id='loading-viewpoints'>Loading viewpoints...</div>;
+    const loadingHotspots = this.state.loadingHotspots &&
+      <div className='loading-text' id='loading-hotpots'>Loading hotspots...</div>;
     return (
       <div id='viewer-widget'>
         { loadingStore }
