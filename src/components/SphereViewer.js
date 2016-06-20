@@ -290,12 +290,12 @@ export default class SphereViewer {
   }
 
   setupMouseTracker() {
-    var sphereGeom = new THREE.SphereGeometry(3, 3, 3);
-    var sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({
-      color: 0xff0000
-    }));
-    this.scene.add(sphere);
-    this.mouseSphere = sphere;
+    // var sphereGeom = new THREE.SphereGeometry(3, 3, 3);
+    // var sphere = new THREE.Mesh(sphereGeom, new THREE.MeshBasicMaterial({
+    //   color: 0xff0000
+    // }));
+    // this.scene.add(sphere);
+    // this.mouseSphere = sphere;
     document.addEventListener('mousemove', (event) => {
       const viewpointX = this.renderer.domElement.offsetLeft;
       const viewpointY = this.renderer.domElement.offsetTop - window.scrollY;
@@ -305,16 +305,16 @@ export default class SphereViewer {
   }
 
   updateMouseCursor() {
-    const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
+    // const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
-    v3MouseCoords.unproject(this.camera);
-    var ray = new THREE.Raycaster(this.camera.position, v3MouseCoords.sub(this.camera.position).normalize());
+    // v3MouseCoords.unproject(this.camera);
+    // var ray = new THREE.Raycaster(this.camera.position, v3MouseCoords.sub(this.camera.position).normalize());
 
-    var intersects = ray.intersectObjects([this.sphereMesh]);
-    if (intersects.length > 0) {
-      this.mouseSphere.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
-    //console.log(intersects[0].point.x);
-    }
+    // var intersects = ray.intersectObjects([this.sphereMesh]);
+    // if (intersects.length > 0) {
+    //   this.mouseSphere.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
+    // //console.log(intersects[0].point.x);
+    // }
   }
 
 

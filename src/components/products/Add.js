@@ -41,7 +41,6 @@ class Add extends Component {
       this.handleAlertDismiss();
     }
 
-
     var addObject = {
       name: this.refs.nameBox.getValue(),
 
