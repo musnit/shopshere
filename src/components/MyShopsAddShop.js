@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, Alert } from 'react-bootstrap';
+import { addCategory } from '~/src/actions/categories';
 import { unboundAddShop } from '~/src/actions/shops';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
@@ -165,7 +166,8 @@ class MyShopsAddShop extends Component {
       alertNoURLVisible: false,
       alertNoPhoneVisible: false,
       alertNoAddressVisible: false,
-      alertNoImageVisible: false
+      alertNoImageVisible: false,
+      addCatModalVisible: false
     };
   }
 
@@ -179,7 +181,8 @@ class MyShopsAddShop extends Component {
       alertNoURLVisible: false,
       alertNoPhoneVisible: false,
       alertNoAddressVisible: false,
-      alertNoImageVisible: false
+      alertNoImageVisible: false,
+      addCatModalVisible: false
     });
   }
 
@@ -309,6 +312,30 @@ class MyShopsAddShop extends Component {
     });
   }
 
+  clickedAddCategory() {
+    this.setState({
+      addCatModalVisible: true
+    });
+  }
+
+  clickedSubmitCategory() {
+    if (this.refs.newCatNameBox.getValue() == "") {
+      return;
+    }
+
+    var addObject = {
+      text: this.refs.newCatNameBox.getValue()
+    };
+
+    this.props.addCategory(addObject);
+
+    this.refs.catBox.getInputDOMNode().value = this.refs.newCatNameBox.getValue();
+
+    this.setState({
+      addCatModalVisible: false,
+    });
+  }
+
 
 
   render() {
@@ -372,14 +399,28 @@ class MyShopsAddShop extends Component {
                 { categories.map((categories, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.clickCategory.bind(this) }>
                                                         { categories.text } </MenuItem>
                   ) }
+                <MenuItem divider />
+                <MenuItem onClick={ this.clickedAddCategory.bind(this) }> <b>Add a new category...</b> </MenuItem>
               </DropdownButton>
             </div>
             <div className="cat-box">
               <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group" placeholder="Category..." />
             </div>
-            { this.state.alertNoCatVisible ?
-              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoCatDismiss.bind(this) }>
-                <p>Select a category for this shop.</p>
+            { this.state.addCatModalVisible ?
+              <div className="addcatbox">
+                <div className="catside">
+                  <Input label="New Category Name" type="CategoryName" ref='newCatNameBox' placeholder="Category Name..." required />
+                </div>
+                <div className="catside">
+                  <ButtonInput type="submit" bsStyle="primary" onClick={ this.clickedSubmitCategory.bind(this) }>
+                    Add category
+                  </ButtonInput>
+                </div>
+              </div>
+              : null }
+            { this.state.alertNoImageVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
+                <p>A shop Logo Image is required.</p>
               </Alert> : null }
             <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label>
             <br/>
@@ -426,6 +467,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     boundAddShop: bindActionCreators(unboundAddShop, dispatch),
+    addCategory: bindActionCreators(addCategory, dispatch),
   };
 }
 ;

@@ -65,3 +65,13 @@ label {
 .contact-outer {
   margin: 0 auto;
 }
+
+
+.catside {
+  display:inline-block;
+  padding: 1%;
+}
+
+.addcatbox {
+  margin:2%;
+}

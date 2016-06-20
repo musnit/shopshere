@@ -10,11 +10,7 @@ import { find, map } from 'lodash';
 
 import '~/src/styles/shops.css';
 
-
-
-
 class Add extends Component {
-
 
   constructor(props) {
     super(props);
@@ -100,6 +96,7 @@ class Add extends Component {
       );
   }
 }
+;
 
 function mapStateToProps(state) {
   return {};
