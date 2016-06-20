@@ -188,13 +188,21 @@ class ViewerWidget extends Component {
 
   render() {
     const loadingStore = this.state.loadingStore &&
-      <div className='loading-text' id='loading-store'>Loading store...</div>;
+      <span className='loading-span' id='loading-store-span'>
+        <div className='loading-text' id='loading-store'>Loading store...</div>
+      </span>
     const loadingProducts = this.state.loadingProducts &&
-      <div className='loading-text' id='loading-products'>Loading products...</div>;
+      <span className='loading-span' id='loading-products-span'>
+        <div className='loading-text' id='loading-products'>Loading products...</div>
+      </span>;
     const loadingViewpoints = this.state.loadingViewpoints &&
-      <div className='loading-text' id='loading-viewpoints'>Loading viewpoints...</div>;
+      <span className='loading-span' id='loading-viewpoints-span'>
+        <div className='loading-text' id='loading-viewpoints'>Loading viewpoints...</div>
+      </span>;
     const loadingHotspots = this.state.loadingHotspots &&
-      <div className='loading-text' id='loading-hotpots'>Loading hotspots...</div>;
+      <span className='loading-span' id='loading-hotspots-span'>
+        <div className='loading-text' id='loading-hotpots'>Loading hotspots...</div>
+      </span>;
     return (
       <div id='viewer-widget'>
         { loadingStore }
