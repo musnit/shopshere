@@ -9,8 +9,8 @@ const sphereRadius = 100;
 
 const testImage = "/images/360_shop_from_aid.jpg";
 const testImage2 = "/images/360_shop_1.jpg";
-const prodHsImage = "/images/product_hs.jpg";
-const navHsImage = "/images/nav_hs.jpg";
+const prodHsImage = "/images/product_hs.png";
+const navHsImage = "/images/nav_hs.png";
 
 const imageAspectRatio = 2;
 
