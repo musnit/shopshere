@@ -31,8 +31,8 @@ class ViewerWidget extends Component {
         return this.loadViewpoints(shopID);
       })
       .then((viewpoints) => {
-        const entranceViewpoint = this.props.firstViewpointId || _.find(viewpoints, (viewpoint) => {
-          return viewpoint.id == this.state.shop.entranceViewpoint;
+        const entranceViewpoint = _.find(viewpoints, (viewpoint) => {
+          return viewpoint.id == (this.props.firstViewpointId || this.state.shop.entranceViewpoint);
         });
         this.setState({
           viewpoints,
