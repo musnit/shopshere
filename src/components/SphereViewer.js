@@ -3,8 +3,8 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 const TransformControls = require('three-transformcontrols');
 import { forEach } from 'lodash';
 
-const viewerSizeX = 800;
-const viewerSizeY = 400;
+let viewerSizeX = 800;
+let viewerSizeY = 400;
 const sphereRadius = 100;
 
 const testImage = "/images/360_shop_from_aid.jpg";
@@ -17,6 +17,9 @@ const imageAspectRatio = 2;
 export default class SphereViewer {
 
   constructor(params) {
+    viewerSizeX = params.width;
+    viewerSizeY = params.height;
+
     this.mouse = {};
     this.openModal = params.openModal;
     this.openNewHSModal = params.openNewHSModal;

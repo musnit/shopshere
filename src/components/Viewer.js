@@ -70,7 +70,7 @@ class Viewer extends Component {
        if(nextProps.hotspots !== this.props.hotspots){
         this.removeAllHotspots();
         this.addHotspotsToViewpoint(nextProps.hotspots);
-       } 
+       }
 	  }
 
     componentDidMount() {
@@ -81,7 +81,9 @@ class Viewer extends Component {
             domContainerElement: document.getElementById('viewer-placeholder'),
             openModal: this.open.bind(this),
             openNewHSModal: this.addNewHotspotModal.bind(this),
-            imageURL:imageURL
+            imageURL:imageURL,
+            width: 800,
+            height: 400
         });
         this.checkForEntranceViewpoint(viewpointID);
     }
@@ -122,17 +124,17 @@ class Viewer extends Component {
         else if (thisHotspot.type === "navigation") {
             var navigateTo = _.find(this.props.viewpoints, function(o) { return o.id == thisHotspot.prodview });
             this.navigateToViewpoint( navigateTo );
-            this.setState({ 
+            this.setState({
                 modalMode: this.state.modalMode,
                 showModal: false,
                 currentHotspot: "",
                 currentProduct: "" });
-            return; 
+            return;
         }
 		else {
 			thisProduct = this.state.currentProduct;
 		}
-    		
+
 
         this.setState({
         	modalMode: this.state.modalMode,
@@ -181,7 +183,7 @@ class Viewer extends Component {
     }
 
     addNewHotspotModal(Coords) {
-        this.setState({ 
+        this.setState({
             showNewHotspotModal: true,
             newHSCoords: Coords
         });
@@ -198,7 +200,7 @@ class Viewer extends Component {
 
     closeNewProductHotspotModal() {
         this.setState({ showNewProductHotspotModal: false});
-        
+
     }
 
     showNewNavigationHotspotModal() {
@@ -208,7 +210,7 @@ class Viewer extends Component {
 
     closeNewNavigationHotspotModal() {
         this.setState({ showNewNavigationHotspotModal: false});
-    }  
+    }
 
     addNewNavigationHotspot(event) {
         var inputName = event.target.innerText;
@@ -226,8 +228,8 @@ class Viewer extends Component {
         var outputName = this.state.currentViewpoint + " Sells " + inputName;
         this.closeNewProductHotspotModal();
         this.sphereViewer.addNewProductHotspot.bind(this.sphereViewer);
-        this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);   
-        this.saveHotspot(productID);     
+        this.sphereViewer.addNewProductHotspot(outputName, this.state.newHSCoords);
+        this.saveHotspot(productID);
     }
 
     saveHotspot(viewpointID){
@@ -265,7 +267,7 @@ class Viewer extends Component {
         });
         this.changeViewpoint(navigateTo.id);
         this.checkForEntranceViewpoint(navigateTo.id);
-    
+
     }
 
     removeAllHotspots() {
@@ -275,7 +277,7 @@ class Viewer extends Component {
     }
 
     addHotspotsToViewpoint(hotspots){
-        
+
         var addAHotspot = this.sphereViewer.addAHotspot.bind(this.sphereViewer);
         _.forEach(hotspots, function(o) { addAHotspot(o); });
     }
@@ -284,7 +286,7 @@ class Viewer extends Component {
 
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
         this.sphereViewer.changeBackgroundImage(imageURL);
-        this.setState({ 
+        this.setState({
             key: Math.random()
             })
     }
@@ -295,7 +297,7 @@ class Viewer extends Component {
         var imageURL = viewpointImage.imageFile;
         this.sphereViewer.changeBackgroundImage.bind(this.sphereViewer);
         this.sphereViewer.changeBackgroundImage(imageURL);
-        this.setState({ 
+        this.setState({
             key: Math.random(),
             currentViewpoint: vpID })
     }
@@ -334,10 +336,10 @@ class Viewer extends Component {
                             </Col>
                     </Row>
 
-                    {!this.state.noSelection ? 
+                    {!this.state.noSelection ?
                         <div>
 
-                    { this.state.entranceViewpointNeeded ?                     
+                    { this.state.entranceViewpointNeeded ?
                     <div className="entrance-view-box">
 
                     <Row className="show-grid">
@@ -350,7 +352,7 @@ class Viewer extends Component {
                         <div className="entrance-view-button">
                             <Button
                             bsStyle="warning"
-                                
+
                                 type = "submit"
                                 onClick = {this.clickedSetToEntranceViewpoint.bind(this)} >
                             Set <b>{viewpointName}</b> as <b>{shopName}&#8217;s</b> entrance viewpoint.
@@ -358,12 +360,12 @@ class Viewer extends Component {
                         </div>
                         </Col>
 
-                    </Row> 
+                    </Row>
 
 
                     </div> : null }
 
-                    
+
                     <div className="edit-box">
 
 
@@ -380,27 +382,27 @@ class Viewer extends Component {
 
                 </Grid>
             </div>
-            
+
 
 
             <div id='viewer-placeholder'></div>
 
-            {!this.state.noSelection ? 
+            {!this.state.noSelection ?
 
                 <Grid className="grid-panel">
 
-                { !this.state.entranceViewpointNeeded && this.state.thisIsTheEntrance ?                     
+                { !this.state.entranceViewpointNeeded && this.state.thisIsTheEntrance ?
                     <div className="entrance-view-box">
 
                     <Row className="show-grid">
                         <p className="entrance-view-text"> <Glyphicon glyph="info-sign" /> This is <b>{shopName}&#8217;s</b> entrance viewpoint. </p>
-                    </Row> 
+                    </Row>
 
 
                     </div> : null}
 
 
-                    { !this.state.entranceViewpointNeeded && !this.state.thisIsTheEntrance ?    
+                    { !this.state.entranceViewpointNeeded && !this.state.thisIsTheEntrance ?
 
                      <div className="entrance-view-box">
 
@@ -409,14 +411,14 @@ class Viewer extends Component {
                         <div className="entrance-view-button">
                             <Button
                             bsStyle="warning"
-                                
+
                                 type = "submit"
                                 onClick = {this.clickedSetToEntranceViewpoint.bind(this)} >
                             Set <b>{viewpointName}</b> as <b>{shopName}&#8217;s</b> entrance viewpoint.
                             </Button>
                         </div>
 
-                    </Row> 
+                    </Row>
 
 
                     </div> : null}
@@ -485,13 +487,13 @@ class Viewer extends Component {
                     <ButtonToolbar>
                         <ButtonGroup className="view-button-left">
                             <Button   bsSize="large" type="submit" bsStyle="primary" onClick = {this.showNewProductHotspotModal.bind(this)} >
-                                Product Hotspot  
+                                Product Hotspot
                                 <Glyphicon glyph="tags" />
                             </Button>
                         </ButtonGroup>
                         <ButtonGroup className="view-button-right">
                             <Button   bsSize="large" type="submit" bsStyle="primary" onClick = {this.showNewNavigationHotspotModal.bind(this)} >
-                                Navigation Hotspot  
+                                Navigation Hotspot
                                 <Glyphicon glyph="transfer" />
                             </Button>
                         </ButtonGroup>
@@ -539,7 +541,7 @@ function mapStateToProps(state) {
   const products = state.products;
   const hotspots = state.hotspots;
   const viewpoints = state.viewpoints;
-  return { 
+  return {
     viewpoints,
   	products,
   	hotspots

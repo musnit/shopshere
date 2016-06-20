@@ -60,7 +60,7 @@ class ViewerWidget extends Component {
             return hotspot.viewpoint === this.state.currentViewpoint.id;
           })
         })
-        this.initializeViewer();
+        this.initializeViewer.call(this);
         this.props.viewerInitialized && this.props.viewerInitialized();
       });
   }
@@ -119,7 +119,9 @@ class ViewerWidget extends Component {
     this.sphereViewer = new SphereViewer({
       domContainerElement: document.getElementById('viewer-placeholder'),
       openModal: this.open.bind(this),
-      imageURL: this.state.currentViewpoint.imageFile
+      imageURL: this.state.currentViewpoint.imageFile,
+      width: this.props.width,
+      height: this.props.height
     });
     this.removeAllHotspots();
     this.addHotspotsToViewpoint(this.state.currentHotspots);

@@ -5,11 +5,13 @@ injectTapEventPlugin();
 
 import ViewerWidget from './components/ViewerWidget';
 
-window.createSphereWidget = (shopID, callbacks, domElementID) => {
+window.createSphereWidget = (shopID, callbacks, domElementID, width, height) => {
   callbacks = callbacks || {};
   render(
     <ViewerWidget
       shopID={ shopID }
+      width = { width }
+      height = { height }
       openProductModal={ callbacks.openProductModal }
       hoverProduct={ callbacks.hoverProduct }
       shopLoaded={ callbacks.shopLoaded }
