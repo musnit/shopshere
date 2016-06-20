@@ -354,7 +354,7 @@ class MyShopsAddShop extends Component {
             <Modal.Title>Add a new shop:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Input label="Name" type="ShopName" ref='nameBox' placeholder="Name..." required />
+            <Input label="Name" type="text" ref='nameBox' placeholder="Name..." required />
             { this.state.alertNoNameVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
                 <p>Shop name is required.</p>
@@ -362,17 +362,17 @@ class MyShopsAddShop extends Component {
             <div className="contact-outer">
               <label>Contact Details:</label>
               <div className="contact-inner">
-                <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox" placeholder="Email..." />
+                <Input type="email" label="Email" ref="shopContactEmailBox" placeholder="Email..." />
                 { this.state.alertBadEmailVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertBadEmailDismiss.bind(this) }>
                     <p>Email address is either invalid or empty.</p>
                   </Alert> : null }
-                <Input type="shopContactURL" label="URL" ref="shopContactURLBox" placeholder="URL..." />
+                <Input type="url" label="URL" ref="shopContactURLBox" placeholder="URL..." />
                 { this.state.alertNoURLVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertNoURLDismiss.bind(this) }>
                     <p>Shop URL is required.</p>
                   </Alert> : null }
-                <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox" placeholder="Phone..." />
+                <Input type="tel" label="Phone" ref="shopContactPhoneBox" placeholder="Phone..." />
                 { this.state.alertNoPhoneVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertNoPhoneDismiss.bind(this) }>
                     <p>Shop contact phone number is required.</p>
@@ -382,11 +382,11 @@ class MyShopsAddShop extends Component {
             <div className="contact-outer">
               <label>Physical Address:</label>
               <div className="contact-inner">
-                <Input type="shopAddressLine1" label="Address Line 1" ref="shopAddressLine1Box" placeholder="Address Line 1..." />
-                <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box" placeholder="Address Line 2..." />
-                <Input type="shopAddressCity" label="City" ref="shopAddressCityBox" placeholder="City..." />
-                <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" placeholder="Province..." />
-                <Input type="shopAddressPost" label="Postal Code" ref="shopAddressPostBox" placeholder="Post Code..." />
+                <Input type="text" label="Address Line 1" ref="shopAddressLine1Box" placeholder="Address Line 1..." />
+                <Input type="text" label="Address Line 2" ref="shopAddressLine2Box" placeholder="Address Line 2..." />
+                <Input type="text" label="City" ref="shopAddressCityBox" placeholder="City..." />
+                <Input type="text" label="Province" ref="shopAddressProvinceBox" placeholder="Province..." />
+                <Input type="text" label="Postal Code" ref="shopAddressPostBox" placeholder="Post Code..." />
               </div>
               { this.state.alertNoAddressVisible ?
                 <Alert bsStyle="danger" onDismiss={ this.handleAlertNoAddressDismiss.bind(this) }>
@@ -404,12 +404,12 @@ class MyShopsAddShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group" placeholder="Category..." />
+              <Input type="text" readOnly ref='catBox' bsClass="input-group" placeholder="Category..." />
             </div>
             { this.state.addCatModalVisible ?
               <div className="addcatbox">
                 <div className="catside">
-                  <Input label="New Category Name" type="CategoryName" ref='newCatNameBox' placeholder="Category Name..." required />
+                  <Input label="New Category Name" type="text" ref='newCatNameBox' placeholder="Category Name..." required />
                 </div>
                 <div className="catside">
                   <ButtonInput type="submit" bsStyle="primary" onClick={ this.clickedSubmitCategory.bind(this) }>
@@ -440,7 +440,7 @@ class MyShopsAddShop extends Component {
                 </div>
                 </Col>
                 <Col xs={ 3 } md={ 3 }>
-                <Input type="productColorHex" ref='colorHexBox' readOnly placeholder="Hex Value" />
+                <Input type="text" ref='colorHexBox' readOnly placeholder="Hex Value" />
                 </Col>
               </Row>
             </Grid>

@@ -154,7 +154,7 @@ class Edit extends Component {
           </Modal.Header>
           <Modal.Body>
             <label htmlFor="inputViewpointName">Viewpoint Name</label>
-            <Input type="ViewpointName" ref='nameBox' defaultValue={ this.state.selectedViewpoint.name } placeholder="Name..." required />
+            <Input type="text" ref='nameBox' defaultValue={ this.state.selectedViewpoint.name } placeholder="Name..." required />
             <label htmlFor="inputViewpointImageFile">Viewpoint Image</label>
             <br/>
             { !this.state.changeImage ?

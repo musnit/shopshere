@@ -425,7 +425,7 @@ class MyShopsEditShop extends Component {
             <Modal.Title>Edit <b>{ this.state.selectedShop.name }</b>:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Input label="Name" type="ShopName" ref='nameBox' defaultValue={ this.state.selectedShop.name } required />
+            <Input label="Name" type="text" ref='nameBox' defaultValue={ this.state.selectedShop.name } required />
             { this.state.alertNoNameVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
                 <p>Shop name is required.</p>
@@ -433,18 +433,18 @@ class MyShopsEditShop extends Component {
             <div className="contact-outer">
               <label>Contact Details:</label>
               <div className="contact-inner">
-                <Input type="shopContactEmail" label="Email" ref="shopContactEmailBox" defaultValue={ this.state.selectedShop.email } />
+                <Input type="email" label="Email" ref="shopContactEmailBox" defaultValue={ this.state.selectedShop.email } />
                 { this.state.alertBadEmailVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertBadEmailDismiss.bind(this) }>
                     <h4>Please add a valid email address.</h4>
                     <p>The email address entered is either invalid or empty.</p>
                   </Alert> : null }
-                <Input type="shopContactURL" label="URL" ref="shopContactURLBox" defaultValue={ this.state.selectedShop.url } />
+                <Input type="url" label="URL" ref="shopContactURLBox" defaultValue={ this.state.selectedShop.url } />
                 { this.state.alertNoURLVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertNoURLDismiss.bind(this) }>
                     <p>Shop URL is required.</p>
                   </Alert> : null }
-                <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox" defaultValue={ this.state.selectedShop.phone } />
+                <Input type="tel" label="Phone" ref="shopContactPhoneBox" defaultValue={ this.state.selectedShop.phone } />
                 { this.state.alertNoPhoneVisible ?
                   <Alert bsStyle="danger" onDismiss={ this.handleAlertNoPhoneDismiss.bind(this) }>
                     <p>Shop contact phone number is required.</p>
@@ -454,11 +454,11 @@ class MyShopsEditShop extends Component {
             <div className="contact-outer">
               <label>Physical Address:</label>
               <div className="contact-inner">
-                <Input type="shopAddressLine1" label="Address Line 1" ref="shopAddressLine1Box" defaultValue={ this.state.selectedShop.address1 } />
-                <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box" defaultValue={ this.state.selectedShop.address2 } />
-                <Input type="shopAddressCity" label="City" ref="shopAddressCityBox" defaultValue={ this.state.selectedShop.city } />
-                <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" defaultValue={ this.state.selectedShop.province } />
-                <Input type="shopAddressPost" label="Postal Code" ref="shopAddressPostBox" defaultValue={ this.state.selectedShop.code } />
+                <Input type="text" label="Address Line 1" ref="shopAddressLine1Box" defaultValue={ this.state.selectedShop.address1 } />
+                <Input type="text" label="Address Line 2" ref="shopAddressLine2Box" defaultValue={ this.state.selectedShop.address2 } />
+                <Input type="text" label="City" ref="shopAddressCityBox" defaultValue={ this.state.selectedShop.city } />
+                <Input type="text" label="Province" ref="shopAddressProvinceBox" defaultValue={ this.state.selectedShop.province } />
+                <Input type="text" label="Postal Code" ref="shopAddressPostBox" defaultValue={ this.state.selectedShop.code } />
               </div>
               { this.state.alertNoAddressVisible ?
                 <Alert bsStyle="danger" onDismiss={ this.handleAlertNoAddressDismiss.bind(this) }>
@@ -474,7 +474,7 @@ class MyShopsEditShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="ShopCat" readOnly ref='catBox' bsClass="input-group" defaultValue={ catText } />
+              <Input type="text" readOnly ref='catBox' bsClass="input-group" defaultValue={ catText } />
             </div>
             { this.state.alertNoCatVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoCatDismiss.bind(this) }>
@@ -490,7 +490,7 @@ class MyShopsEditShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="ShopEntranceViewpoint" readOnly ref='entranceViewpointBox' bsClass="input-group" defaultValue={ entVPText } />
+              <Input type="text" readOnly ref='entranceViewpointBox' bsClass="input-group" defaultValue={ entVPText } />
             </div>
             { this.state.alertNoEVPVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoEVPDismiss.bind(this) }>
@@ -528,7 +528,7 @@ class MyShopsEditShop extends Component {
                 </div>
                 </Col>
                 <Col xs={ 3 } md={ 3 }>
-                <Input type="productColorHex" ref='colorHexBox' readOnly defaultValue={ this.state.selectedShop.logoColor } placeholder="Hex Value" />
+                <Input type="text" ref='colorHexBox' readOnly defaultValue={ this.state.selectedShop.logoColor } placeholder="Hex Value" />
                 </Col>
               </Row>
             </Grid>

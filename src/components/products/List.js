@@ -404,13 +404,13 @@ class List extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Input label="Product Name" type="ProductName" ref='nameBox' defaultValue={ this.state.selectedProduct.name } placeholder="Name..." />
-            <Input label="Product SKU" type="ProductSKU" ref='SKUBox' defaultValue={ this.state.selectedProduct.sku } placeholder="SKU..." />
+            <Input label="Product Name" type="text" ref='nameBox' defaultValue={ this.state.selectedProduct.name } placeholder="Name..." />
+            <Input label="Product SKU" type="text" ref='SKUBox' defaultValue={ this.state.selectedProduct.sku } placeholder="SKU..." />
             <label htmlFor="inputProductDescription">
               Description
             </label>
-            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' defaultValue={ this.state.selectedProduct.description } placeholder="Description..." />
-            <Input label="Product Price" type="ProductPrice" ref='priceBox' defaultValue={ this.state.selectedProduct.price } placeholder="Price (Only decimal numbers)..." />
+            <textarea className="form-control" ref='descriptionBox' defaultValue={ this.state.selectedProduct.description } placeholder="Description..." />
+            <Input label="Product Price" type="number" ref='priceBox' defaultValue={ this.state.selectedProduct.price } placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
                 <h4>Invalid Input!</h4>
@@ -427,15 +427,14 @@ class List extends Component {
                                                                           <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index={ index } />
                                                                           </Col>
                                                                           <Col xs={ 5 } md={ 3 }>
-                                                                          <Input className="color-box" type="productColorName" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this) } defaultValue={ color[0] } placeholder="Name..."
-                                                                          />
+                                                                          <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this) } defaultValue={ color[0] } placeholder="Name..." />
                                                                           </Col>
                                                                           <Col xs={ 1 } md={ 1 }>
                                                                           <div ref={ 'colorDisplayBox' + index }>
                                                                           </div>
                                                                           </Col>
                                                                           <Col xs={ 5 } md={ 3 }>
-                                                                          <Input type="productColorHex" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this) } readOnly defaultValue={ color[1] } />
+                                                                          <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this) } readOnly defaultValue={ color[1] } />
                                                                           </Col>
                                                                           { index == colorLength - 1 ?
                                                                             <div key={ index }>
@@ -472,7 +471,7 @@ class List extends Component {
             <Grid fluid ref='sizeBox'>
               { this.state.selectedProduct.sizes.map((size, index) => <Row key={ index } className="padded-row">
                                                                         <Col xs={ 5 } md={ 3 }>
-                                                                        <Input className="size-box" type="productSize" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..." />
+                                                                        <Input className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..." />
                                                                         </Col>
                                                                         { index == sizeLength - 1 ?
                                                                           <div key={ index }>

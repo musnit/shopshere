@@ -337,19 +337,19 @@ class Add extends Component {
             <label htmlFor="inputProductName">
               Name
             </label>
-            <Input type="ProductName" ref='nameBox' placeholder="Name..." required />
+            <Input type="text" ref='nameBox' placeholder="Name..." required />
             <label htmlFor="inputProductSKU">
               SKU
             </label>
-            <Input type="ProductSKU" ref='SKUBox' placeholder="SKU..." />
+            <Input type="text" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">
               Description
             </label>
-            <textarea className="form-control" type="ProductDescription" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
+            <textarea className="form-control" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
             <label htmlFor="inputProductPrice">
               Price
             </label>
-            <Input type="ProductPrice" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
+            <Input type="number" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
                 <h4>Invalid Input!</h4>
@@ -363,7 +363,7 @@ class Add extends Component {
             <Grid fluid>
               { this.state.colors.map((item, index) => <Row className="padded-row">
                                                          <Col xs={ 3 } md={ 3 }>
-                                                         <Input className="color-box" type="productColorName" ref={ 'colorNameBox' + item } onChange={ this.onaColorBoxChange.bind(this) } placeholder="Name..." />
+                                                         <Input className="color-box" type="text" ref={ 'colorNameBox' + item } onChange={ this.onaColorBoxChange.bind(this) } placeholder="Name..." />
                                                          </Col>
                                                          <Col xs={ 3 } md={ 3 }>
                                                          <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index={ item } />
@@ -373,7 +373,7 @@ class Add extends Component {
                                                          </div>
                                                          </Col>
                                                          <Col xs={ 3 } md={ 3 }>
-                                                         <Input type="productColorHex" ref={ 'colorHexBox' + item } onChange={ this.onaColorBoxChange.bind(this) } readOnly placeholder="Hex Value" />
+                                                         <Input type="text" ref={ 'colorHexBox' + item } onChange={ this.onaColorBoxChange.bind(this) } readOnly placeholder="Hex Value" />
                                                          </Col>
                                                          { index == colorLength - 1 ?
                                                            <div key={ index }>
@@ -399,7 +399,7 @@ class Add extends Component {
             <Grid fluid ref='sizeBox'>
               { this.state.sizes.map((item, index) => <Row className="padded-row">
                                                         <Col xs={ 5 } md={ 3 }>
-                                                        <Input className="size-box" type="productSize" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
+                                                        <Input className="size-box" type="text" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
                                                         </Col>
                                                         { index == sizeLength - 1 ?
                                                           <div key={ index }>
