@@ -32,6 +32,17 @@ class MyShopsEditShop extends Component {
 
     var shortCircuit = 0;
 
+    //validate name
+
+    var nameInput = this.refs.nameBox.getValue();
+
+    if (!nameInput) {
+      this.handleAlertNoNameShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoNameDismiss();
+    }
+
     //validate email
 
     var emailInput = this.refs.shopContactEmailBox.getValue();
@@ -42,6 +53,39 @@ class MyShopsEditShop extends Component {
     } else {
       this.handleAlertBadEmailDismiss();
     }
+
+    //validate URL
+    var URLInput = this.refs.shopContactURLBox.getValue();
+    if (!URLInput) {
+      this.handleAlertNoURLShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoURLDismiss();
+    }
+
+    //validate Phone
+    var phoneInput = this.refs.shopContactPhoneBox.getValue();
+    if (!phoneInput) {
+      this.handleAlertNoPhoneShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoPhoneDismiss();
+    }
+
+    //validate Address
+    var address1Input = this.refs.shopAddressLine1Box.getValue();
+    var address2Input = this.refs.shopAddressLine2Box.getValue();
+    var cityInput = this.refs.shopAddressCityBox.getValue();
+    var provinceInput = this.refs.shopAddressProvinceBox.getValue();
+    var codeInput = this.refs.shopAddressPostBox.getValue();
+
+    if (!address1Input || !address2Input || !cityInput || !provinceInput || !codeInput) {
+      this.handleAlertNoAddressShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoAddressDismiss();
+    }
+
 
     var catval = this.refs.catBox.getValue();
 
@@ -83,15 +127,15 @@ class MyShopsEditShop extends Component {
 
     var patchShopObject = {
       id: this.state.selectedShop.id,
-      name: this.refs.nameBox.getValue(),
+      name: nameInput,
       email: emailInput,
-      url: this.refs.shopContactURLBox.getValue(),
-      phone: this.refs.shopContactPhoneBox.getValue(),
-      address1: this.refs.shopAddressLine1Box.getValue(),
-      address2: this.refs.shopAddressLine2Box.getValue(),
-      city: this.refs.shopAddressCityBox.getValue(),
-      province: this.refs.shopAddressProvinceBox.getValue(),
-      code: this.refs.shopAddressPostBox.getValue(),
+      url: URLInput,
+      phone: phoneInput,
+      address1: address1Input,
+      address2: address2Input,
+      city: cityInput,
+      province: provinceInput,
+      code: codeInput,
       category: cat["id"],
       logoFile: logo,
       logoColor: this.refs.colorHexBox.getValue(),
@@ -127,7 +171,12 @@ class MyShopsEditShop extends Component {
       logoFile: undefined,
       alertNoCatVisible: false,
       alertBadEmailVisible: false,
-      alertNoEVPVisible: false
+      alertNoEVPVisible: false,
+      alertNoNameVisible: false,
+      alertNoURLVisible: false,
+      alertNoPhoneVisible: false,
+      alertNoAddressVisible: false,
+      alertNoImageVisible: false
     };
   }
 
@@ -139,7 +188,12 @@ class MyShopsEditShop extends Component {
       selectedShop: {},
       alertNoCatVisible: false,
       alertBadEmailVisible: false,
-      alertNoEVPVisible: false
+      alertNoEVPVisible: false,
+      alertNoNameVisible: false,
+      alertNoURLVisible: false,
+      alertNoPhoneVisible: false,
+      alertNoAddressVisible: false,
+      alertNoImageVisible: false
     });
   }
 
@@ -216,6 +270,18 @@ class MyShopsEditShop extends Component {
 
   }
 
+  handleAlertNoNameDismiss() {
+    this.setState({
+      alertNoNameVisible: false
+    });
+  }
+
+  handleAlertNoNameShow() {
+    this.setState({
+      alertNoNameVisible: true
+    });
+  }
+
   handleAlertNoCatDismiss() {
     this.setState({
       alertNoCatVisible: false
@@ -249,6 +315,54 @@ class MyShopsEditShop extends Component {
   handleAlertNoEVPShow() {
     this.setState({
       alertNoEVPVisible: true
+    });
+  }
+
+  handleAlertNoURLDismiss() {
+    this.setState({
+      alertNoURLVisible: false
+    });
+  }
+
+  handleAlertNoURLShow() {
+    this.setState({
+      alertNoURLVisible: true
+    });
+  }
+
+  handleAlertNoPhoneDismiss() {
+    this.setState({
+      alertNoPhoneVisible: false
+    });
+  }
+
+  handleAlertNoPhoneShow() {
+    this.setState({
+      alertNoPhoneVisible: true
+    });
+  }
+
+  handleAlertNoAddressDismiss() {
+    this.setState({
+      alertNoAddressVisible: false
+    });
+  }
+
+  handleAlertNoAddressShow() {
+    this.setState({
+      alertNoAddressVisible: true
+    });
+  }
+
+  handleAlertNoImageDismiss() {
+    this.setState({
+      alertNoImageVisible: false
+    });
+  }
+
+  handleAlertNoImageShow() {
+    this.setState({
+      alertNoImageVisible: true
     });
   }
 
@@ -312,6 +426,10 @@ class MyShopsEditShop extends Component {
           </Modal.Header>
           <Modal.Body>
             <Input label="Name" type="ShopName" ref='nameBox' defaultValue={ this.state.selectedShop.name } required />
+            { this.state.alertNoNameVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
+                <p>Shop name is required.</p>
+              </Alert> : null }
             <div className="contact-outer">
               <label>Contact Details:</label>
               <div className="contact-inner">
@@ -322,7 +440,15 @@ class MyShopsEditShop extends Component {
                     <p>The email address entered is either invalid or empty.</p>
                   </Alert> : null }
                 <Input type="shopContactURL" label="URL" ref="shopContactURLBox" defaultValue={ this.state.selectedShop.url } />
+                { this.state.alertNoURLVisible ?
+                  <Alert bsStyle="danger" onDismiss={ this.handleAlertNoURLDismiss.bind(this) }>
+                    <p>Shop URL is required.</p>
+                  </Alert> : null }
                 <Input type="shopContactPhone" label="Phone" ref="shopContactPhoneBox" defaultValue={ this.state.selectedShop.phone } />
+                { this.state.alertNoPhoneVisible ?
+                  <Alert bsStyle="danger" onDismiss={ this.handleAlertNoPhoneDismiss.bind(this) }>
+                    <p>Shop contact phone number is required.</p>
+                  </Alert> : null }
               </div>
             </div>
             <div className="contact-outer">
@@ -334,6 +460,10 @@ class MyShopsEditShop extends Component {
                 <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" defaultValue={ this.state.selectedShop.province } />
                 <Input type="shopAddressPost" label="Postal Code" ref="shopAddressPostBox" defaultValue={ this.state.selectedShop.code } />
               </div>
+              { this.state.alertNoAddressVisible ?
+                <Alert bsStyle="danger" onDismiss={ this.handleAlertNoAddressDismiss.bind(this) }>
+                  <p>All address fields are required.</p>
+                </Alert> : null }
             </div>
             <label htmlFor="inputShopCategory" className="form-element">Category</label>
             <div className="cat-button">
@@ -364,8 +494,7 @@ class MyShopsEditShop extends Component {
             </div>
             { this.state.alertNoEVPVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoEVPDismiss.bind(this) }>
-                <h4>Please select an entrance viewpoint.</h4>
-                <p>You have not yet selected an entrance viewpoint for this shop.</p>
+                <p>Please select an entrance viewpoint for this shop.</p>
               </Alert> : null }
             <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label>
             <br/>
