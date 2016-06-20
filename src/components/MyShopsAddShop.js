@@ -75,6 +75,7 @@ class MyShopsAddShop extends Component {
       address2: this.refs.shopAddressLine2Box.getValue(),
       city: this.refs.shopAddressCityBox.getValue(),
       province: this.refs.shopAddressProvinceBox.getValue(),
+      code: this.refs.shopAddressPostBox.getValue(),
       category: cat["id"],
       logoFile: this.state.logoFile,
       logoColor: this.refs.colorHexBox.getValue(),
@@ -222,6 +223,7 @@ class MyShopsAddShop extends Component {
                 <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box" placeholder="Address Line 2..." />
                 <Input type="shopAddressCity" label="City" ref="shopAddressCityBox" placeholder="City..." />
                 <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" placeholder="Province..." />
+                <Input type="shopAddressPost" label="Postal Code" ref="shopAddressPostBox" placeholder="Post Code..." />
               </div>
             </div>
             <label htmlFor="inputShopCategory" className="form-element">Category</label>

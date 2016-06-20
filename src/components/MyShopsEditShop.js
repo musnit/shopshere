@@ -91,6 +91,7 @@ class MyShopsEditShop extends Component {
       address2: this.refs.shopAddressLine2Box.getValue(),
       city: this.refs.shopAddressCityBox.getValue(),
       province: this.refs.shopAddressProvinceBox.getValue(),
+      code: this.refs.shopAddressPostBox.getValue(),
       category: cat["id"],
       logoFile: logo,
       logoColor: this.refs.colorHexBox.getValue(),
@@ -331,6 +332,7 @@ class MyShopsEditShop extends Component {
                 <Input type="shopAddressLine2" label="Address Line 2" ref="shopAddressLine2Box" defaultValue={ this.state.selectedShop.address2 } />
                 <Input type="shopAddressCity" label="City" ref="shopAddressCityBox" defaultValue={ this.state.selectedShop.city } />
                 <Input type="shopAddressProvince" label="Province" ref="shopAddressProvinceBox" defaultValue={ this.state.selectedShop.province } />
+                <Input type="shopAddressPost" label="Postal Code" ref="shopAddressPostBox" defaultValue={ this.state.selectedShop.code } />
               </div>
             </div>
             <label htmlFor="inputShopCategory" className="form-element">Category</label>
