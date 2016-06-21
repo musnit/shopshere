@@ -131,8 +131,7 @@ class Edit extends Component {
             <Modal.Title>Edit category:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="inputCategoryName">Name</label>
-            <Input type="text" ref='nameBox' defaultValue={ this.state.selectedCategory.text } placeholder="Category Name..." required />
+            <Input label="Name" type="text" ref='nameBox' defaultValue={ this.state.selectedCategory.text } placeholder="Category Name..." required />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleNameAlertDismiss.bind(this) }>
                 <p>Please enter a category name to continue.</p>

@@ -333,22 +333,13 @@ class Add extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="inputProductName">
-              Name
-            </label>
-            <Input type="text" ref='nameBox' placeholder="Name..." required />
-            <label htmlFor="inputProductSKU">
-              SKU
-            </label>
-            <Input type="text" ref='SKUBox' placeholder="SKU..." />
+            <Input label="Name" type="text" ref='nameBox' placeholder="Name..." required />
+            <Input label="SKU" type="text" ref='SKUBox' placeholder="SKU..." />
             <label htmlFor="inputProductDescription">
               Description
             </label>
-            <textarea className="form-control" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
-            <label htmlFor="inputProductPrice">
-              Price
-            </label>
-            <Input type="number" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
+            <textarea id="inputProductDescription" className="form-control" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
+            <Input label="Price" type="number" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
                 <h4>Invalid Input!</h4>
@@ -398,7 +389,7 @@ class Add extends Component {
             <Grid fluid ref='sizeBox'>
               { this.state.sizes.map((item, index) => <Row className="padded-row">
                                                         <Col xs={ 5 } md={ 3 }>
-                                                        <Input className="size-box" type="text" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
+                                                        <Input id="inputProductSize" className="size-box" type="text" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
                                                         </Col>
                                                         { index == sizeLength - 1 ?
                                                           <div key={ index }>

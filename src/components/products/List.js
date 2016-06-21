@@ -414,7 +414,7 @@ class List extends Component {
             <label htmlFor="inputProductDescription">
               Description
             </label>
-            <textarea className="form-control" ref='descriptionBox' defaultValue={ this.state.selectedProduct.description } placeholder="Description..." />
+            <textarea id="inputProductDescription" className="form-control" ref='descriptionBox' defaultValue={ this.state.selectedProduct.description } placeholder="Description..." />
             <Input label="Product Price" type="number" ref='priceBox' defaultValue={ this.state.selectedProduct.price } placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
@@ -476,7 +476,8 @@ class List extends Component {
             <Grid fluid ref='sizeBox'>
               { this.state.selectedProduct.sizes.map((size, index) => <Row key={ index } className="padded-row">
                                                                         <Col xs={ 5 } md={ 3 }>
-                                                                        <Input className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..." />
+                                                                        <Input id="inputProductSize" className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..."
+                                                                        />
                                                                         </Col>
                                                                         { index == sizeLength - 1 ?
                                                                           <div key={ index }>

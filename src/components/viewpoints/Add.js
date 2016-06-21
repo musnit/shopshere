@@ -82,8 +82,7 @@ class Add extends Component {
             <Modal.Title>Add a new viewpoint:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label htmlFor="inputViewpointName">Viewpoint Name</label>
-            <Input id="inputViewpointName" type="text" ref='nameBox' placeholder="Name..." required />
+            <Input label="Viewpoint Name" id="inputViewpointName" type="text" ref='nameBox' placeholder="Name..." required />
             <label htmlFor="inputViewpointImageFile">360° Viewpoint Image</label>
             <br/>
             <S3Uploader id="inputViewpointImageFile" onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } />

@@ -481,7 +481,7 @@ class MyShopsEditShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="text" readOnly ref='catBox' bsClass="input-group" defaultValue={ catText } />
+              <Input id="inputShopCategory" type="text" readOnly ref='catBox' bsClass="input-group" defaultValue={ catText } />
             </div>
             { this.state.alertNoCatVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoCatDismiss.bind(this) }>
@@ -497,7 +497,7 @@ class MyShopsEditShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="text" readOnly ref='entranceViewpointBox' bsClass="input-group" defaultValue={ entVPText } />
+              <Input id="inputShopEntranceViewpoint" type="text" readOnly ref='entranceViewpointBox' bsClass="input-group" defaultValue={ entVPText } />
             </div>
             { this.state.alertNoEVPVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoEVPDismiss.bind(this) }>
@@ -535,7 +535,7 @@ class MyShopsEditShop extends Component {
                 </div>
                 </Col>
                 <Col xs={ 3 } md={ 3 }>
-                <Input type="text" ref='colorHexBox' readOnly defaultValue={ this.state.selectedShop.logoColor } placeholder="Hex Value" />
+                <Input id="inputShopLogoBackground" type="text" ref='colorHexBox' readOnly defaultValue={ this.state.selectedShop.logoColor } placeholder="Hex Value" />
                 </Col>
               </Row>
             </Grid>

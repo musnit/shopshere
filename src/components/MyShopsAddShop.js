@@ -404,7 +404,7 @@ class MyShopsAddShop extends Component {
               </DropdownButton>
             </div>
             <div className="cat-box">
-              <Input type="text" readOnly ref='catBox' bsClass="input-group" placeholder="Category..." />
+              <Input id="inputShopCategory" type="text" readOnly ref='catBox' bsClass="input-group" placeholder="Category..." />
             </div>
             { this.state.addCatModalVisible ?
               <div className="addcatbox">
@@ -424,7 +424,7 @@ class MyShopsAddShop extends Component {
               </Alert> : null }
             <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label>
             <br/>
-            <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ logoFolderURL } />
+            <S3Uploader id="inputShopLogoImageFile" onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ logoFolderURL } />
             { this.state.alertNoImageVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
                 <p>A shop Logo Image is required.</p>
@@ -440,7 +440,7 @@ class MyShopsAddShop extends Component {
                 </div>
                 </Col>
                 <Col xs={ 3 } md={ 3 }>
-                <Input type="text" ref='colorHexBox' readOnly placeholder="Hex Value" />
+                <Input id="inputShopLogoBackground" type="text" ref='colorHexBox' readOnly placeholder="Hex Value" />
                 </Col>
               </Row>
             </Grid>
