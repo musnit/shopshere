@@ -376,6 +376,7 @@ class MyShopsEditShop extends Component {
     var catText;
     var entVPID;
     var entVPText;
+    var entVPobj;
 
     if (this.props.shops.length == 0 || this.props.shopID == 0) {
       selected = {
@@ -406,9 +407,15 @@ class MyShopsEditShop extends Component {
       entVPID = selected.entranceViewpoint;
 
       if (entVPID) {
-        entVPText = _.find(this.props.viewpoints, function(o) {
+        entVPobj = _.find(this.props.viewpoints, function(o) {
           return o.id == entVPID
-        }).name;
+        });
+
+        if (entVPobj.name) {
+          entVPText = entVPobj.name;
+        } else {
+          entVPText = "";
+        }
       }
 
     }
