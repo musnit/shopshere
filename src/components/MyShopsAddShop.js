@@ -418,9 +418,9 @@ class MyShopsAddShop extends Component {
                 </div>
               </div>
               : null }
-            { this.state.alertNoImageVisible ?
-              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
-                <p>A shop Logo Image is required.</p>
+            { this.state.alertNoCatVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoCatDismiss.bind(this) }>
+                <p>You have not yet selected a category for this shop.</p>
               </Alert> : null }
             <label htmlFor="inputShopLogoImageFile" className="form-element">Shop Logo</label>
             <br/>

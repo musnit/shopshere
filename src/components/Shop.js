@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
+import { fetchShops } from '~/src/actions/shops';
+import fetch from '~/src/components/fetch';
 import Viewpoints from '~/src/components/Viewpoints';
 import Products from '~/src/components/Products';
 import Admin from '~/src/components/Admin';
@@ -53,6 +55,11 @@ class Shop extends Component {
   }
 }
 
+const FetchedShop = fetch(Shop, {
+  actions: [fetchShops]
+});
+
+
 function mapStateToProps(state) {
   const shops = state.shops;
   return {
@@ -60,4 +67,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Shop);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchShops: bindActionCreators(fetchShops, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedShop);

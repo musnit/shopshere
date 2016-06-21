@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
+import fetch from '~/src/components/fetch';
 import { fetchViewpoints } from '~/src/actions/viewpoints';
 import { unboundPatchShop } from '~/src/actions/shops';
 import { fetchCategories } from '~/src/actions/categories';
 import { fetchShops } from '~/src/actions/shops';
-import fetch from '~/src/components/fetch';
 import ColorPick from '~/src/components/utility/ColorPick';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
@@ -405,7 +405,7 @@ class MyShopsEditShop extends Component {
 
       entVPID = selected.entranceViewpoint;
 
-      if (entVPID.id) {
+      if (entVPID) {
         entVPText = _.find(this.props.viewpoints, function(o) {
           return o.id == entVPID
         }).name;
