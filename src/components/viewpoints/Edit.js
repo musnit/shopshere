@@ -23,12 +23,22 @@ class Edit extends Component {
       image = this.state.selectedViewpoint.imageFile;
     }
 
+    var thumbnail;
+
+    if (this.state.thumbnailFile) {
+      thumbnail = this.state.thumbnailFile;
+    } else {
+      thumbnail = this.state.selectedViewpoint.thumbnailFile;
+    }
+
+
     var name = this.refs.nameBox.getValue();
 
     var patchObject = {
       id: this.state.selectedViewpoint.id,
       name: name,
       imageFile: image,
+      thumbnailFile: thumbnail,
       shop: this.props.shopID
     }
 
@@ -38,6 +48,7 @@ class Edit extends Component {
       showModal: false,
       submitDisabled: false,
       imageFile: undefined,
+      thumbnailFile: undefined,
       changeImage: false
     });
   }
@@ -61,10 +72,13 @@ class Edit extends Component {
       showModal: false,
       selectedViewpoint: {
         name: "",
-        imageFile: ""
+        imageFile: "",
+        thumbnailFile: "",
       },
       changeImage: false,
-      imageFile: undefined
+      changeThumbnail: false,
+      imageFile: undefined,
+      thumbnailFile: undefined
     };
   }
 
@@ -81,9 +95,11 @@ class Edit extends Component {
       showModal: false,
       changeImage: false,
       imageFile: undefined,
+      thumbnailFile: undefined,
       selectedViewpoint: {
         name: "",
-        imageFile: ""
+        imageFile: "",
+        thumbnailFile: "",
       }
     });
   }
@@ -93,6 +109,8 @@ class Edit extends Component {
       showModal: false,
       imageFile: undefined,
       changeImage: false,
+      thumbnailFile: undefined,
+      changeThumbnail: false,
     });
   }
 
@@ -130,9 +148,22 @@ class Edit extends Component {
     });
   }
 
+  imageThumbnailUploadComplete(thumbnailFile) {
+    this.setState({
+      submitDisabled: false,
+      thumbnailFile: thumbnailFile
+    });
+  }
+
   clickedDeleteImage() {
     this.setState({
       changeImage: true
+    });
+  }
+
+  clickedDeleteThumbnail() {
+    this.setState({
+      changeThumbnail: true
     });
   }
 
@@ -154,8 +185,8 @@ class Edit extends Component {
           </Modal.Header>
           <Modal.Body>
             <label htmlFor="inputViewpointName">Viewpoint Name</label>
-            <Input type="text" ref='nameBox' defaultValue={ this.state.selectedViewpoint.name } placeholder="Name..." required />
-            <label htmlFor="inputViewpointImageFile">Viewpoint Image</label>
+            <Input id="inputViewpointName" type="text" ref='nameBox' defaultValue={ this.state.selectedViewpoint.name } placeholder="Name..." required />
+            <label htmlFor="inputViewpointImageFile">360° Viewpoint Image</label>
             <br/>
             { !this.state.changeImage ?
               <Grid fluid>
@@ -176,6 +207,28 @@ class Edit extends Component {
               </Grid>
               :
               <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
+            <br/>
+            <label htmlFor="inputViewpointThumbnailFile">Viewpoint Thumbnail</label>
+            <br/>
+            { !this.state.changeThumbnail ?
+              <Grid fluid>
+                <div>
+                  <Row className="padded-row">
+                    <Col xs={ 8 } md={ 8 }>
+                    <Image src={ this.state.selectedViewpoint.thumbnailFile } responsive />
+                    </Col>
+                    <Col xs={ 1 } md={ 1 }>
+                    <div>
+                      <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove thumbnail.</Tooltip> }>
+                        <Button bsStyle="danger" onClick={ this.clickedDeleteThumbnail.bind(this) }>Change Thumbnail</Button>
+                      </OverlayTrigger>
+                    </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Grid>
+              :
+              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageThumbnailUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
           </Modal.Body>
           <Modal.Footer>
             <Grid fluid>

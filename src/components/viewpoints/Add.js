@@ -16,13 +16,15 @@ class Add extends Component {
     this.props.boundAddViewpoint({
       name: this.refs.nameBox.getValue(),
       shop: this.props.shopID,
-      imageFile: this.state.imageFile
+      imageFile: this.state.imageFile,
+      thumbnailFile: this.state.thumbnailFile
     });
     this.refs.nameBox.getInputDOMNode().value = '';
     this.setState({
       showModal: false,
       submitDisabled: false,
-      imageFile: undefined
+      imageFile: undefined,
+      thumbnailFile: undefined
     });
   }
 
@@ -36,7 +38,8 @@ class Add extends Component {
   close() {
     this.setState({
       showModal: false,
-      imageFile: undefined
+      imageFile: undefined,
+      thumbnailFile: undefined
     });
   }
 
@@ -59,6 +62,13 @@ class Add extends Component {
     });
   }
 
+  imageThumbnailUploadComplete(thumbnailFile) {
+    this.setState({
+      submitDisabled: false,
+      thumbnailFile: thumbnailFile
+    });
+  }
+
   render() {
     return (
       <div>
@@ -73,10 +83,13 @@ class Add extends Component {
           </Modal.Header>
           <Modal.Body>
             <label htmlFor="inputViewpointName">Viewpoint Name</label>
-            <Input type="text" ref='nameBox' placeholder="Name..." required />
-            <label htmlFor="inputViewpointImageFile">Viewpoint Image</label>
+            <Input id="inputViewpointName" type="text" ref='nameBox' placeholder="Name..." required />
+            <label htmlFor="inputViewpointImageFile">360° Viewpoint Image</label>
             <br/>
-            <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } />
+            <S3Uploader id="inputViewpointImageFile" onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } />
+            <br/>
+            <label htmlFor="inputViewpointThumbnailFile">Viewpoint Thumbnail</label>
+            <S3Uploader id="inputViewpointThumbnailFile" onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageThumbnailUploadComplete.bind(this) } folderURL={ viewpointFolderURL } />
           </Modal.Body>
           <Modal.Footer>
             <ButtonInput type="submit" bsStyle="primary" onClick={ this.clickedAddViewpoint.bind(this) } disabled={ this.state.submitDisabled }>
