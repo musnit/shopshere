@@ -63,14 +63,19 @@ class List extends Component {
         patchObject[key] = [];
       } else if (key === 'colors') {
 
-        _.forEach(patchObject[key], function(item) {
-          if (item[0] == "") {
-            item[0] = " "
-          }
-          if (item[1] == "") {
-            item[1] = " "
-          }
-        })
+        if (patchObject[key].length == 1 && patchObject[key][0][0] == "" && patchObject[key][0][1] == "") {
+          patchObject[key] = [];
+        } else {
+          _.forEach(patchObject[key], function(item) {
+            if (item[0] == "") {
+              item[0] = " "
+            }
+            if (item[1] == "") {
+              item[1] = " "
+            }
+          })
+        }
+
       } else if (patchObject[key] == "") {
         patchObject[key] = " ";
       }

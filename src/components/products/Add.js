@@ -53,7 +53,6 @@ class Add extends Component {
       sizes: this.state.sizeOptions
     }
 
-
     for (var key in addObject) {
       if (key === 'images' && addObject[key] == "") {
         addObject[key] = [];
