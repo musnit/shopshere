@@ -129,11 +129,12 @@ class MyShopsAddShop extends Component {
       category: cat["id"],
       logoFile: logoFileInput,
       logoColor: this.refs.colorHexBox.getValue(),
-      entranceViewpoint: undefined
+      entranceViewpoint: undefined,
+      visible: false
     }
 
     for (var key in addShopObject) {
-      if (addShopObject[key] == "") {
+      if (addShopObject[key] === "") {
         addShopObject[key] = undefined;
       }
     }
