@@ -49,7 +49,10 @@ class Edit extends Component {
       submitDisabled: false,
       imageFile: undefined,
       thumbnailFile: undefined,
-      changeImage: false
+      changeImage: false,
+      alertNoNameVisible: false,
+      alertNoViewImageVisible: false,
+      alertNoThumbnailVisible: false,
     });
   }
 
@@ -78,7 +81,10 @@ class Edit extends Component {
       changeImage: false,
       changeThumbnail: false,
       imageFile: undefined,
-      thumbnailFile: undefined
+      thumbnailFile: undefined,
+      alertNoNameVisible: false,
+      alertNoViewImageVisible: false,
+      alertNoThumbnailVisible: false,
     };
   }
 
@@ -111,6 +117,9 @@ class Edit extends Component {
       changeImage: false,
       thumbnailFile: undefined,
       changeThumbnail: false,
+      alertNoNameVisible: false,
+      alertNoViewImageVisible: false,
+      alertNoThumbnailVisible: false,
     });
   }
 
@@ -167,7 +176,41 @@ class Edit extends Component {
     });
   }
 
+  handleAlertNoNameDismiss() {
+    this.setState({
+      alertNoNameVisible: false
+    });
+  }
 
+  handleAlertNoNameShow() {
+    this.setState({
+      alertNoNameVisible: true
+    });
+  }
+
+  handleAlertNoViewImageDismiss() {
+    this.setState({
+      alertNoViewImageVisible: false
+    });
+  }
+
+  handleAlertNoViewImageShow() {
+    this.setState({
+      alertNoViewImageVisible: true
+    });
+  }
+
+  handleAlertNoThumbnailDismiss() {
+    this.setState({
+      alertNoThumbnailVisible: false
+    });
+  }
+
+  handleAlertNoThumbnailShow() {
+    this.setState({
+      alertNoThumbnailVisible: true
+    });
+  }
 
   render() {
     return (
