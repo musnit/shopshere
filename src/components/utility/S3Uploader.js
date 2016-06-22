@@ -41,7 +41,15 @@ class S3Uploader extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reset != this.props.reset && nextProps.reset) {
+      this.state = {};
+      debugger;
+    }
+  }
+
   render() {
+
     const dropZone = !this.state.uploadInProgress && !this.state.uploadCompleted &&
       <Dropzone onDrop={ this.onDrop.bind(this) }>
         <div className="dropzone">Drop a file here, or click to select a file to upload.</div>
