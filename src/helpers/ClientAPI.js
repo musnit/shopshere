@@ -257,6 +257,10 @@ export function patchViewpointAPI(data) {
 }
 ;
 
+export function patchHotspotAPI(data) {
+  return PatchAPI(data, 'hotspot');
+}
+;
 
 export function connectProductToHotspotAPI(data) {
   return PatchAPI(data, 'hotspot');

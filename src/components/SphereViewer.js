@@ -329,6 +329,22 @@ export default class SphereViewer {
     this.Hotspots = [];
   }
 
+  removeAHotspot(hotspot) {
+    var viewportScene = this.scene;
+
+    var toRemove = _.find(this.Hotspots, function(o) {
+      return o.hotspotID == hotspot.id;
+    });
+    viewportScene.remove(toRemove);
+
+    var index = this.Hotspots.indexOf(toRemove);
+
+    if (index > -1) {
+      this.Hotspots.splice(index, 1);
+    }
+
+  }
+
   addAHotspot(hotspot) {
 
     var map

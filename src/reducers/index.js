@@ -197,6 +197,11 @@ const hotspot = (state, action) => {
   switch (action.type) {
     case types.ADD_HOTSPOT_FULFILLED:
       return action.payload;
+    case types.EDIT_HOTSPOT_FULFILLED:
+      if (state.id !== action.payload.id) {
+        return state;
+      }
+      return action.payload;
     default:
       return state;
   }
@@ -213,6 +218,13 @@ const hotspots = (state = [], action) => {
       return [];
     case types.FETCH_HOTSPOTS_FULFILLED:
       return action.payload;
+    case types.DELETE_HOTSPOT_FULFILLED:
+      return [
+        ...state.slice(0, action.payload.index),
+        ...state.slice(action.payload.index + 1)
+      ]
+    case types.EDIT_HOTSPOT_FULFILLED:
+      return state.map(t => hotspot(t, action));
     default:
       return state;
   }

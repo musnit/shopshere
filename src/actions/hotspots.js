@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { connectProductToHotspotAPI, deleteHotspotAPI, fetchHotspotsAPI, addHotspotAPI } from '~/src/helpers/ClientAPI';
+import { connectProductToHotspotAPI, deleteHotspotAPI, fetchHotspotsAPI, addHotspotAPI, patchHotspotAPI } from '~/src/helpers/ClientAPI';
 
 //action creators:
 export function connectProductToHotspot(data) {
@@ -46,6 +46,16 @@ export function unboundAddHotspot(data) {
 export function clearHotspots() {
   return {
     type: types.CLEAR_HOTSPOTS
+  }
+}
+;
+
+export function unboundPatchHotspot(data) {
+  return {
+    type: types.EDIT_HOTSPOT,
+    payload: {
+      promise: patchHotspotAPI(data)
+    }
   }
 }
 ;
