@@ -44,7 +44,6 @@ class S3Uploader extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.reset != this.props.reset && nextProps.reset) {
       this.state = {};
-      debugger;
     }
   }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import { Input, ButtonInput, Modal, Button, Radio, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image } from 'react-bootstrap';
+import { Input, ButtonInput, Modal, Button, Radio, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
 import { fetchViewpoints, clearViewpoints, deleteViewpoint, unboundPatchViewpoint } from '~/src/actions/viewpoints';
 import '~/src/styles/viewpoint.css';
 
@@ -15,24 +15,48 @@ class Edit extends Component {
 
   clickedPatchViewpoint() {
 
+    var shortCircuit = 0;
+
+    var name = this.refs.nameBox.getValue();
+
+    if (name == "") {
+      this.handleAlertNoNameShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoNameDismiss();
+    }
+
     var image;
 
     if (this.state.imageFile) {
       image = this.state.imageFile;
+      this.handleAlertNoViewImageDismiss();
+    } else if (this.state.clickedChange) {
+      this.handleAlertNoViewImageShow();
+      shortCircuit = 1;
     } else {
       image = this.state.selectedViewpoint.imageFile;
+      this.handleAlertNoViewImageDismiss();
     }
 
     var thumbnail;
 
     if (this.state.thumbnailFile) {
       thumbnail = this.state.thumbnailFile;
+      this.handleAlertNoThumbnailDismiss();
+    } else if (this.state.clickedChangeThumbnail) {
+      this.handleAlertNoThumbnailShow();
+      shortCircuit = 1;
     } else {
       thumbnail = this.state.selectedViewpoint.thumbnailFile;
+      this.handleAlertNoThumbnailDismiss();
+    }
+
+    if (shortCircuit == 1) {
+      return;
     }
 
 
-    var name = this.refs.nameBox.getValue();
 
     var patchObject = {
       id: this.state.selectedViewpoint.id,
@@ -50,9 +74,12 @@ class Edit extends Component {
       imageFile: undefined,
       thumbnailFile: undefined,
       changeImage: false,
+      changeThumbnail: false,
       alertNoNameVisible: false,
       alertNoViewImageVisible: false,
       alertNoThumbnailVisible: false,
+      clickedChange: false,
+      clickedChangeThumbnail: false,
     });
   }
 
@@ -153,26 +180,34 @@ class Edit extends Component {
   imageUploadComplete(imageFile) {
     this.setState({
       submitDisabled: false,
-      imageFile: imageFile
+      imageFile: imageFile,
+      resetViewpointImage: false,
     });
   }
 
   imageThumbnailUploadComplete(thumbnailFile) {
     this.setState({
       submitDisabled: false,
-      thumbnailFile: thumbnailFile
+      thumbnailFile: thumbnailFile,
+      resetViewpointThumbnail: false
     });
   }
 
   clickedDeleteImage() {
     this.setState({
-      changeImage: true
+      changeImage: true,
+      imageFile: undefined,
+      clickedChange: true,
+      resetViewpointImage: true,
     });
   }
 
   clickedDeleteThumbnail() {
     this.setState({
-      changeThumbnail: true
+      changeThumbnail: true,
+      thumbnailFile: undefined,
+      clickedChangeThumbnail: true,
+      resetViewpointThumbnail: true,
     });
   }
 
@@ -229,6 +264,10 @@ class Edit extends Component {
           <Modal.Body>
             <label htmlFor="inputViewpointName">Viewpoint Name</label>
             <Input id="inputViewpointName" type="text" ref='nameBox' defaultValue={ this.state.selectedViewpoint.name } placeholder="Name..." required />
+            { this.state.alertNoNameVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
+                <p>Viewpoint name is required.</p>
+              </Alert> : null }
             <label htmlFor="inputViewpointImageFile">360° Viewpoint Image</label>
             <br/>
             { !this.state.changeImage ?
@@ -249,7 +288,25 @@ class Edit extends Component {
                 </div>
               </Grid>
               :
-              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
+              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } reset={ this.state.resetViewpointImage } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
+            { this.state.imageFile ?
+              <Grid fluid>
+                <div>
+                  <Row className="padded-row">
+                    <Col xs={ 1 } md={ 1 }>
+                    <div>
+                      <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove image.</Tooltip> }>
+                        <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this) }>Change Image</Button>
+                      </OverlayTrigger>
+                    </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Grid> : null }
+            { this.state.alertNoViewImageVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoViewImageDismiss.bind(this) }>
+                <p>Viewpoint 360° Image is required.</p>
+              </Alert> : null }
             <br/>
             <label htmlFor="inputViewpointThumbnailFile">Viewpoint Thumbnail</label>
             <br/>
@@ -271,7 +328,25 @@ class Edit extends Component {
                 </div>
               </Grid>
               :
-              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageThumbnailUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
+              <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } reset={ this.state.resetViewpointThumbnail } onUploadFinish={ this.imageThumbnailUploadComplete.bind(this) } folderURL={ viewpointFolderURL } /> }
+            { this.state.thumbnailFile ?
+              <Grid fluid>
+                <div>
+                  <Row className="padded-row">
+                    <Col xs={ 1 } md={ 1 }>
+                    <div>
+                      <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove thumbnail.</Tooltip> }>
+                        <Button bsStyle="danger" onClick={ this.clickedDeleteThumbnail.bind(this) }>Change Thumbnail</Button>
+                      </OverlayTrigger>
+                    </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Grid> : null }
+            { this.state.alertNoThumbnailVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoThumbnailDismiss.bind(this) }>
+                <p>Viewpoint thumbnail is required.</p>
+              </Alert> : null }
           </Modal.Body>
           <Modal.Footer>
             <Grid fluid>
