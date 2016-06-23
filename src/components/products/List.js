@@ -392,14 +392,31 @@ class List extends Component {
     });
   }
 
-  clickedDeleteSize() {
+  clickedDeleteSize(size) {
 
     if (this.state.selectedProduct.sizes.length == 1) {
-      return
+      var updateProduct = _.cloneDeep(this.state.selectedProduct);
+
+      updateProduct.sizes = [""];
+
+      this.setState({
+        selectedProduct: updateProduct
+      });
+
+      return;
     }
 
-    var updateProduct = JSON.parse(JSON.stringify(this.state.selectedProduct));
-    updateProduct.sizes.pop();
+    var updateProduct = _.cloneDeep(this.state.selectedProduct);
+    var updateProductSizes = _.cloneDeep(updateProduct.sizes);
+
+    var sizeIndex = _.findIndex(updateProductSizes, function(o) {
+      return o == size;
+    });
+
+    _.pullAt(updateProductSizes, sizeIndex);
+
+    updateProduct.sizes = updateProductSizes;
+
     this.setState({
       selectedProduct: updateProduct
     });
@@ -619,33 +636,25 @@ class List extends Component {
               Size(s)
             </label>
             <Grid fluid ref='sizeBox'>
-              { this.state.selectedProduct.sizes.map((size, index) => <Row key={ index } className="padded-row">
+              { this.state.selectedProduct.sizes.map((size, index) => <Row key={ size } className="padded-row">
                                                                         <Col xs={ 5 } md={ 3 }>
                                                                         <Input id="inputProductSize" className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..."
                                                                         />
+                                                                        </Col>
+                                                                        <Col xs={ 1 } md={ 1 }>
+                                                                        <div>
+                                                                          <Button bsStyle="danger" onClick={ this.clickedDeleteSize.bind(this, size) }>
+                                                                            <b>‒</b>
+                                                                          </Button>
+                                                                        </div>
                                                                         </Col>
                                                                         { index == sizeLength - 1 ?
                                                                           <div key={ index }>
                                                                             <Col xs={ 1 } md={ 1 }>
                                                                             <div>
-                                                                              <OverlayTrigger overlay={ <Tooltip id="add-size">
-                                                                                                          Add another size.
-                                                                                                        </Tooltip> }>
-                                                                                <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this) }>
-                                                                                  <b>+</b>
-                                                                                </Button>
-                                                                              </OverlayTrigger>
-                                                                            </div>
-                                                                            </Col>
-                                                                            <Col xs={ 1 } md={ 1 }>
-                                                                            <div>
-                                                                              <OverlayTrigger overlay={ <Tooltip id="remove-size">
-                                                                                                          Remove size.
-                                                                                                        </Tooltip> }>
-                                                                                <Button bsStyle="danger" onClick={ this.clickedDeleteSize.bind(this) }>
-                                                                                  <b>‒</b>
-                                                                                </Button>
-                                                                              </OverlayTrigger>
+                                                                              <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this) }>
+                                                                                <b>+</b>
+                                                                              </Button>
                                                                             </div>
                                                                             </Col>
                                                                           </div>
