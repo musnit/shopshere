@@ -257,7 +257,7 @@ class Edit extends Component {
               ) }
           </DropdownButton>
         </div>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Edit viewpoint:</Modal.Title>
           </Modal.Header>

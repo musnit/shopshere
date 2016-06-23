@@ -171,7 +171,7 @@ class Add extends Component {
             Add a new viewpoint
           </Button>
         </div>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Add a new viewpoint:</Modal.Title>
           </Modal.Header>
