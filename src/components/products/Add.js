@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, FormGroup, InputGroup, FormControl, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Alert } from 'react-bootstrap';
 import { unboundAddProduct } from '~/src/actions/products';
-import { filter, cloneDeep, forEach } from 'lodash';
+import { filter, cloneDeep, forEach, pull } from 'lodash';
 import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
@@ -115,7 +115,8 @@ class Add extends Component {
       imageFiles: [],
       sizeOptions: [],
       colorOptions: [],
-      description: undefined
+      description: undefined,
+      disabled: []
     });
 
   }
@@ -133,7 +134,8 @@ class Add extends Component {
       sizeOptions: [],
       colorOptions: [],
       alertVisible: false,
-      description: undefined
+      description: undefined,
+      disabled: []
     };
   }
 
@@ -171,7 +173,8 @@ class Add extends Component {
       imageFiles: [],
       sizeOptions: [],
       colorOptions: [],
-      description: undefined
+      description: undefined,
+      disabled: []
     });
   }
 
@@ -265,15 +268,17 @@ class Add extends Component {
     });
   }
 
-  imageUploadComplete(imageFile) {
+  imageUploadComplete(index, imageFile) {
+    var currentDisabled = _.cloneDeep(this.state.disabled);
+    currentDisabled[index] = true;
     var imageFileName = imageFile;
     var images = _.cloneDeep(this.state.imageFiles);
     images.push(imageFileName);
     this.setState({
       submitDisabled: false,
-      imageFiles: images
+      imageFiles: images,
+      disabled: currentDisabled
     });
-    this.clickedAddImage();
   }
 
   onNameBoxChange(event) {
@@ -413,6 +418,23 @@ class Add extends Component {
     });
   }
 
+  clickedDeleteImage(index) {
+
+    var currentDisabled = _.cloneDeep(this.state.disabled);
+    currentDisabled[index] = false;
+
+    var refName = "imageBox" + index
+
+    var imageFileName = this.refs[refName].state.uploadFileURL;
+    var images = _.cloneDeep(this.state.imageFiles);
+    _.pull(images, imageFileName);
+
+    this.setState({
+      imageFiles: images,
+      disabled: currentDisabled
+    });
+  }
+
   render() {
     var colorLength = this.state.colors.length;
     var sizeLength = this.state.sizes.length;
@@ -537,7 +559,13 @@ class Add extends Component {
               { this.state.images.map((item, index) => <div>
                                                          <Row className="padded-row">
                                                            <Col>
-                                                           <S3Uploader ref={ 'imageBox' + item } onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ productFolderURL } />
+                                                           <S3Uploader ref={ 'imageBox' + item } reset={ !this.state.disabled[index] } onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this, index) } folderURL={ productFolderURL }
+                                                           />
+                                                           </Col>
+                                                           <Col xs={ 1 } md={ 1 }>
+                                                           <div>
+                                                             <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this, index) } disabled={ !this.state.disabled[index] }>Change Image</Button>
+                                                           </div>
                                                            </Col>
                                                          </Row>
                                                        </div>
@@ -551,13 +579,9 @@ class Add extends Component {
               <Row className="padded-row">
                 <Col xs={ 1 } md={ 1 }>
                 <div>
-                  <OverlayTrigger overlay={ <Tooltip id="add-image">
-                                              Add another image.
-                                            </Tooltip> }>
-                    <Button bsStyle="success" onClick={ this.clickedAddImage.bind(this) }>
-                      <b>+</b>
-                    </Button>
-                  </OverlayTrigger>
+                  <Button bsStyle="success" onClick={ this.clickedAddImage.bind(this) }>
+                    Add another image.
+                  </Button>
                 </div>
                 </Col>
               </Row>
