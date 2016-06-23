@@ -90,6 +90,13 @@ class List extends Component {
     }
 
 
+    var currentColorOptions = _.cloneDeep(this.state.selectedProduct.colors);
+
+    _.forEach(currentColorOptions, function(item) {
+      item.pop();
+    })
+
+
     var patchObject = {
       id: this.state.selectedProduct.id,
       name: prodName,
@@ -97,7 +104,7 @@ class List extends Component {
       description: descriptionInput,
       price: priceValue,
       shop: this.props.shopID,
-      colors: this.state.selectedProduct.colors,
+      colors: currentColorOptions,
       images: imageObjects,
       sizes: this.state.selectedProduct.sizes
     }
@@ -263,6 +270,7 @@ class List extends Component {
       if (item[1] == " ") {
         item[1] = ""
       }
+      item[2] = Math.random()
     })
 
 
@@ -276,7 +284,6 @@ class List extends Component {
 
 
   setColorBoxes() {
-
 
     var refToThis = this;
 
@@ -298,6 +305,7 @@ class List extends Component {
 
 
   onaColorBoxChange(item, event) {
+
     var currentColorOptions = _.cloneDeep(this.state.selectedProduct);
 
 
@@ -308,7 +316,7 @@ class List extends Component {
         var hexind = key.slice(-1);
         hexind = parseInt(hexind);
         if (currentColorOptions.colors[hexind] == undefined) {
-          currentColorOptions.colors[hexind] = ["", ""];
+          currentColorOptions.colors[hexind] = ["", "", Math.random()];
         }
         ;
         currentColorOptions.colors[hexind][1] = hexval;
@@ -318,7 +326,7 @@ class List extends Component {
         var nameind = key.slice(-1);
         nameind = parseInt(nameind);
         if (currentColorOptions.colors[nameind] == undefined) {
-          currentColorOptions.colors[nameind] = ["", ""];
+          currentColorOptions.colors[nameind] = ["", "", Math.random()];
         }
         ;
         currentColorOptions.colors[nameind][0] = nameval;
@@ -342,9 +350,12 @@ class List extends Component {
   }
 
 
-  clickedAddColor() {
+  clickedAddColor(color) {
+    if (color[0] == "" && color[1] == "") {
+      return;
+    }
     var updateProduct = JSON.parse(JSON.stringify(this.state.selectedProduct));
-    updateProduct.colors.push(["", ""]);
+    updateProduct.colors.push(["", "", Math.random()]);
     this.setState({
       selectedProduct: updateProduct
     });
@@ -454,7 +465,7 @@ class List extends Component {
     });
   }
 
-  handleChangeComplete(color, index) {
+  handleChangeComplete(index, color) {
 
     var refstring = 'colorHexBox' + String(index);
     var refstring2 = 'colorDisplayBox' + String(index);
@@ -540,6 +551,7 @@ class List extends Component {
 
     var colorChoices = this.state.selectedProduct.colors;
 
+
     return (
       <div className="product-button">
         <DropdownButton bsStyle={ 'primary' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
@@ -598,19 +610,19 @@ class List extends Component {
               Color(s)
             </label>
             <Grid fluid>
-              { colorChoices.map((color, index) => <Row key={ color[1] } className="padded-row">
+              { colorChoices.map((color, index) => <Row key={ color[2] } className="padded-row">
                                                      <Col xs={ 3 } md={ 3 }>
-                                                     <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } />
+                                                     <ColorPick handleChange={ this.handleChangeComplete.bind(this, index) } onClosing={ this.handleColorClose.bind(this, index) } />
                                                      </Col>
                                                      <Col xs={ 5 } md={ 3 }>
-                                                     <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this) } defaultValue={ color[0] } placeholder="Name..." />
+                                                     <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this, index) } defaultValue={ color[0] } placeholder="Name..." />
                                                      </Col>
                                                      <Col xs={ 1 } md={ 1 }>
                                                      <div ref={ 'colorDisplayBox' + index }>
                                                      </div>
                                                      </Col>
                                                      <Col xs={ 5 } md={ 3 }>
-                                                     <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this) } readOnly defaultValue={ color[1] } />
+                                                     <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this, index) } readOnly defaultValue={ color[1] } />
                                                      </Col>
                                                      <Col xs={ 1 } md={ 1 }>
                                                      <div>
@@ -623,7 +635,7 @@ class List extends Component {
                                                        <div>
                                                          <Col xs={ 1 } md={ 1 }>
                                                          <div>
-                                                           <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this) }>
+                                                           <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this, color) }>
                                                              <b>+</b>
                                                            </Button>
                                                          </div>
