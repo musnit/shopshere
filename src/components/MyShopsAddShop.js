@@ -5,9 +5,10 @@ import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, Alert } from 'react-bootstrap';
 import { addCategory } from '~/src/actions/categories';
 import { unboundAddShop } from '~/src/actions/shops';
+import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 
-import { find, map } from 'lodash';
+import { find, map, difference } from 'lodash';
 
 import '~/src/styles/shops.css';
 import ColorPick from '~/src/components/utility/ColorPick';
@@ -16,6 +17,9 @@ import S3Uploader from '~/src/components/utility/S3Uploader';
 
 import { logoFolderURL } from '~/src/config';
 
+
+const defaultPano = "/images/defaultEntrance.jpg";
+const defaultThumb = "/images/defaultThumbnail.jpg";
 
 class MyShopsAddShop extends Component {
 
@@ -154,6 +158,23 @@ class MyShopsAddShop extends Component {
       showModal: false,
       logoFile: undefined
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+    //if change to new shop:
+    if (nextProps.shops !== this.props.shops && this.props.shops.length != 0 && this.props.shops.length < nextProps.shops.length) {
+      var shopJustAdded = _.difference(nextProps.shops, this.props.shops);
+      debugger;
+      this.props.boundAddViewpoint({
+        name: "Entrance",
+        shop: shopJustAdded[0].id,
+        imageFile: defaultPano,
+        thumbnailFile: defaultThumb
+      });
+
+    }
+
   }
 
   constructor(props) {
@@ -469,6 +490,7 @@ function mapDispatchToProps(dispatch) {
   return {
     boundAddShop: bindActionCreators(unboundAddShop, dispatch),
     addCategory: bindActionCreators(addCategory, dispatch),
+    boundAddViewpoint: bindActionCreators(unboundAddViewpoint, dispatch),
   };
 }
 ;
