@@ -564,7 +564,9 @@ class Add extends Component {
                                                            </Col>
                                                            <Col xs={ 1 } md={ 1 }>
                                                            <div>
-                                                             <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this, index) } disabled={ !this.state.disabled[index] }>Change Image</Button>
+                                                             <Button bsStyle="danger" className="remove-button" onClick={ this.clickedDeleteImage.bind(this, index) } disabled={ !this.state.disabled[index] }>
+                                                               { !this.state.disabled[index] ? null : 'Change Image' }
+                                                             </Button>
                                                            </div>
                                                            </Col>
                                                          </Row>
