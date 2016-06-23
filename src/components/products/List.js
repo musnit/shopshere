@@ -6,7 +6,7 @@ import fetch from '~/src/components/fetch';
 import ProductListItemWrapper from '~/src/components/ProductListItemWrapper';
 import { fetchProducts, clearProducts, unboundPatchProduct, deleteProduct } from '~/src/actions/products';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, OverlayTrigger, Tooltip, Image, Alert } from 'react-bootstrap';
-import { find, findIndex, forEach } from 'lodash';
+import { find, findIndex, forEach, pull, pullAt } from 'lodash';
 import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
@@ -268,7 +268,8 @@ class List extends Component {
 
     this.setState({
       showModal: true,
-      selectedProduct: selected
+      selectedProduct: selected,
+      description: selected.description
     });
 
   }
@@ -293,7 +294,6 @@ class List extends Component {
     this.setState({
       description: event.target.value
     });
-    debugger;
   }
 
 
@@ -350,7 +350,7 @@ class List extends Component {
     });
   }
 
-  clickedDeleteColor() {
+  clickedDeleteColor(color, index) {
 
     if (this.state.selectedProduct.colors.length == 1) {
       var refstring = 'colorHexBox0';
@@ -368,8 +368,17 @@ class List extends Component {
       return;
     }
 
-    var updateProduct = JSON.parse(JSON.stringify(this.state.selectedProduct));
-    updateProduct.colors.pop();
+    var updateProduct = _.cloneDeep(this.state.selectedProduct);
+    var updateProductColors = _.cloneDeep(updateProduct.colors);
+
+    var colorIndex = _.findIndex(updateProductColors, function(o) {
+      return o[0] == color[0] && o[1] == color[1];
+    });
+
+    _.pullAt(updateProductColors, colorIndex);
+
+    updateProduct.colors = updateProductColors;
+
     this.setState({
       selectedProduct: updateProduct
     });
@@ -512,6 +521,8 @@ class List extends Component {
     var sizeLength = this.state.selectedProduct.sizes.length;
     var imageLength = this.state.selectedProduct.images.length;
 
+    var colorChoices = this.state.selectedProduct.colors;
+
     return (
       <div className="product-button">
         <DropdownButton bsStyle={ 'primary' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
@@ -570,48 +581,39 @@ class List extends Component {
               Color(s)
             </label>
             <Grid fluid>
-              { this.state.selectedProduct.colors.map((color, index) => <Row className="padded-row">
-                                                                          <Col xs={ 3 } md={ 3 }>
-                                                                          <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index={ index } />
-                                                                          </Col>
-                                                                          <Col xs={ 5 } md={ 3 }>
-                                                                          <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this) } defaultValue={ color[0] } placeholder="Name..." />
-                                                                          </Col>
-                                                                          <Col xs={ 1 } md={ 1 }>
-                                                                          <div ref={ 'colorDisplayBox' + index }>
-                                                                          </div>
-                                                                          </Col>
-                                                                          <Col xs={ 5 } md={ 3 }>
-                                                                          <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this) } readOnly defaultValue={ color[1] } />
-                                                                          </Col>
-                                                                          { index == colorLength - 1 ?
-                                                                            <div key={ index }>
-                                                                              <Col xs={ 1 } md={ 1 }>
-                                                                              <div>
-                                                                                <OverlayTrigger overlay={ <Tooltip id="add-color">
-                                                                                                            Add another color.
-                                                                                                          </Tooltip> }>
-                                                                                  <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this) }>
-                                                                                    <b>+</b>
-                                                                                  </Button>
-                                                                                </OverlayTrigger>
-                                                                              </div>
-                                                                              </Col>
-                                                                              <Col xs={ 1 } md={ 1 }>
-                                                                              <div>
-                                                                                <OverlayTrigger overlay={ <Tooltip id="remove-color">
-                                                                                                            Remove color.
-                                                                                                          </Tooltip> }>
-                                                                                  <Button bsStyle="danger" onClick={ this.clickedDeleteColor.bind(this) }>
-                                                                                    <b>‒</b>
-                                                                                  </Button>
-                                                                                </OverlayTrigger>
-                                                                              </div>
-                                                                              </Col>
-                                                                            </div>
-                                                                            : null }
-                                                                        </Row>
-                ) }
+              { colorChoices.map((color, index) => <Row key={ index + 525 } className="padded-row">
+                                                     <Col xs={ 3 } md={ 3 }>
+                                                     <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } />
+                                                     </Col>
+                                                     <Col xs={ 5 } md={ 3 }>
+                                                     <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this) } defaultValue={ color[0] } placeholder="Name..." />
+                                                     </Col>
+                                                     <Col xs={ 1 } md={ 1 }>
+                                                     <div ref={ 'colorDisplayBox' + index }>
+                                                     </div>
+                                                     </Col>
+                                                     <Col xs={ 5 } md={ 3 }>
+                                                     <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this) } readOnly defaultValue={ color[1] } />
+                                                     </Col>
+                                                     <Col xs={ 1 } md={ 1 }>
+                                                     <div>
+                                                       <Button bsStyle="danger" onClick={ this.clickedDeleteColor.bind(this, color, index) }>
+                                                         <b>‒</b>
+                                                       </Button>
+                                                     </div>
+                                                     </Col>
+                                                     { index == colorLength - 1 ?
+                                                       <div>
+                                                         <Col xs={ 1 } md={ 1 }>
+                                                         <div>
+                                                           <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this) }>
+                                                             <b>+</b>
+                                                           </Button>
+                                                         </div>
+                                                         </Col>
+                                                       </div>
+                                                       : null }
+                                                   </Row>) }
             </Grid>
             <label htmlFor="inputProductSize">
               Size(s)
