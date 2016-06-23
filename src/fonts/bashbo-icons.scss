@@ -1,0 +1,91 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 30/05/2016 17:24
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-add-circular-button:before { content: "\f100"; }
+.flaticon-cash-register-machine:before { content: "\f101"; }
+.flaticon-checked:before { content: "\f102"; }
+.flaticon-close:before { content: "\f103"; }
+.flaticon-commercial-delivery-symbol-of-a-list-on-clipboard-on-a-box-package:before { content: "\f104"; }
+.flaticon-credit-card-with-check-symbol:before { content: "\f105"; }
+.flaticon-credit-cards-payment:before { content: "\f106"; }
+.flaticon-down-chevron:before { content: "\f107"; }
+.flaticon-eye:before { content: "\f108"; }
+.flaticon-id-card:before { content: "\f109"; }
+.flaticon-invoice:before { content: "\f10a"; }
+.flaticon-left-and-right-shoe-footprints:before { content: "\f10b"; }
+.flaticon-left-chevron:before { content: "\f10c"; }
+.flaticon-logistics-delivery-truck-in-movement:before { content: "\f10d"; }
+.flaticon-magnifier:before { content: "\f10e"; }
+.flaticon-price-tag:before { content: "\f10f"; }
+.flaticon-right-chevron:before { content: "\f110"; }
+.flaticon-shield:before { content: "\f111"; }
+.flaticon-shop:before { content: "\f112"; }
+.flaticon-shopping-bag:before { content: "\f113"; }
+.flaticon-shopping-cart:before { content: "\f114"; }
+.flaticon-tag:before { content: "\f115"; }
+.flaticon-telephone:before { content: "\f116"; }
+.flaticon-truck:before { content: "\f117"; }
+.flaticon-up-chevron:before { content: "\f118"; }
+.flaticon-verification-of-delivery-list-clipboard-symbol:before { content: "\f119"; }
+    
+    $font-Flaticon-add-circular-button: "\f100";
+    $font-Flaticon-cash-register-machine: "\f101";
+    $font-Flaticon-checked: "\f102";
+    $font-Flaticon-close: "\f103";
+    $font-Flaticon-commercial-delivery-symbol-of-a-list-on-clipboard-on-a-box-package: "\f104";
+    $font-Flaticon-credit-card-with-check-symbol: "\f105";
+    $font-Flaticon-credit-cards-payment: "\f106";
+    $font-Flaticon-down-chevron: "\f107";
+    $font-Flaticon-eye: "\f108";
+    $font-Flaticon-id-card: "\f109";
+    $font-Flaticon-invoice: "\f10a";
+    $font-Flaticon-left-and-right-shoe-footprints: "\f10b";
+    $font-Flaticon-left-chevron: "\f10c";
+    $font-Flaticon-logistics-delivery-truck-in-movement: "\f10d";
+    $font-Flaticon-magnifier: "\f10e";
+    $font-Flaticon-price-tag: "\f10f";
+    $font-Flaticon-right-chevron: "\f110";
+    $font-Flaticon-shield: "\f111";
+    $font-Flaticon-shop: "\f112";
+    $font-Flaticon-shopping-bag: "\f113";
+    $font-Flaticon-shopping-cart: "\f114";
+    $font-Flaticon-tag: "\f115";
+    $font-Flaticon-telephone: "\f116";
+    $font-Flaticon-truck: "\f117";
+    $font-Flaticon-up-chevron: "\f118";
+    $font-Flaticon-verification-of-delivery-list-clipboard-symbol: "\f119";
