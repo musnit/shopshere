@@ -16,20 +16,33 @@ class Add extends Component {
 
   clickedAddProduct() {
 
-    if (this.refs.nameBox.getValue() == "") {
-      this.handleAlertDismiss();
-      this.setState({
-        showModal: false,
-        colors: [0],
-        sizes: [0],
-        images: [0],
-        submitDisabled: false,
-        imageFiles: [],
-        sizeOptions: [],
-        colorOptions: [],
-        description: undefined
-      });
-      return;
+    var shortCircuit = 0;
+
+    var prodName = this.refs.nameBox.getValue();
+
+    if (prodName == "") {
+      this.handleAlertNoNameShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoNameDismiss();
+    }
+
+    var prodSKU = this.refs.SKUBox.getValue();
+
+    if (prodSKU == "") {
+      this.handleAlertNoSKUShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoSKUDismiss();
+    }
+
+    var descriptionInput = this.state.description;
+
+    if (descriptionInput == "" || !descriptionInput) {
+      this.handleAlertNoDescShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoDescDismiss();
     }
 
     var priceValue = this.refs.priceBox.getValue();
@@ -41,11 +54,29 @@ class Add extends Component {
       this.handleAlertDismiss();
     }
 
-    var addObject = {
-      name: this.refs.nameBox.getValue(),
+    if (priceValue == "") {
+      this.handleAlertNoPriceShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoPriceDismiss();
+    }
 
-      sku: this.refs.SKUBox.getValue(),
-      description: this.state.description,
+    if (this.state.imageFiles.length < 1) {
+      this.handleAlertNoImageShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoImageDismiss();
+    }
+
+    if (shortCircuit == 1) {
+      return;
+    }
+
+    var addObject = {
+      name: prodName,
+
+      sku: prodSKU,
+      description: descriptionInput,
       price: priceValue,
       shop: this.props.shopID,
       colors: this.state.colorOptions,
@@ -70,6 +101,11 @@ class Add extends Component {
     this.refs.nameBox.getInputDOMNode().value = '';
     this.refs.priceBox.getInputDOMNode().value = '';
     this.handleAlertDismiss();
+    this.handleAlertNoNameDismiss();
+    this.handleAlertNoSKUDismiss();
+    this.handleAlertNoDescDismiss();
+    this.handleAlertNoPriceDismiss();
+    this.handleAlertNoImageDismiss();
     this.setState({
       showModal: false,
       colors: [0],
@@ -121,6 +157,11 @@ class Add extends Component {
 
   close() {
     this.handleAlertDismiss();
+    this.handleAlertNoNameDismiss();
+    this.handleAlertNoSKUDismiss();
+    this.handleAlertNoDescDismiss();
+    this.handleAlertNoPriceDismiss();
+    this.handleAlertNoImageDismiss();
     this.setState({
       showModal: false,
       submitDisabled: false,
@@ -232,6 +273,7 @@ class Add extends Component {
       submitDisabled: false,
       imageFiles: images
     });
+    this.clickedAddImage();
   }
 
   onNameBoxChange(event) {
@@ -311,9 +353,65 @@ class Add extends Component {
     this.onaColorBoxChange(index);
   }
 
+  handleAlertNoNameDismiss() {
+    this.setState({
+      alertNoNameVisible: false
+    });
+  }
 
+  handleAlertNoNameShow() {
+    this.setState({
+      alertNoNameVisible: true
+    });
+  }
 
+  handleAlertNoSKUDismiss() {
+    this.setState({
+      alertNoSKUVisible: false
+    });
+  }
 
+  handleAlertNoSKUShow() {
+    this.setState({
+      alertNoSKUVisible: true
+    });
+  }
+
+  handleAlertNoDescDismiss() {
+    this.setState({
+      alertNoDescVisible: false
+    });
+  }
+
+  handleAlertNoDescShow() {
+    this.setState({
+      alertNoDescVisible: true
+    });
+  }
+
+  handleAlertNoPriceDismiss() {
+    this.setState({
+      alertNoPriceVisible: false
+    });
+  }
+
+  handleAlertNoPriceShow() {
+    this.setState({
+      alertNoPriceVisible: true
+    });
+  }
+
+  handleAlertNoImageDismiss() {
+    this.setState({
+      alertNoImageVisible: false
+    });
+  }
+
+  handleAlertNoImageShow() {
+    this.setState({
+      alertNoImageVisible: true
+    });
+  }
 
   render() {
     var colorLength = this.state.colors.length;
@@ -326,7 +424,7 @@ class Add extends Component {
             Add a new product
           </Button>
         </div>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>
               Add a new Product:
@@ -334,17 +432,40 @@ class Add extends Component {
           </Modal.Header>
           <Modal.Body>
             <Input label="Name" type="text" ref='nameBox' placeholder="Name..." required />
+            { this.state.alertNoNameVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
+                <p>
+                  Product name is required.
+                </p>
+              </Alert> : null }
             <Input label="SKU" type="text" ref='SKUBox' placeholder="SKU..." />
+            { this.state.alertNoSKUVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoSKUDismiss.bind(this) }>
+                <p>
+                  Product SKU is required.
+                </p>
+              </Alert> : null }
             <label htmlFor="inputProductDescription">
               Description
             </label>
             <textarea id="inputProductDescription" className="form-control" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } placeholder="Description..." />
+            { this.state.alertNoDescVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoDescDismiss.bind(this) }>
+                <p>
+                  Product description is required.
+                </p>
+              </Alert> : null }
             <Input label="Price" type="number" ref='priceBox' placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
-                <h4>Invalid Input!</h4>
                 <p>
                   Product price can only be a decimal number example 1 50 50.00 65.89 etc.
+                </p>
+              </Alert> : null }
+            { this.state.alertNoPriceVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoPriceDismiss.bind(this) }>
+                <p>
+                  Product price is required.
                 </p>
               </Alert> : null }
             <label htmlFor="inputProductColor">
@@ -413,19 +534,6 @@ class Add extends Component {
               Image(s)
             </label>
             <Grid fluid>
-              <Row className="padded-row">
-                <Col xs={ 1 } md={ 1 }>
-                <div>
-                  <OverlayTrigger overlay={ <Tooltip id="add-image">
-                                              Add another image.
-                                            </Tooltip> }>
-                    <Button bsStyle="success" onClick={ this.clickedAddImage.bind(this) }>
-                      <b>+</b>
-                    </Button>
-                  </OverlayTrigger>
-                </div>
-                </Col>
-              </Row>
               { this.state.images.map((item, index) => <div>
                                                          <Row className="padded-row">
                                                            <Col>
@@ -434,6 +542,12 @@ class Add extends Component {
                                                          </Row>
                                                        </div>
                 ) }
+              { this.state.alertNoImageVisible ?
+                <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
+                  <p>
+                    At least one image is required.
+                  </p>
+                </Alert> : null }
               <Row className="padded-row">
                 <Col xs={ 1 } md={ 1 }>
                 <div>

@@ -350,7 +350,7 @@ class MyShopsAddShop extends Component {
             Add a new shop
           </Button>
         </div>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Add a new shop:</Modal.Title>
           </Modal.Header>

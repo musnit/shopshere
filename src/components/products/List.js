@@ -30,6 +30,35 @@ class List extends Component {
 
   clickedPatchProduct() {
 
+    var shortCircuit = 0;
+
+    var prodName = this.refs.nameBox.getValue();
+
+    if (prodName == "") {
+      this.handleAlertNoNameShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoNameDismiss();
+    }
+
+    var prodSKU = this.refs.SKUBox.getValue();
+
+    if (prodSKU == "") {
+      this.handleAlertNoSKUShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoSKUDismiss();
+    }
+
+    var descriptionInput = this.state.description;
+
+    if (descriptionInput == "" || !descriptionInput) {
+      this.handleAlertNoDescShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoDescDismiss();
+    }
+
     var priceValue = this.refs.priceBox.getValue();
 
     if (Number(priceValue) != priceValue) {
@@ -39,16 +68,33 @@ class List extends Component {
       this.handleAlertDismiss();
     }
 
+    if (priceValue == "") {
+      this.handleAlertNoPriceShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoPriceDismiss();
+    }
+
 
     var imageObjects = this.state.selectedProduct.images.concat(this.state.imageFiles);
+    if (imageObjects.length < 1) {
+      this.handleAlertNoImageShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoImageDismiss();
+    }
 
+
+    if (shortCircuit == 1) {
+      return;
+    }
 
 
     var patchObject = {
       id: this.state.selectedProduct.id,
-      name: this.refs.nameBox.getValue(),
-      sku: this.refs.SKUBox.getValue(),
-      description: this.refs.descriptionBox.value,
+      name: prodName,
+      sku: prodSKU,
+      description: descriptionInput,
       price: priceValue,
       shop: this.props.shopID,
       colors: this.state.selectedProduct.colors,
@@ -85,6 +131,11 @@ class List extends Component {
 
     this.refs.priceBox.getInputDOMNode().value = '';
     this.handleAlertDismiss();
+    this.handleAlertNoNameDismiss();
+    this.handleAlertNoSKUDismiss();
+    this.handleAlertNoDescDismiss();
+    this.handleAlertNoPriceDismiss();
+    this.handleAlertNoImageDismiss();
     this.setState({
       showModal: false,
       colorOptions: [],
@@ -165,6 +216,12 @@ class List extends Component {
       alertVisible: false,
       description: undefined
     });
+    this.handleAlertDismiss();
+    this.handleAlertNoNameDismiss();
+    this.handleAlertNoSKUDismiss();
+    this.handleAlertNoDescDismiss();
+    this.handleAlertNoPriceDismiss();
+    this.handleAlertNoImageDismiss();
   }
 
   open(name) {
@@ -236,6 +293,7 @@ class List extends Component {
     this.setState({
       description: event.target.value
     });
+    debugger;
   }
 
 
@@ -388,6 +446,66 @@ class List extends Component {
     this.onaColorBoxChange(index);
   }
 
+  handleAlertNoNameDismiss() {
+    this.setState({
+      alertNoNameVisible: false
+    });
+  }
+
+  handleAlertNoNameShow() {
+    this.setState({
+      alertNoNameVisible: true
+    });
+  }
+
+  handleAlertNoSKUDismiss() {
+    this.setState({
+      alertNoSKUVisible: false
+    });
+  }
+
+  handleAlertNoSKUShow() {
+    this.setState({
+      alertNoSKUVisible: true
+    });
+  }
+
+  handleAlertNoDescDismiss() {
+    this.setState({
+      alertNoDescVisible: false
+    });
+  }
+
+  handleAlertNoDescShow() {
+    this.setState({
+      alertNoDescVisible: true
+    });
+  }
+
+  handleAlertNoPriceDismiss() {
+    this.setState({
+      alertNoPriceVisible: false
+    });
+  }
+
+  handleAlertNoPriceShow() {
+    this.setState({
+      alertNoPriceVisible: true
+    });
+  }
+
+  handleAlertNoImageDismiss() {
+    this.setState({
+      alertNoImageVisible: false
+    });
+  }
+
+  handleAlertNoImageShow() {
+    this.setState({
+      alertNoImageVisible: true
+    });
+  }
+
   render() {
 
     var colorLength = this.state.selectedProduct.colors.length;
@@ -402,7 +520,7 @@ class List extends Component {
                                                         </MenuItem>
             ) }
         </DropdownButton>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>
               Edit <b>{ this.state.selectedProduct.name }</b> by modifying it below and then click Edit product
@@ -410,17 +528,42 @@ class List extends Component {
           </Modal.Header>
           <Modal.Body>
             <Input label="Product Name" type="text" ref='nameBox' defaultValue={ this.state.selectedProduct.name } placeholder="Name..." />
+            { this.state.alertNoNameVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoNameDismiss.bind(this) }>
+                <p>
+                  Product name is required.
+                </p>
+              </Alert> : null }
             <Input label="Product SKU" type="text" ref='SKUBox' defaultValue={ this.state.selectedProduct.sku } placeholder="SKU..." />
+            { this.state.alertNoSKUVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoSKUDismiss.bind(this) }>
+                <p>
+                  Product SKU is required.
+                </p>
+              </Alert> : null }
             <label htmlFor="inputProductDescription">
               Description
             </label>
-            <textarea id="inputProductDescription" className="form-control" ref='descriptionBox' defaultValue={ this.state.selectedProduct.description } placeholder="Description..." />
+            <textarea id="inputProductDescription" className="form-control" ref='descriptionBox' onChange={ this.onDescriptionBoxChange.bind(this) } defaultValue={ this.state.selectedProduct.description } placeholder="Description..."
+            />
+            { this.state.alertNoDescVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoDescDismiss.bind(this) }>
+                <p>
+                  Product description is required.
+                </p>
+              </Alert> : null }
             <Input label="Product Price" type="number" ref='priceBox' defaultValue={ this.state.selectedProduct.price } placeholder="Price (Only decimal numbers)..." />
             { this.state.alertVisible ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertDismiss.bind(this) }>
                 <h4>Invalid Input!</h4>
                 <p>
                   Product price can only be a decimal number example 1 50 50.00 65.89 etc.
+                </p>
+              </Alert> : null }
+            { this.state.alertNoPriceVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoPriceDismiss.bind(this) }>
+                <p>
+                  Product price is required.
                 </p>
               </Alert> : null }
             <label htmlFor="inputProductColor">
@@ -537,6 +680,12 @@ class List extends Component {
                                                          </Col>
                                                        </Row>
                 ) }
+              { this.state.alertNoImageVisible ?
+                <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
+                  <p>
+                    At least one image is required.
+                  </p>
+                </Alert> : null }
               <Row className="padded-row">
                 <Col xs={ 1 } md={ 1 }>
                 <div>

@@ -109,6 +109,14 @@ class MyShopsEditShop extends Component {
       this.handleAlertNoEVPDismiss();
     }
 
+
+    if (this.state.changeImage) {
+      this.handleAlertNoImageShow();
+      shortCircuit = 1;
+    } else {
+      this.handleAlertNoImageDismiss();
+    }
+
     if (shortCircuit == 1) {
       return;
     }
@@ -223,7 +231,8 @@ class MyShopsEditShop extends Component {
   imageUploadComplete(logoFile) {
     this.setState({
       submitDisabled: false,
-      logoFile: logoFile
+      logoFile: logoFile,
+      changeImage: false
     });
   }
 
@@ -427,7 +436,7 @@ class MyShopsEditShop extends Component {
             Edit <b>{ selected.name }</b>
           </Button>
         </div>
-        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) }>
+        <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Edit <b>{ this.state.selectedShop.name }</b>:</Modal.Title>
           </Modal.Header>
@@ -524,6 +533,10 @@ class MyShopsEditShop extends Component {
               </Grid>
               :
               <S3Uploader onUploadStart={ this.imageUploadStarted.bind(this) } onUploadFinish={ this.imageUploadComplete.bind(this) } folderURL={ logoFolderURL } /> }
+            { this.state.alertNoImageVisible ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertNoImageDismiss.bind(this) }>
+                <p>A shop Logo Image is required.</p>
+              </Alert> : null }
             <label htmlFor="inputShopLogoBackground" className="form-element">Shop Logo Background Color </label>
             <Grid fluid>
               <Row className="padded-row">
