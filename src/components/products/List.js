@@ -96,6 +96,13 @@ class List extends Component {
       item.pop();
     })
 
+    var currentSizeOptions = _.cloneDeep(this.state.selectedProduct.sizes);
+    var submitSizes = [];
+
+    _.forEach(currentSizeOptions, function(item) {
+      submitSizes.push(item[0]);
+    })
+
 
     var patchObject = {
       id: this.state.selectedProduct.id,
@@ -106,7 +113,7 @@ class List extends Component {
       shop: this.props.shopID,
       colors: currentColorOptions,
       images: imageObjects,
-      sizes: this.state.selectedProduct.sizes
+      sizes: submitSizes
     }
 
     for (var key in patchObject) {
@@ -270,9 +277,16 @@ class List extends Component {
       if (item[1] == " ") {
         item[1] = ""
       }
-      item[2] = Math.random()
+      item[2] = Math.random();
     })
 
+    _.forEach(selected.sizes, function(item, index) {
+      console.log(index);
+      if (item == " ") {
+        item = ""
+      }
+      selected.sizes[index] = [item, Math.random()];
+    })
 
     this.setState({
       showModal: true,
@@ -343,7 +357,7 @@ class List extends Component {
 
   onaSizeBoxChange(item, event) {
     var currentSizeOptions = _.cloneDeep(this.state.selectedProduct);
-    currentSizeOptions.sizes[item] = event.target.value;
+    currentSizeOptions.sizes[item][0] = event.target.value;
     this.setState({
       selectedProduct: currentSizeOptions
     });
@@ -395,9 +409,12 @@ class List extends Component {
     });
   }
 
-  clickedAddSize() {
+  clickedAddSize(size) {
+    if (size[0] == "") {
+      return;
+    }
     var updateProduct = JSON.parse(JSON.stringify(this.state.selectedProduct));
-    updateProduct.sizes.push("");
+    updateProduct.sizes.push(["", Math.random()]);
     this.setState({
       selectedProduct: updateProduct
     });
@@ -408,7 +425,7 @@ class List extends Component {
     if (this.state.selectedProduct.sizes.length == 1) {
       var updateProduct = _.cloneDeep(this.state.selectedProduct);
 
-      updateProduct.sizes = [""];
+      updateProduct.sizes = [["", Math.random()]];
 
       this.setState({
         selectedProduct: updateProduct
@@ -421,7 +438,7 @@ class List extends Component {
     var updateProductSizes = _.cloneDeep(updateProduct.sizes);
 
     var sizeIndex = _.findIndex(updateProductSizes, function(o) {
-      return o == size;
+      return o[0] == size[0];
     });
 
     _.pullAt(updateProductSizes, sizeIndex);
@@ -551,7 +568,6 @@ class List extends Component {
 
     var colorChoices = this.state.selectedProduct.colors;
 
-
     return (
       <div className="product-button">
         <DropdownButton bsStyle={ 'primary' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
@@ -648,9 +664,9 @@ class List extends Component {
               Size(s)
             </label>
             <Grid fluid ref='sizeBox'>
-              { this.state.selectedProduct.sizes.map((size, index) => <Row key={ size } className="padded-row">
+              { this.state.selectedProduct.sizes.map((size, index) => <Row key={ size[1] } className="padded-row">
                                                                         <Col xs={ 5 } md={ 3 }>
-                                                                        <Input id="inputProductSize" className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size } placeholder="Size..."
+                                                                        <Input id="inputProductSize" className="size-box" type="text" ref={ 'sizeBox' + index } onChange={ this.onaSizeBoxChange.bind(this, index) } defaultValue={ size[0] } placeholder="Size..."
                                                                         />
                                                                         </Col>
                                                                         <Col xs={ 1 } md={ 1 }>
@@ -664,7 +680,7 @@ class List extends Component {
                                                                           <div key={ index }>
                                                                             <Col xs={ 1 } md={ 1 }>
                                                                             <div>
-                                                                              <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this) }>
+                                                                              <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this, size) }>
                                                                                 <b>+</b>
                                                                               </Button>
                                                                             </div>
