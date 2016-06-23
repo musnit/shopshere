@@ -165,7 +165,6 @@ class MyShopsAddShop extends Component {
     //if change to new shop:
     if (nextProps.shops !== this.props.shops && this.props.shops.length != 0 && this.props.shops.length < nextProps.shops.length) {
       var shopJustAdded = _.difference(nextProps.shops, this.props.shops);
-      debugger;
       this.props.boundAddViewpoint({
         name: "Entrance",
         shop: shopJustAdded[0].id,

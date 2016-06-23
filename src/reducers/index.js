@@ -238,7 +238,6 @@ const category = (state, action) => {
     case types.ADD_CATEGORY_FULFILLED:
       return action.payload;
     case types.EDIT_CATEGORY_FULFILLED:
-      debugger;
       if (state.id !== action.payload.id) {
         return state;
       }
