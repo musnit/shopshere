@@ -147,11 +147,13 @@ class MyShopsEditShop extends Component {
       category: cat["id"],
       logoFile: logo,
       logoColor: this.refs.colorHexBox.getValue(),
-      entranceViewpoint: viewp["id"]
+      entranceViewpoint: viewp["id"],
+      visible: !this.refs.checkbox.checked
     }
 
+
     for (var key in patchShopObject) {
-      if (patchShopObject[key] == "") {
+      if (patchShopObject[key] === "") {
         patchShopObject[key] = undefined;
       }
     }
@@ -375,8 +377,6 @@ class MyShopsEditShop extends Component {
     });
   }
 
-
-
   render() {
 
     var shopID;
@@ -480,6 +480,13 @@ class MyShopsEditShop extends Component {
                 <Alert bsStyle="danger" onDismiss={ this.handleAlertNoAddressDismiss.bind(this) }>
                   <p>All address fields are required.</p>
                 </Alert> : null }
+            </div>
+            <label htmlFor="checkbox" className="form-element">Shop Visibility</label>
+            <div className="checkbox">
+              <input id="checkbox" type="checkbox" ref="checkbox" defaultChecked={ !selected.visible } />
+              <label htmlFor="checkbox">
+                <b> Hide Shop </b>
+              </label>
             </div>
             <label htmlFor="inputShopCategory" className="form-element">Category</label>
             <div className="cat-button">
