@@ -3,10 +3,11 @@ import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
 import superagent from 'superagent';
 import uuid from 'node-uuid';
-
+import { Image } from 'react-bootstrap';
 import '~/src/styles/uploader.css';
 
 
+const gifSource = "/images/spin.gif"
 
 class S3Uploader extends Component {
 
@@ -53,7 +54,9 @@ class S3Uploader extends Component {
       <Dropzone onDrop={ this.onDrop.bind(this) }>
         <div className="dropzone">Drop a file here, or click to select a file to upload.</div>
       </Dropzone>;
-    const uploadProgress = this.state.uploadInProgress && <div>Uploading...</div>;
+    const uploadProgress = this.state.uploadInProgress && <div>
+                                                            <Image src={ gifSource } />
+                                                          </div>;
     const uploadPreview = this.state.uploadCompleted &&
     <img src={ this.state.uploadFileURL } style={ { maxWidth: '100%', maxHeight: '100%' } } />;
     return (
