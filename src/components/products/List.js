@@ -10,6 +10,7 @@ import { find, findIndex, forEach, pull, pullAt } from 'lodash';
 import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
+import Confirm from '~/src/components/utility/Confirm';
 import '~/src/styles/product.css';
 
 
@@ -174,6 +175,18 @@ class List extends Component {
 
 
   clickedDeleteProduct() {
+    this.setState({
+      confirmModalVisible: true,
+    });
+  }
+
+  closeConfirm() {
+    this.setState({
+      confirmModalVisible: false,
+    });
+  }
+
+  confirmDeleteProduct() {
 
     let deleteObject = {
       ID: this.state.selectedProduct.id,
@@ -192,7 +205,8 @@ class List extends Component {
       imageFiles: [],
       submitDisabled: false,
       images: [0],
-      description: undefined
+      description: undefined,
+      confirmModalVisible: false
     });
   }
 
@@ -211,7 +225,8 @@ class List extends Component {
       imageFiles: [],
       images: [0],
       alertVisible: false,
-      description: undefined
+      description: undefined,
+      confirmModalVisible: false
     };
   }
 
@@ -757,6 +772,8 @@ class List extends Component {
             </Grid>
           </Modal.Footer>
         </Modal>
+        <Confirm visible={ this.state.confirmModalVisible } onConfirm={ this.confirmDeleteProduct.bind(this) } onClose={ this.closeConfirm.bind(this) } title="Confirmation" body="Are you sure you want to delete this product?"
+        />
       </div>
       );
   }
