@@ -11,6 +11,8 @@ import S3Uploader from '~/src/components/utility/S3Uploader';
 
 import { viewpointFolderURL } from '~/src/config';
 
+import Confirm from '~/src/components/utility/Confirm';
+
 class Edit extends Component {
 
   clickedPatchViewpoint() {
@@ -112,11 +114,23 @@ class Edit extends Component {
       alertNoNameVisible: false,
       alertNoViewImageVisible: false,
       alertNoThumbnailVisible: false,
+      confirmModalVisible: false
     };
   }
 
-
   clickedDeleteViewpoint() {
+    this.setState({
+      confirmModalVisible: true,
+    });
+  }
+
+  closeConfirm() {
+    this.setState({
+      confirmModalVisible: false,
+    });
+  }
+
+  confirmDeleteViewpoint() {
     let deleteObject = {
       ID: this.state.selectedViewpoint.id,
       index: this.state.selectedViewpoint.index
@@ -129,6 +143,7 @@ class Edit extends Component {
       changeImage: false,
       imageFile: undefined,
       thumbnailFile: undefined,
+      confirmModalVisible: false,
       selectedViewpoint: {
         name: "",
         imageFile: "",
@@ -363,6 +378,8 @@ class Edit extends Component {
             </Grid>
           </Modal.Footer>
         </Modal>
+        <Confirm visible={ this.state.confirmModalVisible } onConfirm={ this.confirmDeleteViewpoint.bind(this) } onClose={ this.closeConfirm.bind(this) } title="Confirmation" body="Are you sure you want to delete this viewpoint?"
+        />
       </div>
       );
   }
