@@ -118,13 +118,13 @@ class Add extends Component {
       description: undefined,
       disabled: []
     });
-
+    this.props.onClose();
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false,
+      showModal: this.props.visible,
       colors: [0],
       sizes: [0],
       images: [0],
@@ -138,6 +138,17 @@ class Add extends Component {
       disabled: []
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.visible != this.props.visible && nextProps.visible == true && this.state.showModal != true) {
+      this.setState({
+        showModal: true,
+      });
+    } else {
+      return;
+    }
+  }
+
 
   handleAlertDismiss() {
     this.setState({
@@ -176,6 +187,7 @@ class Add extends Component {
       description: undefined,
       disabled: []
     });
+    this.props.onClose();
   }
 
   open() {
@@ -441,11 +453,6 @@ class Add extends Component {
     var imageLength = this.state.images.length;
     return (
       <div>
-        <div className="product-button">
-          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
-            Add a new product
-          </Button>
-        </div>
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>

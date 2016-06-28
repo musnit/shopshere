@@ -9,7 +9,7 @@ import { connectProductToHotspot, deleteHotspot, fetchHotspots, unboundAddHotspo
 import { unboundPatchShop } from '~/src/actions/shops';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
 import { find, findIndex, forEach } from 'lodash';
-
+import Add from '~/src/components/products/Add';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
@@ -37,7 +37,8 @@ class Viewer extends Component {
       key: undefined,
       entranceViewpointNeeded: false,
       thisIsTheEntrance: false,
-      noSelection: false
+      noSelection: false,
+      productAddVisible: false
     };
   }
 
@@ -399,6 +400,18 @@ class Viewer extends Component {
     this.closeEditProdHotspotModal();
   }
 
+  closeProductAddModal() {
+    this.setState({
+      productAddVisible: false
+    });
+  }
+
+  openProductAddModal() {
+    this.setState({
+      productAddVisible: true
+    });
+  }
+
   render() {
 
     var currentViewpointID = this.state.currentViewpoint;
@@ -507,6 +520,8 @@ class Viewer extends Component {
                 { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index } data={ product.id } onClick={ this.addNewProductHotspot.bind(this) }>
                                                               { product.name } </MenuItem>
                   ) }
+                { this.props.products.length == 0 ?
+                  <MenuItem onClick={ this.openProductAddModal.bind(this) }> <b>Add a product...</b> </MenuItem> : null }
               </DropdownButton>
             </div>
           </Modal.Body>
@@ -559,6 +574,7 @@ class Viewer extends Component {
             <ButtonInput className="hotspot-button" type="submit" bsStyle="danger" onClick={ this.clickedDeleteHotspot.bind(this) }>Delete this hotspot!</ButtonInput>
           </Modal.Footer>
         </Modal>
+        <Add shopID={ this.props.shopID } visible={ this.state.productAddVisible } onClose={ this.closeProductAddModal.bind(this) } />
       </div>
       );
   }
