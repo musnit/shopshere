@@ -391,10 +391,13 @@ export default class SphereViewer {
 
 
   setupClickEvent() {
+
+    var Flag = 0;
+
     function onDocumentMouseUp(event) {
       event.preventDefault();
 
-      if (event.target == this.renderer.domElement) {
+      if (event.target == this.renderer.domElement && Flag == 0) {
         const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
         v3MouseCoords.unproject(this.camera);
@@ -432,6 +435,22 @@ export default class SphereViewer {
       }
     }
     document.addEventListener("dblclick", onDocumentMouseDoubleclick.bind(this), false);
+
+    function onDocumentMouseMove(event) {
+      event.preventDefault();
+
+      Flag = 1;
+
+    }
+    document.addEventListener("mousemove", onDocumentMouseMove.bind(this), false);
+
+    function onDocumentMouseDown(event) {
+      event.preventDefault();
+
+      Flag = 0;
+
+    }
+    document.addEventListener("mousedown", onDocumentMouseDown.bind(this), false);
 
   }
 
