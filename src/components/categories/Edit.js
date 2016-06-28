@@ -7,6 +7,7 @@ import { addCategory } from '~/src/actions/categories';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
 import fetch from '~/src/components/fetch';
 import { fetchCategories, unboundPatchCategory, deleteCategory } from '~/src/actions/categories';
+import { fetchShops } from '~/src/actions/shops';
 import { find, map } from 'lodash';
 
 import '~/src/styles/shops.css';
@@ -22,6 +23,7 @@ class Edit extends Component {
     this.state = {
       showModal: false,
       alertVisible: false,
+      alertUnableToDelete: false,
       selectedCategory: {
         text: ""
       }
@@ -56,6 +58,7 @@ class Edit extends Component {
     this.setState({
       showModal: false,
       alertVisible: false,
+      alertUnableToDelete: false,
       selectedCategory: {
         text: ""
       }
@@ -63,8 +66,21 @@ class Edit extends Component {
   }
 
   clickedDeleteCategory() {
+
+    var selectedCategoryID = this.state.selectedCategory.id;
+
+    var stillSomeShopsWithCategory = _.find(this.props.shops, function(o) {
+      return o.category == selectedCategoryID
+    });
+
+    if (stillSomeShopsWithCategory) {
+
+      this.handleAlertUnableToDeleteShow();
+      return
+    }
+
     let deleteObject = {
-      ID: this.state.selectedCategory.id,
+      ID: selectedCategoryID,
       index: this.state.selectedCategory.index
     };
 
@@ -73,6 +89,7 @@ class Edit extends Component {
     this.setState({
       showModal: false,
       alertVisible: false,
+      alertUnableToDelete: false,
       selectedCategory: {
         text: ""
       }
@@ -112,6 +129,18 @@ class Edit extends Component {
     });
   }
 
+  handleAlertUnableToDeleteDismiss() {
+    this.setState({
+      alertUnableToDelete: false
+    });
+  }
+
+  handleAlertUnableToDeleteShow() {
+    this.setState({
+      alertUnableToDelete: true
+    });
+  }
+
 
   render() {
 
@@ -148,6 +177,12 @@ class Edit extends Component {
                 </Col>
               </Row>
             </Grid>
+            { this.state.alertUnableToDelete ?
+              <Alert bsStyle="danger" onDismiss={ this.handleAlertUnableToDeleteDismiss.bind(this) }>
+                <p>You cannot delete a category that still has some shops assigned to it. Either delete these shops or assign them to a different category in order to delete this
+                  category.
+                </p>
+              </Alert> : null }
           </Modal.Footer>
         </Modal>
       </div>
@@ -157,20 +192,22 @@ class Edit extends Component {
 }
 
 const FetchedEdit = fetch(Edit, {
-  actions: [fetchCategories]
+  actions: [fetchShops, fetchCategories]
 });
 
 function mapStateToProps(state) {
   const categories = state.categories;
+  const shops = state.shops;
   return {
     categories,
+    shops
   };
 }
-;
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchCategories: bindActionCreators(fetchCategories, dispatch),
+    fetchShops: bindActionCreators(fetchShops, dispatch),
     boundPatchCategory: bindActionCreators(unboundPatchCategory, dispatch),
     deleteCategory: bindActionCreators(deleteCategory, dispatch)
   };
