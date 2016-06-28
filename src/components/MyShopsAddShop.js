@@ -4,11 +4,12 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { Input, ButtonInput, Modal, Button, DropdownButton, MenuItem, Grid, Row, Col, Alert } from 'react-bootstrap';
 import { addCategory } from '~/src/actions/categories';
-import { unboundAddShop } from '~/src/actions/shops';
+import { unboundAddShop, unboundPatchShop } from '~/src/actions/shops';
 import { unboundAddViewpoint } from '~/src/actions/viewpoints';
 import '~/node_modules/bootstrap/dist/css/bootstrap.css';
-
+import fetch from '~/src/components/fetch';
 import { find, map, difference } from 'lodash';
+import { fetchViewpoints } from '~/src/actions/viewpoints';
 
 import '~/src/styles/shops.css';
 import ColorPick from '~/src/components/utility/ColorPick';
@@ -171,6 +172,29 @@ class MyShopsAddShop extends Component {
         imageFile: defaultPano,
         thumbnailFile: defaultThumb
       });
+      this.setState({
+        shopJustAddedID: shopJustAdded[0].id
+      });
+    }
+
+    if (nextProps.viewpoints != this.props.viewpoints && nextProps.viewpoints.length === 1 && nextProps.viewpoints[0].shop == this.state.shopJustAddedID && nextProps.viewpoints[0].name == "Entrance") {
+
+      var checkID = this.state.shopJustAddedID;
+
+      var shopToCheck = _.find(this.props.shops, function(o) {
+        return o.id == checkID;
+      });
+
+      if (!shopToCheck.entranceViewpoint) {
+
+        var patchShopObject = {
+          id: this.state.shopJustAddedID,
+          entranceViewpoint: nextProps.viewpoints[0].id
+        }
+
+        this.props.boundPatchShop(patchShopObject);
+      }
+
 
     }
 
@@ -188,7 +212,8 @@ class MyShopsAddShop extends Component {
       alertNoPhoneVisible: false,
       alertNoAddressVisible: false,
       alertNoImageVisible: false,
-      addCatModalVisible: false
+      addCatModalVisible: false,
+      shopJustAddedID: undefined
     };
   }
 
@@ -477,10 +502,16 @@ class MyShopsAddShop extends Component {
   }
 }
 
+const FetchedMSAS = fetch(MyShopsAddShop, {
+  actions: [fetchViewpoints]
+});
+
 function mapStateToProps(state) {
   const shops = state.shops;
+  const viewpoints = state.viewpoints;
   return {
-    shops
+    shops,
+    viewpoints
   };
 }
 ;
@@ -490,8 +521,10 @@ function mapDispatchToProps(dispatch) {
     boundAddShop: bindActionCreators(unboundAddShop, dispatch),
     addCategory: bindActionCreators(addCategory, dispatch),
     boundAddViewpoint: bindActionCreators(unboundAddViewpoint, dispatch),
+    fetchViewpoints: bindActionCreators(fetchViewpoints, dispatch),
+    boundPatchShop: bindActionCreators(unboundPatchShop, dispatch),
   };
 }
 ;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyShopsAddShop);
+export default connect(mapStateToProps, mapDispatchToProps)(FetchedMSAS);
