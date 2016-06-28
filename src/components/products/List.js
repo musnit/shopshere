@@ -11,6 +11,7 @@ import ColorPick from '~/src/components/utility/ColorPick';
 import S3Uploader from '~/src/components/utility/S3Uploader';
 import { productFolderURL } from '~/src/config';
 import Confirm from '~/src/components/utility/Confirm';
+import Add from '~/src/components/products/Add';
 import '~/src/styles/product.css';
 
 
@@ -226,7 +227,8 @@ class List extends Component {
       images: [0],
       alertVisible: false,
       description: undefined,
-      confirmModalVisible: false
+      confirmModalVisible: false,
+      productAddVisible: false
     };
   }
 
@@ -575,6 +577,19 @@ class List extends Component {
     });
   }
 
+  closeProductAddModal() {
+    this.setState({
+      productAddVisible: false
+    });
+  }
+
+  openProductAddModal() {
+    this.setState({
+      productAddVisible: true
+    });
+  }
+
+
   render() {
 
     var colorLength = this.state.selectedProduct.colors.length;
@@ -590,6 +605,8 @@ class List extends Component {
                                                         { product.name }
                                                         </MenuItem>
             ) }
+          { this.props.products.length == 0 ?
+            <MenuItem onClick={ this.openProductAddModal.bind(this) }> <b>Add a new product...</b> </MenuItem> : null }
         </DropdownButton>
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) } backdrop="static">
           <Modal.Header closeButton>
@@ -774,6 +791,7 @@ class List extends Component {
         </Modal>
         <Confirm visible={ this.state.confirmModalVisible } onConfirm={ this.confirmDeleteProduct.bind(this) } onClose={ this.closeConfirm.bind(this) } title="Confirmation" body="Are you sure you want to delete this product?"
         />
+        <Add shopID={ this.props.shopID } visible={ this.state.productAddVisible } onClose={ this.closeProductAddModal.bind(this) } />
       </div>
       );
   }
