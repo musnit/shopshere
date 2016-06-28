@@ -9,6 +9,7 @@ import { connectProductToHotspot, deleteHotspot, fetchHotspots, unboundAddHotspo
 import { unboundPatchShop } from '~/src/actions/shops';
 import { clearProducts, fetchProducts } from '~/src/actions/products';
 import { find, findIndex, forEach } from 'lodash';
+import { LinkContainer } from 'react-router-bootstrap';
 import Add from '~/src/components/products/Add';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -489,6 +490,12 @@ class Viewer extends Component {
                 </Row>
               </div> : null }
           </Grid> : null }
+        <LinkContainer to={ { pathname: `/store.html` } }>
+          <Button bsStyle="warning" type="submit">
+            Go To Store
+            <Glyphicon glyph="new-window" />
+          </Button>
+        </LinkContainer>
         <Modal show={ this.state.showNewHotspotModal } onHide={ this.closeNewHotspotModal.bind(this) }>
           <Modal.Header closeButton>
             <Modal.Title>Select the type of hotspot you would like to add here:</Modal.Title>
