@@ -490,12 +490,14 @@ class Viewer extends Component {
                 </Row>
               </div> : null }
           </Grid> : null }
-        <LinkContainer to={ { pathname: `/store.html` } }>
-          <Button bsStyle="warning" type="submit">
-            Go To Store
-            <Glyphicon glyph="new-window" />
-          </Button>
-        </LinkContainer>
+        { /*
+                            <LinkContainer to={ { pathname: `/store.html` } }>
+                              <Button bsStyle="warning" type="submit">
+                                Go To Store
+                                <Glyphicon glyph="new-window" />
+                              </Button>
+                            </LinkContainer>
+                            */ }
         <Modal show={ this.state.showNewHotspotModal } onHide={ this.closeNewHotspotModal.bind(this) }>
           <Modal.Header closeButton>
             <Modal.Title>Select the type of hotspot you would like to add here:</Modal.Title>
