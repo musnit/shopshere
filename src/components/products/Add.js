@@ -16,6 +16,7 @@ class Add extends Component {
 
   clickedAddProduct() {
 
+
     var shortCircuit = 0;
 
     var prodName = this.refs.nameBox.getValue();
@@ -72,6 +73,20 @@ class Add extends Component {
       return;
     }
 
+
+    var currentColorOptions = _.cloneDeep(this.state.colorOptions);
+
+    _.forEach(currentColorOptions, function(item) {
+      item.pop();
+    })
+
+    var currentSizeOptions = _.cloneDeep(this.state.sizeOptions);
+    var submitSizes = [];
+
+    _.forEach(currentSizeOptions, function(item) {
+      submitSizes.push(item[0]);
+    })
+
     var addObject = {
       name: prodName,
 
@@ -79,9 +94,9 @@ class Add extends Component {
       description: descriptionInput,
       price: priceValue,
       shop: this.props.shopID,
-      colors: this.state.colorOptions,
+      colors: currentColorOptions,
       images: this.state.imageFiles,
-      sizes: this.state.sizeOptions
+      sizes: submitSizes
     }
 
     for (var key in addObject) {
@@ -89,12 +104,29 @@ class Add extends Component {
         addObject[key] = [];
       } else if (key === 'sizes' && addObject[key] == "") {
         addObject[key] = [];
-      } else if (key === 'colors' && addObject[key] == "") {
-        addObject[key] = [];
+      } else if (key === 'colors') {
+
+
+        if (addObject[key].length == 1 && addObject[key][0][0] == "" && addObject[key][0][1] == "") {
+          addObject[key] = [];
+        } else {
+          _.forEach(addObject[key], function(item) {
+            if (item[0] == "") {
+              item[0] = " "
+            }
+            if (item[1] == "") {
+              item[1] = " "
+            }
+          })
+        }
+
+
       } else if (addObject[key] == "") {
         addObject[key] = " ";
       }
     }
+
+    debugger;
 
     this.props.boundAddProduct(addObject);
 
@@ -108,13 +140,11 @@ class Add extends Component {
     this.handleAlertNoImageDismiss();
     this.setState({
       showModal: false,
-      colors: [0],
-      sizes: [0],
       images: [0],
       submitDisabled: false,
       imageFiles: [],
-      sizeOptions: [],
-      colorOptions: [],
+      sizeOptions: [["", Math.random()]],
+      colorOptions: [["", "", Math.random()]],
       description: undefined,
       disabled: []
     });
@@ -125,14 +155,12 @@ class Add extends Component {
     super(props);
     this.state = {
       showModal: this.props.visible,
-      colors: [0],
-      sizes: [0],
       images: [0],
       submitDisabled: false,
       imageFiles: [],
       nameValue: undefined,
-      sizeOptions: [],
-      colorOptions: [],
+      sizeOptions: [["", Math.random()]],
+      colorOptions: [["", "", Math.random()]],
       alertVisible: false,
       description: undefined,
       disabled: []
@@ -178,12 +206,10 @@ class Add extends Component {
     this.setState({
       showModal: false,
       submitDisabled: false,
-      colors: [0],
-      sizes: [0],
       images: [0],
       imageFiles: [],
-      sizeOptions: [],
-      colorOptions: [],
+      sizeOptions: [["", Math.random()]],
+      colorOptions: [["", "", Math.random()]],
       description: undefined,
       disabled: []
     });
@@ -196,57 +222,60 @@ class Add extends Component {
     });
   }
 
-  clickedAddColor() {
-    var currentvalue = this.state.colors[this.state.colors.length - 1];
-    var newcolor = this.state.colors.concat(currentvalue + 1);
-    this.setState({
-      colors: newcolor
-    });
-  }
-
-  clickedRemoveColor(event) {
-
-    if (this.state.colors.length == 1) {
-      return
+  clickedAddColor(color) {
+    if (color[0] == "" && color[1] == "") {
+      return;
     }
 
-    var lineToRemove = event.currentTarget.value;
+    var updateProductColors = _.cloneDeep(this.state.colorOptions);
 
-    var newcolor = _.filter(this.state.colors, function(o) {
-      return o != lineToRemove;
-    })
+    updateProductColors.push(["", "", Math.random()]);
 
     this.setState({
-      colors: newcolor
+      colorOptions: updateProductColors
     });
   }
 
-  clickedAddSize() {
-    var currentvalue = this.state.sizes[this.state.sizes.length - 1];
-    var newsize = this.state.sizes.concat(currentvalue + 1);
-    this.setState({
-      sizes: newsize
-    });
-  }
-
-  clickedRemoveSize(event) {
-
-
-    if (this.state.sizes.length == 1) {
-      return
+  clickedAddSize(size) {
+    if (size[0] == "") {
+      return;
     }
 
-    var lineToRemove = event.currentTarget.value;
+    var updateProductSizes = _.cloneDeep(this.state.sizeOptions);
 
-    var newsize = _.filter(this.state.sizes, function(o) {
-      return o != lineToRemove;
-    })
+    updateProductSizes.push(["", Math.random()]);
 
     this.setState({
-      sizes: newsize
+      sizeOptions: updateProductSizes
     });
   }
 
+  clickedDeleteSize(size) {
+
+    if (this.state.sizeOptions.length == 1) {
+
+      updateProduct = [["", Math.random()]];
+
+      this.setState({
+        sizeOptions: updateProduct
+      });
+
+      return;
+    }
+
+    var updateProductSizes = _.cloneDeep(this.state.sizeOptions);
+
+    var sizeIndex = _.findIndex(updateProductSizes, function(o) {
+      return o[0] == size[0];
+    });
+
+    _.pullAt(updateProductSizes, sizeIndex);
+
+    this.setState({
+      sizeOptions: updateProductSizes
+    });
+
+  }
 
   clickedAddImage() {
     var currentvalue = this.state.images[this.state.images.length - 1];
@@ -302,7 +331,7 @@ class Add extends Component {
 
   onaSizeBoxChange(item, event) {
     var currentSizeOptions = _.cloneDeep(this.state.sizeOptions);
-    currentSizeOptions[item] = event.target.value;
+    currentSizeOptions[item][0] = event.target.value;
     this.setState({
       sizeOptions: currentSizeOptions
     });
@@ -319,7 +348,7 @@ class Add extends Component {
         var hexind = key.slice(-1);
         hexind = parseInt(hexind);
         if (currentColorOptions[hexind] == undefined) {
-          currentColorOptions[hexind] = [];
+          currentColorOptions[hexind] = ["", "", Math.random()];
         }
         ;
         currentColorOptions[hexind][1] = hexval;
@@ -329,7 +358,7 @@ class Add extends Component {
         var nameind = key.slice(-1);
         nameind = parseInt(nameind);
         if (currentColorOptions[nameind] == undefined) {
-          currentColorOptions[nameind] = [];
+          currentColorOptions[nameind] = ["", "", Math.random()];
         }
         ;
         currentColorOptions[nameind][0] = nameval;
@@ -352,7 +381,8 @@ class Add extends Component {
 
   }
 
-  handleChangeComplete(color, index) {
+  handleChangeComplete(index, color) {
+
     var refstring = 'colorHexBox' + String(index);
     var refstring2 = 'colorDisplayBox' + String(index);
 
@@ -362,8 +392,6 @@ class Add extends Component {
     this.refs[refstring2].style.height = '30px';
     this.refs[refstring2].style.width = '30px';
     this.refs[refstring2].style.borderRadius = '20px';
-
-
   }
 
   handleColorClose(index) {
@@ -447,9 +475,41 @@ class Add extends Component {
     });
   }
 
+  clickedDeleteColor(color, index) {
+
+    if (this.state.colorOptions.length == 1) {
+      var refstring = 'colorHexBox0';
+      var refstring2 = 'colorDisplayBox0';
+      var refstring3 = 'colorNameBox0';
+
+      this.refs[refstring].refs.input.value = "";
+      this.refs[refstring3].refs.input.value = "";
+
+      this.refs[refstring2].style.backgroundColor = "#fff";
+      this.refs[refstring2].style.height = '30px';
+      this.refs[refstring2].style.width = '30px';
+      this.refs[refstring2].style.borderRadius = '20px';
+      this.onaColorBoxChange(0);
+      return;
+    }
+
+    var updateProductColors = _.cloneDeep(this.state.colorOptions);
+
+    var colorIndex = _.findIndex(updateProductColors, function(o) {
+      return o[0] == color[0] && o[1] == color[1];
+    });
+
+    _.pullAt(updateProductColors, colorIndex);
+
+
+    this.setState({
+      colorOptions: updateProductColors
+    });
+  }
+
   render() {
-    var colorLength = this.state.colors.length;
-    var sizeLength = this.state.sizes.length;
+    var colorLength = this.state.colorOptions.length;
+    var sizeLength = this.state.sizeOptions.length;
     var imageLength = this.state.images.length;
     return (
       <div>
@@ -501,62 +561,68 @@ class Add extends Component {
               Color(s)
             </label>
             <Grid fluid>
-              { this.state.colors.map((item, index) => <Row className="padded-row">
-                                                         <Col xs={ 3 } md={ 3 }>
-                                                         <Input className="color-box" type="text" ref={ 'colorNameBox' + item } onChange={ this.onaColorBoxChange.bind(this) } placeholder="Name..." />
-                                                         </Col>
-                                                         <Col xs={ 3 } md={ 3 }>
-                                                         <ColorPick handleChange={ this.handleChangeComplete.bind(this) } onClosing={ this.handleColorClose.bind(this) } index={ item } />
-                                                         </Col>
-                                                         <Col xs={ 1 } md={ 1 }>
-                                                         <div ref={ 'colorDisplayBox' + item }>
-                                                         </div>
-                                                         </Col>
-                                                         <Col xs={ 3 } md={ 3 }>
-                                                         <Input type="text" ref={ 'colorHexBox' + item } onChange={ this.onaColorBoxChange.bind(this) } readOnly placeholder="Hex Value" />
-                                                         </Col>
-                                                         { index == colorLength - 1 ?
-                                                           <div key={ index }>
-                                                             <Col xs={ 1 } md={ 1 }>
-                                                             <div>
-                                                               <OverlayTrigger overlay={ <Tooltip id="add-color">
-                                                                                           Add another color.
-                                                                                         </Tooltip> }>
-                                                                 <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this) }>
-                                                                   <b>+</b>
-                                                                 </Button>
-                                                               </OverlayTrigger>
-                                                             </div>
-                                                             </Col>
-                                                           </div>
-                                                           : null }
-                                                       </Row>
+              { this.state.colorOptions.map((color, index) => <Row key={ color[2] } className="padded-row">
+                                                                <Col xs={ 3 } md={ 3 }>
+                                                                <ColorPick handleChange={ this.handleChangeComplete.bind(this, index) } onClosing={ this.handleColorClose.bind(this, index) } />
+                                                                </Col>
+                                                                <Col xs={ 5 } md={ 3 }>
+                                                                <Input className="color-box" type="text" ref={ 'colorNameBox' + index } onChange={ this.onaColorBoxChange.bind(this, index) } placeholder="Name..." />
+                                                                </Col>
+                                                                <Col xs={ 1 } md={ 1 }>
+                                                                <div ref={ 'colorDisplayBox' + index }>
+                                                                </div>
+                                                                </Col>
+                                                                <Col xs={ 5 } md={ 3 }>
+                                                                <Input type="text" ref={ 'colorHexBox' + index } onChange={ this.onaColorBoxChange.bind(this, index) } readOnly placeholder="Hex Value" />
+                                                                </Col>
+                                                                <Col xs={ 1 } md={ 1 }>
+                                                                <div>
+                                                                  <Button bsStyle="danger" onClick={ this.clickedDeleteColor.bind(this, color, index) }>
+                                                                    <b>‒</b>
+                                                                  </Button>
+                                                                </div>
+                                                                </Col>
+                                                                { index == colorLength - 1 ?
+                                                                  <div>
+                                                                    <Col xs={ 1 } md={ 1 }>
+                                                                    <div>
+                                                                      <Button bsStyle="success" onClick={ this.clickedAddColor.bind(this, color) }>
+                                                                        <b>+</b>
+                                                                      </Button>
+                                                                    </div>
+                                                                    </Col>
+                                                                  </div>
+                                                                  : null }
+                                                              </Row>
                 ) }
             </Grid>
             <label htmlFor="inputProductSize">
               Size(s)
             </label>
             <Grid fluid ref='sizeBox'>
-              { this.state.sizes.map((item, index) => <Row className="padded-row">
-                                                        <Col xs={ 5 } md={ 3 }>
-                                                        <Input id="inputProductSize" className="size-box" type="text" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + item } placeholder="Size..." />
-                                                        </Col>
-                                                        { index == sizeLength - 1 ?
-                                                          <div key={ index }>
-                                                            <Col xs={ 1 } md={ 1 }>
-                                                            <div>
-                                                              <OverlayTrigger overlay={ <Tooltip id="add-size">
-                                                                                          Add another size.
-                                                                                        </Tooltip> }>
-                                                                <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this) }>
-                                                                  <b>+</b>
+              { this.state.sizeOptions.map((size, index) => <Row key={ size[1] } className="padded-row">
+                                                              <Col xs={ 5 } md={ 3 }>
+                                                              <Input id="inputProductSize" className="size-box" type="text" onChange={ this.onaSizeBoxChange.bind(this, index) } ref={ 'sizeBox' + index } placeholder="Size..." />
+                                                              </Col>
+                                                              <Col xs={ 1 } md={ 1 }>
+                                                              <div>
+                                                                <Button bsStyle="danger" onClick={ this.clickedDeleteSize.bind(this, size) }>
+                                                                  <b>‒</b>
                                                                 </Button>
-                                                              </OverlayTrigger>
-                                                            </div>
-                                                            </Col>
-                                                          </div>
-                                                          : null }
-                                                      </Row>
+                                                              </div>
+                                                              </Col>
+                                                              { index == sizeLength - 1 ?
+                                                                <div key={ index }>
+                                                                  <Col xs={ 1 } md={ 1 }>
+                                                                  <div>
+                                                                    <Button bsStyle="success" onClick={ this.clickedAddSize.bind(this, size) }>
+                                                                      <b>+</b>
+                                                                    </Button>
+                                                                  </div>
+                                                                  </Col>
+                                                                </div>
+                                                                : null }
+                                                            </Row>
                 ) }
             </Grid>
             <label htmlFor="inputProductImage">
