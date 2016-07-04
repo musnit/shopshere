@@ -149,7 +149,7 @@ class Edit extends Component {
     return (
       <div>
         <div className="force-to-bottom">
-          <DropdownButton bsStyle={ 'primary' } title={ 'Select a Category to View, Edit or Delete' } id="cat-list" className="add-shop-btn">
+          <DropdownButton bsStyle={ 'info' } title={ 'Select a Category to View, Edit or Delete' } id="cat-list" className="add-shop-btn">
             { this.props.categories.map((category, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.open.bind(this) }>
                                                              { category.text } </MenuItem>
               ) }
@@ -167,16 +167,10 @@ class Edit extends Component {
               </Alert> : null }
           </Modal.Body>
           <Modal.Footer>
-            <Grid fluid>
-              <Row className="padded-row">
-                <Col xs={ 6 } md={ 4 }>
-                <ButtonInput className="product-button" type="submit" bsStyle="danger" onClick={ this.clickedDeleteCategory.bind(this) }>Delete category</ButtonInput>
-                </Col>
-                <Col xs={ 6 } md={ 4 }>
-                <ButtonInput className="product-button" type="submit" bsStyle="primary" onClick={ this.clickedPatchCategory.bind(this) }>Edit category</ButtonInput>
-                </Col>
-              </Row>
-            </Grid>
+            
+            <ButtonInput className="b-float-left" type="submit" bsStyle="danger" onClick={ this.clickedDeleteCategory.bind(this) }>Delete category</ButtonInput>
+            <ButtonInput className="b-float-right" type="submit" bsStyle="info" onClick={ this.clickedPatchCategory.bind(this) }>Save Changes</ButtonInput>
+
             { this.state.alertUnableToDelete ?
               <Alert bsStyle="danger" onDismiss={ this.handleAlertUnableToDeleteDismiss.bind(this) }>
                 <p>You cannot delete a category that still has some shops assigned to it. Either delete these shops or assign them to a different category in order to delete this

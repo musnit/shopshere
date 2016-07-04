@@ -37,7 +37,7 @@ class Shop extends Component {
     return (
       <div>
         <div>
-          <h1>Shop: <b>{ name }</b></h1>
+          <h1>{ name }</h1>
         </div>
         <Tabs defaultActiveKey={ 1 }>
           <Tab eventKey={ 1 } title="Viewpoints">

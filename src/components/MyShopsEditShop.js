@@ -430,12 +430,11 @@ class MyShopsEditShop extends Component {
     }
 
     return (
-      <div className="force-to-bottom">
-        <div className="add-shop-btn">
-          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
-            Edit <b>{ selected.name }</b>
+      <div className="b-float-right">
+          <Button bsStyle="info" bsSize="large" onClick={ this.open.bind(this) }>
+            <span className="b-button-icon glyphicons pencil"></span>
+            <span className="b-button-text">Edit Shop Details</span>
           </Button>
-        </div>
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } onEntered={ this.setColorBoxes.bind(this) } backdrop="static">
           <Modal.Header closeButton>
             <Modal.Title>Edit <b>{ this.state.selectedShop.name }</b>:</Modal.Title>

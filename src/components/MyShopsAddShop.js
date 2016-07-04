@@ -390,9 +390,10 @@ class MyShopsAddShop extends Component {
 
     return (
       <div className="force-to-bottom">
-        <div className="add-shop-btn">
-          <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
-            Add a new shop
+        <div className="actions">
+          <Button bsStyle="primary" className="btn-small" onClick={ this.open.bind(this) }>
+            <span className="b-button-icon glyphicons plus"></span>
+            <span className="b-button-text">Add a New Shop</span>
           </Button>
         </div>
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">

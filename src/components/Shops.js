@@ -2,12 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import ShopList from '~/src/components/ShopList';
+import Topbar from '~/src/components/Topbar/Topbar';
 import '~/src/styles/shops.css';
 
 class Shops extends Component {
   render() {
     return (
-      <div className='container shops-page'>
+      <div>
+      <Topbar />
+      <div className='container content-box'>
         <div className='row'>
           <div className="column container-header">Shops</div>
         </div>
@@ -17,6 +20,7 @@ class Shops extends Component {
             { this.props.children }
           </div>
         </div>
+      </div>
       </div>
       );
   }

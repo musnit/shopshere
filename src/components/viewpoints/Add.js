@@ -168,7 +168,8 @@ class Add extends Component {
       <div>
         <div className="view-button">
           <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
-            Add a new viewpoint
+            <span className="b-button-icon glyphicons plus"></span>
+            <span className="b-button-text">Add a new viewpoint</span>
           </Button>
         </div>
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) } backdrop="static">

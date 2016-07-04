@@ -54,12 +54,14 @@
 
 
 .entrance-view-box{
-        background-color: #fcf8e3;
-            background-clip: content-box;
-                margin: 20px;
-                border-color: #faebcc;
-                border-style:solid;
-                border-width:2px;
+    
+    padding: 20px;
+    background-clip: content-box;
+    border-color: #faebcc;
+    background: #fcf8e3;
+    border-style:solid;
+    border-width:2px;
+    margin: 10px -15px;
 }
 
 .entrance-view-text {

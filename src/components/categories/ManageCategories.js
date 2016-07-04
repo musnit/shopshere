@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import Add from '~/src/components/categories/Add';
 import Edit from '~/src/components/categories/Edit';
 import BackLink from '~/src/components/categories/BackLink';
+import Topbar from '~/src/components/Topbar/Topbar';
 import '~/src/styles/categories.css';
 
 class ManageCategories extends Component {
@@ -15,17 +16,19 @@ class ManageCategories extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="side">
-          <h1>Manage Categories</h1>
+      <div>
+      <Topbar />
+      <div className="categories container content-box">
+        <div className="row shops-section">
+          <div className="parent-of-list">
+            <h2>Manage Categories</h2>
+          </div>  
+          <div className="shop-details">        
+            <Edit />
+            <Add />
+          </div>
         </div>
-        <div className="side">
-          <BackLink />
-        </div>
-        <br/>
-        <br/>
-        <Edit />
-        <Add />
+      </div>
       </div>
       );
   }

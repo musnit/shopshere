@@ -32,7 +32,8 @@ class ShopList extends Component {
   render() {
     return (
       <div className="parent-of-list">
-        <Nav className="shop-list" activeKey={ this.state.activeTab } bsStyle="pills" stacked={ true }>
+        <h2>Store List</h2>
+        <Nav className="shop-list" activeKey={ this.state.activeTab } >
           { this.props.shops.map((shop, index) => <LinkContainer key={ index } to={ { pathname: `/shops/${shop.name}` } }>
                                                     <NavItem eventKey={ index } key={ index } onClick={ this.clickHandler.bind(this, index) }>
                                                       { shop.name }
@@ -41,7 +42,6 @@ class ShopList extends Component {
             ) }
         </Nav>
         <MyShopsAddShop categories={ this.props.categories } />
-        <CategoryLink />
       </div>
       );
   }

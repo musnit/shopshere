@@ -600,7 +600,7 @@ class List extends Component {
 
     return (
       <div className="product-button">
-        <DropdownButton bsStyle={ 'primary' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
+        <DropdownButton bsStyle={ 'info' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
           { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.open.bind(this) }>
                                                         { product.name }
                                                         </MenuItem>

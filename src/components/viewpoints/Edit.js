@@ -266,7 +266,7 @@ class Edit extends Component {
     return (
       <div>
         <div className="view-button">
-          <DropdownButton bsStyle={ 'primary' } title={ 'Select a viewpoint to edit/delete' } id="viewpoint">
+          <DropdownButton bsStyle={ 'info' } title={ 'Select a viewpoint to edit/delete' } id="viewpoint">
             { this.props.viewpoints.map((viewpoint, index) => <MenuItem eventKey={ index } key={ index } data={ viewpoint.id } onClick={ this.open.bind(this) }>
                                                               { viewpoint.name } </MenuItem>
               ) }
@@ -289,10 +289,10 @@ class Edit extends Component {
               <Grid fluid>
                 <div>
                   <Row className="padded-row">
-                    <Col xs={ 8 } md={ 8 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <Image src={ this.state.selectedViewpoint.imageFile } responsive />
                     </Col>
-                    <Col xs={ 1 } md={ 1 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <div>
                       <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove image.</Tooltip> }>
                         <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this) }>Change Image</Button>
@@ -308,7 +308,7 @@ class Edit extends Component {
               <Grid fluid>
                 <div>
                   <Row className="padded-row">
-                    <Col xs={ 1 } md={ 1 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <div>
                       <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove image.</Tooltip> }>
                         <Button bsStyle="danger" onClick={ this.clickedDeleteImage.bind(this) }>Change Image</Button>
@@ -329,10 +329,10 @@ class Edit extends Component {
               <Grid fluid>
                 <div>
                   <Row className="padded-row">
-                    <Col xs={ 8 } md={ 8 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <Image src={ this.state.selectedViewpoint.thumbnailFile } responsive />
                     </Col>
-                    <Col xs={ 1 } md={ 1 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <div>
                       <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove thumbnail.</Tooltip> }>
                         <Button bsStyle="danger" onClick={ this.clickedDeleteThumbnail.bind(this) }>Change Thumbnail</Button>
@@ -348,7 +348,7 @@ class Edit extends Component {
               <Grid fluid>
                 <div>
                   <Row className="padded-row">
-                    <Col xs={ 1 } md={ 1 }>
+                    <Col xs={ 12 } md={ 6 }>
                     <div>
                       <OverlayTrigger overlay={ <Tooltip id="remove-image">Remove thumbnail.</Tooltip> }>
                         <Button bsStyle="danger" onClick={ this.clickedDeleteThumbnail.bind(this) }>Change Thumbnail</Button>
@@ -364,18 +364,13 @@ class Edit extends Component {
               </Alert> : null }
           </Modal.Body>
           <Modal.Footer>
-            <Grid fluid>
-              <Row className="padded-row">
-                <Col xs={ 6 } md={ 4 }>
-                <ButtonInput className="product-button" type="submit" bsStyle="danger" onClick={ this.clickedDeleteViewpoint.bind(this) }>Delete viewpoint</ButtonInput>
-                </Col>
-                <Col xs={ 6 } md={ 4 }>
-                <ButtonInput className="product-button" type="submit" bsStyle="primary" onClick={ this.clickedPatchViewpoint.bind(this) } disabled={ this.state.submitDisabled }>
-                  { this.state.submitDisabled ? 'Wait for upload to finish' : 'Edit viewpoint' }
-                </ButtonInput>
-                </Col>
-              </Row>
-            </Grid>
+
+            <ButtonInput className="product-button b-float-left" type="submit" bsStyle="danger" onClick={ this.clickedDeleteViewpoint.bind(this) }>Delete Viewpoint</ButtonInput>
+
+            <ButtonInput className="product-button b-float-right" type="submit" bsStyle="primary" onClick={ this.clickedPatchViewpoint.bind(this) } disabled={ this.state.submitDisabled }>
+              { this.state.submitDisabled ? 'Wait for upload to finish' : 'Save Changes' }
+            </ButtonInput>
+
           </Modal.Footer>
         </Modal>
         <Confirm visible={ this.state.confirmModalVisible } onConfirm={ this.confirmDeleteViewpoint.bind(this) } onClose={ this.closeConfirm.bind(this) } title="Confirmation" body="Are you sure you want to delete this viewpoint?"

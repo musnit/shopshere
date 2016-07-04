@@ -40,7 +40,8 @@ class AddProductButton extends Component {
       <div>
         <div className="product-button">
           <Button bsStyle="primary" bsSize="large" onClick={ this.open.bind(this) }>
-            Add a new product
+            <span className="b-button-icon glyphicons plus"></span>
+            <span className="b-button-text">Add a new product</span>
           </Button>
         </div>
         <Add shopID={ this.props.shopID } visible={ this.state.visible } onClose={ this.close.bind(this) } />

@@ -68,22 +68,27 @@ class MyShopsDeleteShop extends Component {
 
 
     return (
-      <div className="force-to-bottom">
-        <div className="add-shop-btn">
-          <Button bsStyle="danger" bsSize="large" onClick={ this.open.bind(this) }>
-            Delete <b>{ selected.name }</b>
-          </Button>
-        </div>
+      <div>
+
+        <Button bsStyle="danger" className="b-float-left" onClick={ this.open.bind(this) }>
+          <span className="b-button-icon glyphicons remove_2"></span>
+          <span className="b-button-text">Delete { selected.name }</span>
+        </Button>
+
         <Modal show={ this.state.showModal } onHide={ this.close.bind(this) }>
           <Modal.Header closeButton>
             <Modal.Title>Permanently delete <b>{ selected.name }</b> ?</Modal.Title>
           </Modal.Header>
           <Modal.Body className="modal-body-delete">
-            <ButtonInput className="delete-modal-button" type="submit" bsStyle="primary" onClick={ this.close.bind(this) }>No, close this window.</ButtonInput>
-            <LinkContainer to={ { pathname: `/shops/` } }>
-              <ButtonInput className="delete-modal-button" type="submit" bsStyle="danger" onClick={ this.clickedDeleteShop.bind(this, this.props.shopID) }>Yes, delete this shop!</ButtonInput>
-            </LinkContainer>
+            <p>You are about to permanently delete this shop. This cannot be undone. Are you sure?</p>
+            
           </Modal.Body>
+          <Modal.Footer>
+            <ButtonInput className="b-float-right" type="submit" bsStyle="primary" onClick={ this.close.bind(this) }>No, close this window</ButtonInput>
+            <LinkContainer className="b-float-left" to={ { pathname: `/shops/` } }>
+              <ButtonInput type="submit" bsStyle="danger" onClick={ this.clickedDeleteShop.bind(this, this.props.shopID) }>Yes, delete this shop!</ButtonInput>
+            </LinkContainer>
+          </Modal.Footer>
         </Modal>
       </div>
       );
