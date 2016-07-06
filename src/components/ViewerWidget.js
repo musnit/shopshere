@@ -1,4 +1,4 @@
-const dummyShopID = '4f0d81dc-06dd-4bb9-bd00-279d84e7caaf';
+const dummyShopID = '009826c9-1aa0-475c-98e7-a4a1f42220cd';
 const dummyOpenProductModal = (productObject) => {
   alert('Open product: ' + productObject.name)
 };
@@ -7,6 +7,7 @@ import React, { Component, PropTypes } from 'react';
 import SphereViewer from './SphereViewer.js';
 import request from 'superagent';
 import { apiURL } from '~/src/config';
+import '~/src/styles/viewer.css';
 
 class ViewerWidget extends Component {
 
@@ -209,7 +210,11 @@ class ViewerWidget extends Component {
         { loadingProducts }
         { loadingViewpoints }
         { loadingHotspots }
-        <div id='viewer-placeholder'></div>
+        <div id='viewer-placeholder'>
+          <div id='viewer-loader'>
+            Loading image, please wait...
+          </div>
+        </div>
       </div>
       );
   }

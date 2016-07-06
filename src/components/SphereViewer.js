@@ -73,7 +73,11 @@ export default class SphereViewer {
 
     let loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
-    this.sphereMaterial.map = loader.load(imageURL);
+
+    document.getElementById('viewer-loader').style.display = 'inherit';
+    this.sphereMaterial.map = loader.load(imageURL, () => {
+      document.getElementById('viewer-loader').style.display = 'none';
+    });
 
     this.sphereMaterial.depthWrite = false;
     this.sphereMaterial.depthTest = false;
@@ -278,7 +282,10 @@ export default class SphereViewer {
   changeBackgroundImage(imageURL) {
     let loader = new THREE.TextureLoader();
     loader.crossOrigin = "anonymous";
-    this.sphereMaterial.map = loader.load(imageURL);
+    document.getElementById('viewer-loader').style.display = 'inherit';
+    this.sphereMaterial.map = loader.load(imageURL, () => {
+      document.getElementById('viewer-loader').style.display = 'none';
+    });
   }
 
   someOtherControlsCode() {

@@ -467,9 +467,13 @@ class Viewer extends Component {
               </div> : null }
           </Grid>
         </div>
-        <div id='viewer-placeholder'></div>
+        <div id='viewer-placeholder'>
+          <div id='viewer-loader'>
+            Loading image, please wait...
+          </div>
+        </div>
         { !this.state.noSelection ?
-          
+
           <Grid className="grid-panel">
             { !this.state.entranceViewpointNeeded && this.state.thisIsTheEntrance ?
               <div className="entrance-view-box">
@@ -479,7 +483,7 @@ class Viewer extends Component {
                 </Row>
               </div> : null }
             { !this.state.entranceViewpointNeeded && !this.state.thisIsTheEntrance ?
-              
+
               <div className="entrance-view-box">
                 <Row className="show-grid">
                   <div className="entrance-view-button">

@@ -54,7 +54,7 @@
 
 
 .entrance-view-box{
-    
+
     padding: 20px;
     background-clip: content-box;
     border-color: #faebcc;
@@ -94,4 +94,14 @@ color: #3a87ad;
     background-color: #fcf8e3;
     color: #8a6d3b;
 
+}
+
+.viewer-loader {
+	position: absolute;
+	top: calc(50% - 12px);
+	left: calc(50% - 37px);
+}
+
+.viewer-placeholder-grouping {
+	position: relative;
 }
