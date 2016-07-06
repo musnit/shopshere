@@ -7,6 +7,7 @@ const UrlAPI = apiURL;
 
 
 function PostAPI(data, table) {
+  data.secretKey = window.localStorage.getItem('secretKey');
   return new Promise((resolve, reject) => {
     request.post(UrlAPI + table + '/')
       .set('Content-Type', 'application/json')
@@ -55,7 +56,7 @@ export function addCategoryAPI(data) {
 function DeleteAPI(object, table) {
   return new Promise((resolve, reject) => {
     var getResult = (() => {
-      request.del(UrlAPI + table + '/' + object.ID)
+      request.del(UrlAPI + table + '/' + object.ID + `?secretKey=${window.localStorage.getItem('secretKey')}`)
         .set('Content-Type', 'application/json')
         .end(function(err, res) {
           if (err || !res.ok) {
@@ -223,6 +224,7 @@ function PatchAPI(data, table) {
   return new Promise((resolve, reject) => {
     const id = data.id;
     delete (data.id);
+    data.secretKey = window.localStorage.get('secretKey');
     request.patch(UrlAPI + table + '/' + id)
       .set('Content-Type', 'application/json')
       .send(data)
