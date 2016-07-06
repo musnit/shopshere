@@ -30,16 +30,42 @@ class ShopList extends Component {
 
 
   render() {
+    let categoriedShops = {};
+    this.props.shops.forEach((shop) => {
+      let category = categoriedShops[shop.category];
+      if (!category) {
+        categoriedShops[shop.category] = [];
+        category = categoriedShops[shop.category];
+      }
+      category.push(shop);
+    });
+    let categoriedShopsArray = [];
+    for (let categoryID in categoriedShops) {
+      let thisCategory = this.props.categories.filter((category) => {
+        return category.id === categoryID;
+      })[0];
+      categoriedShopsArray.push({ category: thisCategory && thisCategory.text, shops: categoriedShops[categoryID] });
+    }
     return (
       <div className="parent-of-list">
         <h2>Store List</h2>
         <Nav className="shop-list" activeKey={ this.state.activeTab } >
-          { this.props.shops.map((shop, index) => <LinkContainer key={ index } to={ { pathname: `/shops/${shop.name}` } }>
-                                                    <NavItem eventKey={ index } key={ index } onClick={ this.clickHandler.bind(this, index) }>
-                                                      { shop.name }
-                                                    </NavItem>
-                                                  </LinkContainer>
-            ) }
+
+          { categoriedShopsArray.map((categoriedShops) => {
+            return <div>
+              <LinkContainer className='category-text' key={ categoriedShops.category } to={ { pathname: `#` } }>
+                      <NavItem eventKey={ categoriedShops.category } key={ categoriedShops.category } >
+                        { categoriedShops.category }
+                      </NavItem>
+                    </LinkContainer>
+                    { categoriedShops.shops.map((shop, index) => <LinkContainer key={ index } to={ { pathname: `/shops/${shop.name}` } }>
+                                                              <NavItem eventKey={ index } key={ index } onClick={ this.clickHandler.bind(this, index) }>
+                                                                { shop.name }
+                                                              </NavItem>
+                                                            </LinkContainer>
+                      ) }
+                    </div>
+          })}
         </Nav>
         <MyShopsAddShop categories={ this.props.categories } />
       </div>
