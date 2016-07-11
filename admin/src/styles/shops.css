@@ -1,0 +1,170 @@
+.content-box {
+  padding: 50px;
+}
+
+.shops-section {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px #ddd;
+}
+
+
+.shop-list {
+  width: 20%;
+  padding-bottom: 10px;
+  min-width: 200px;
+  border-top: none;
+  border-bottom: solid 1px #ddd;
+  width: 100%;
+}
+
+.shop-list li {
+  list-style: none;
+}
+
+.category-text {
+  padding-top: 20px;
+  padding-bottom: 5px;
+}
+
+.category-text a {
+ font-size: 18px !important;
+}
+
+.parent-of-list .actions {
+  display:block;
+  padding: 10px;
+}
+
+.shop-list {
+ margin-top: -20px; 
+}
+
+.shop-list .force-to-bottom {
+padding: 10px;
+}
+
+
+.shop-list li.category {
+padding: 0 30px;
+margin-top: 1em;
+margin-bottom: .4em;
+font-weight: 700;
+color: #999;
+}
+
+.shop-list li a {
+box-sizing: border-box;
+font-size: 16px;
+padding: 0 30px;
+
+color: #666;
+font-weight: 700;
+}
+
+
+
+
+
+
+.parent-of-list {
+  position: relative;
+  border-right: solid 1px #ddd;
+  background: #fafafa;
+}
+
+.parent-of-list h2 {
+position: relative !important;
+padding: 0 30px;
+margin: 20px 0;
+font-size: 1.2em;
+text-transform: none;
+}
+
+.delete-modal-button {
+  padding: 10px;
+  margin:10px;
+}
+
+.modal-body-delete {
+  display:flex;
+}
+label {
+  padding:5px;
+  margin:0;
+}
+
+.shop-details {
+  width: 80%;
+  /*padding: 10px;*/
+}
+
+.shop-details .tab-content {
+ padding: 10px;
+}
+
+.shop-details .tab-pane {
+  padding-top: 20px;
+}
+
+.shop-details .nav-tabs {
+  margin: 0 10px;
+}
+
+.shop-details h1 {
+  padding: 20px;
+  border-bottom: 1px solid #e6e6e6;
+font-size: 1.6em;
+text-transform: none;
+}
+
+.cat-button {
+  border-color: transparent;
+  padding: 10px;
+  margin: 0 auto 0 auto;
+  display:inline-block;
+
+}
+
+.form-element {
+  width:100%;
+}
+
+.cat-box {
+    display:inline-block;
+}
+
+.contact-inner {
+
+}
+
+.contact-outer {
+  margin: 0 auto;
+}
+
+
+.catside {
+  display:inline-block;
+  padding: 1%;
+}
+
+.addcatbox {
+  margin:2%;
+}
+
+.checkbox {
+  margin:1%;
+}
+
+#checkbox {
+  margin:1%;
+}
+
+
+/*  ==================================
+    Bootstrap Overrides
+    ================================== */
+
+.modal-footer .form-group {
+  margin: 0;
+}

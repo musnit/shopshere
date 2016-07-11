@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title>Shopsphere widget example</title>
+  </head>
+  <body>
+    <h1> widget inserted below when u click with shop id of 8e93ed4e-dab6-46e3-99fa-674decf69486. The code is run like:</h1>
+    <pre>window.createSphereWidget('8e93ed4e-dab6-46e3-99fa-674decf69486',
+          {
+            openProductModal: console.log.bind(console),
+            hoverProduct: console.log.bind(console),
+            shopLoaded: console.log.bind(console),
+            productsLoaded: console.log.bind(console),
+            viewpointsLoaded: console.log.bind(console),
+            hotspotsLoaded: console.log.bind(console),
+            viewerInitialized: console.log.bind(console)
+          },
+          'widget-holder-div', 800, 400, 'firstViewpointId')</pre>
+    <button onclick="window.createSphereWidget('009826c9-1aa0-475c-98e7-a4a1f42220cd', { openProductModal: console.log.bind(console), hoverProduct: console.log.bind(console), shopLoaded: console.log.bind(console), productsLoaded: console.log.bind(console), viewpointsLoaded: console.log.bind(console), hotspotsLoaded: console.log.bind(console), viewerInitialized: console.log.bind(console) } , 'widget-holder-div', 800, 400, 'e60ce33d-e609-4865-b2a8-c20c30021658')">clicky</button>
+
+    <div id="widget-holder-div"></div>
+    <script src="/sphereWidget.js"></script>
+  </body>
+</html>

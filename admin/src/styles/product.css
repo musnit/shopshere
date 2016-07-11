@@ -1,0 +1,17 @@
+.input-group .form-control:first-child {
+	    border-radius: 4px;
+}
+
+.padded-row{
+	padding:1%;
+}
+
+.input-group-btn:last-child > .btn {
+			    border-radius: 14px;
+}
+
+.remove-button:disabled {
+	padding:0px;
+	margin:0px;
+	border:0px;
+}
