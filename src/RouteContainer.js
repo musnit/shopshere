@@ -27,7 +27,7 @@ class RouteContainer extends Component {
     };
   }
 
-  checkAuth(nextState, replace, callback?) {
+  checkAuth(nextState, replace) {
     let secret = window.localStorage.getItem('secretKey');
     if (secret === null) {
       replace('/login');
@@ -38,7 +38,7 @@ class RouteContainer extends Component {
     return (
       <Router ref="router" history={ this.state.history }>
         <Redirect from="/user" to="/user/directory" />
-        <Redirect from="/" to="shops" />
+        <Redirect from="/" to="/shops" />
         <Route path="/login" component={ Login }>
         </Route>
         <Route path="/" component={ App } onEnter={this.checkAuth}>
