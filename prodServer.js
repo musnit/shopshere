@@ -1,31 +1,15 @@
-var path = require('path');
 var express = require('express');
-var webpack = require('webpack');
-var config = require('./webpack.config.dev');
 
 var app = express();
-var compiler = webpack(config);
-
 var port = process.env.PORT || 3000;
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
+// serve the files out of ./dist as our main files
+app.use(express.static('dist'));
 
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.use(express.static('public'));
-
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.all('*', function(req, res) {
+    res.sendFile('dist/index.html', { root: __dirname });
 });
 
-app.listen(port, '0.0.0.0', function(err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-
-  console.log('Listening at http://localhost:' + port + ' - Running');
+app.listen(port, function() {
+  console.log('server starting');
 });

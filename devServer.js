@@ -27,5 +27,5 @@ app.listen(port, '0.0.0.0', function(err) {
     return;
   }
 
-  console.log('Listening at http://localhost:' + port + ' - Running');
+  console.log('Listening at http://localhost:3000');
 });
