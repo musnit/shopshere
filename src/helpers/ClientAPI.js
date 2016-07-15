@@ -224,7 +224,7 @@ function PatchAPI(data, table) {
   return new Promise((resolve, reject) => {
     const id = data.id;
     delete (data.id);
-    data.secretKey = window.localStorage.get('secretKey');
+    data.secretKey = window.localStorage.getItem('secretKey');
     request.patch(UrlAPI + table + '/' + id)
       .set('Content-Type', 'application/json')
       .send(data)
