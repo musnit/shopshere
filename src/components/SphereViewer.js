@@ -40,6 +40,7 @@ export default class SphereViewer {
     this.setupMouseTracker();
     this.setupClickEvent();
     this.reRender.call(this);
+    window.currentViewer = this;
   }
 
   //  disableOrbit(){
@@ -61,6 +62,12 @@ export default class SphereViewer {
     this.camera = new THREE.PerspectiveCamera(75, viewerSizeX / viewerSizeY, 0.1, 1000);
   //camera.target = new THREE.Vector3(0, 0, 0);
   }
+
+  resize(x, y){
+    viewerSizeX = x;
+    viewerSizeY = y;
+    this.renderer.setSize(viewerSizeX, viewerSizeY);
+  };
 
   setupSphereProjection(imageURL) {
     // creation of a big sphere geometry
