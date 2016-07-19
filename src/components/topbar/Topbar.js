@@ -54,7 +54,7 @@ render() {
                   <div className="b-topbar-section b-topbar-section-storedirectory">
 										<LinkContainer to={ { pathname: `/login` } }>
 		                  <button className="b-topbar-button" id="b-topbar-button-signout" onclick="location.href = '/login'">
-		                    <span className="b-icon b-icon-category"></span>
+		                    <span className="b-icon b-icon-ui-signout"></span>
 		                    <span className="b-text">Sign Out</span>
 		                  </button>
 		                </LinkContainer>
