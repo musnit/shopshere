@@ -137,7 +137,10 @@ class ViewerWidget extends Component {
       const product = _.find(this.state.products, (product) => {
         return product.id == hotspot.prodview
       });
-      openProductModal(product);
+      const products = _.filter(this.state.products, (product) => {
+        return hotspot.products && hotspot.products.includes(product.id);
+      });
+      hotspot.products? openProductModal(products) : openProductModal(product);
     } else if (hotspot.type === "navigation") {
       const viewpoint = _.find(this.state.viewpoints, (viewpoint) => {
         return viewpoint.id == hotspot.prodview
