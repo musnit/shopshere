@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import fetch from '~/src/components/fetch';
-import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col, ButtonGroup, ButtonToolbar, Glyphicon } from 'react-bootstrap';
+import { Input, ButtonInput, Button, Modal, DropdownButton, MenuItem, Image, Label, Grid, Row, Col, ButtonGroup, ButtonToolbar, Glyphicon, Checkbox, FormControl } from 'react-bootstrap';
 import SphereViewer from './SphereViewer.js';
 import { connectProductToHotspot, deleteHotspot, fetchHotspots, unboundAddHotspot, clearHotspots, unboundPatchHotspot } from '~/src/actions/hotspots';
 import { unboundPatchShop } from '~/src/actions/shops';
@@ -34,6 +34,7 @@ class Viewer extends Component {
       currentViewpoint: this.props.viewpointID,
       currentHotspot: "",
       currentProduct: "",
+      currentProducts: [],
       newHSCoords: "",
       key: undefined,
       entranceViewpointNeeded: false,
@@ -128,13 +129,14 @@ class Viewer extends Component {
       modalMode: this.state.modalMode,
       showModal: false,
       currentHotspot: "",
-      currentProduct: ""
+      currentProduct: "",
+      currentProducts: []
     });
   }
 
   open(id) {
 
-    var thisProduct;
+    var thisProduct, thisProducts;
     var thisHotspot = _.find(this.props.hotspots, function(o) {
       return o.id == id
     });
@@ -143,7 +145,10 @@ class Viewer extends Component {
       thisProduct = _.find(this.props.products, function(o) {
         return o.id == thisHotspot.prodview
       });
-      this.showEditProdHotspotModal();
+      thisProducts = this.props.products.filter((product) => {
+        return thisHotspot.products? thisHotspot.products.includes(product.id) : false;
+      });
+      this.showEditProdHotspotModal(thisProducts);
     } else if (thisHotspot.type === "navigation") {
       var navigateTo = _.find(this.props.viewpoints, function(o) {
         return o.id == thisHotspot.prodview
@@ -158,12 +163,14 @@ class Viewer extends Component {
       return;
     } else {
       thisProduct = this.state.currentProduct;
+      thisProducts = this.state.currentProducts;
     }
 
 
     this.setState({
       currentHotspot: thisHotspot,
-      currentProduct: thisProduct
+      currentProduct: thisProduct,
+      currentProducts: thisProducts
     });
 
   }
@@ -173,7 +180,8 @@ class Viewer extends Component {
       modalMode: true,
       showModal: false,
       currentHotspot: this.state.currentHotspot,
-      currentProduct: this.state.currentProduct
+      currentProduct: this.state.currentProduct,
+      currentProducts: this.state.currentProducts
     };
   }
 
@@ -183,7 +191,8 @@ class Viewer extends Component {
       modalMode: false,
       showModal: false,
       currentHotspot: this.state.currentHotspot,
-      currentProduct: this.state.currentProduct
+      currentProduct: this.state.currentProduct,
+      currentProducts: this.state.currentProducts
     };
   }
 
@@ -211,7 +220,8 @@ class Viewer extends Component {
 
     this.setState({
       currentHotspot: "",
-      currentProduct: this.state.currentProduct
+      currentProduct: this.state.currentProduct,
+      currentProducts: this.state.currentProducts
     });
   }
 
@@ -267,9 +277,10 @@ class Viewer extends Component {
     });
   }
 
-  showEditProdHotspotModal() {
+  showEditProdHotspotModal(currentProducts) {
     this.setState({
-      showEditProdHotspotModal: true
+      showEditProdHotspotModal: true,
+      currentProducts: currentProducts
     });
   }
 
@@ -315,6 +326,8 @@ class Viewer extends Component {
       shop: this.props.shopID,
 
       prodview: linktoID,
+
+      products: [linktoID],
 
       viewpoint: this.state.currentViewpoint,
 
@@ -386,10 +399,21 @@ class Viewer extends Component {
   }
 
   patchHotspot(event) {
+    let prodview, products, close;
+    if(event.currentTarget.type !== "checkbox"){
+      prodview = event.currentTarget.attributes.data.value;
+      close = true;
+    }
+    else {
+      products = [...this.refs.productList.getElementsByClassName("product-selector")]
+        .filter((checkbox)=> checkbox.checked)
+        .map((checkbox) => checkbox.dataset.productid);
+    }
     var patchObject = {
       id: this.state.currentHotspot.id,
       position: this.state.currentHotspot.position,
-      prodview: event.currentTarget.attributes.data.value,
+      prodview: prodview,
+      products: products,
       shop: this.state.currentHotspot.shop,
       type: this.state.currentHotspot.type,
       viewpoint: this.state.currentHotspot.viewpoint,
@@ -397,8 +421,11 @@ class Viewer extends Component {
 
     this.props.boundPatchHotspot(patchObject);
 
-    this.closeEditNavHotspotModal();
-    this.closeEditProdHotspotModal();
+
+    if(close) {
+      this.closeEditNavHotspotModal();
+      this.closeEditProdHotspotModal();
+    }
   }
 
   closeProductAddModal() {
@@ -529,7 +556,7 @@ class Viewer extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="product-button">
-              <DropdownButton bsStyle={ 'primary' } title={ 'Select a product to link to this hotspot' } id="product-view-edit">
+              <DropdownButton bsStyle={ 'primary' } title={ 'Select the first product to link to this hotspot' } id="product-view-edit">
                 { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index } data={ product.id } onClick={ this.addNewProductHotspot.bind(this) }>
                                                               { product.name } </MenuItem>
                   ) }
@@ -555,15 +582,17 @@ class Viewer extends Component {
         </Modal>
         <Modal show={ this.state.showEditProdHotspotModal } onHide={ this.closeEditProdHotspotModal.bind(this) }>
           <Modal.Header closeButton>
-            <Modal.Title>This product hotspot links to <b>{ this.state.currentProduct.name }</b>:</Modal.Title>
+            <Modal.Title>This product hotspot links to these products:</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="product-button">
-              <DropdownButton bsStyle={ 'primary' } title={ 'Change which product this hotspot is linked to' } id="product-view-edit">
-                { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index } data={ product.id } onClick={ this.patchHotspot.bind(this) }>
-                                                              { product.name } </MenuItem>
-                  ) }
-              </DropdownButton>
+            <div className="product-selection-list" ref="productList">
+              {console.log(this.state.currentProducts)}
+              { this.props.products.map((product, index) => {
+                return <div><input type="checkbox" data-productid={product.id}
+                  defaultChecked={this.state.currentProducts.map((product) => product.id).includes(product.id)}
+                  className='product-selector' onClick={ this.patchHotspot.bind(this)}>
+                </input>{product.name}</div>;
+              })}
             </div>
           </Modal.Body>
           <Modal.Footer>
