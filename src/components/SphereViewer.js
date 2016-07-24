@@ -409,9 +409,9 @@ export default class SphereViewer {
     var Flag = 0;
 
     function onDocumentMouseUp(event) {
-      event.preventDefault();
 
       if (event.target == this.renderer.domElement && Flag == 0) {
+        event.preventDefault();
         const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
         v3MouseCoords.unproject(this.camera);
@@ -431,9 +431,10 @@ export default class SphereViewer {
     document.addEventListener("mouseup", onDocumentMouseUp.bind(this), false);
 
     function onDocumentMouseDoubleclick(event) {
-      event.preventDefault();
 
       if (event.target == this.renderer.domElement) {
+        event.preventDefault();
+
         const v3MouseCoords = new THREE.Vector3(this.mouse.x, this.mouse.y, 1);
 
         v3MouseCoords.unproject(this.camera);
@@ -459,7 +460,9 @@ export default class SphereViewer {
     document.addEventListener("mousemove", onDocumentMouseMove.bind(this), false);
 
     function onDocumentMouseDown(event) {
-      event.preventDefault();
+      if (event.target == this.renderer.domElement) {
+        event.preventDefault();
+      }
 
       Flag = 0;
 
