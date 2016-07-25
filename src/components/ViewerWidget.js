@@ -215,7 +215,7 @@ class ViewerWidget extends Component {
         { loadingHotspots }
         <div id='viewer-placeholder'>
           <div id='viewer-loader'>
-            Loading image, please wait...
+            <span class="viewer-loader-text">Loading image, please wait...</span>
           </div>
         </div>
       </div>
