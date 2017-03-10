@@ -97,14 +97,12 @@ class List extends Component {
     _.forEach(currentColorOptions, function(item) {
       item.pop();
     })
-
     var currentSizeOptions = _.cloneDeep(this.state.selectedProduct.sizes);
     var submitSizes = [];
 
     _.forEach(currentSizeOptions, function(item) {
       submitSizes.push(item[0]);
     })
-
 
     var patchObject = {
       id: this.state.selectedProduct.id,
@@ -123,11 +121,24 @@ class List extends Component {
         patchObject[key] = [];
       } else if (key === 'sizes' && patchObject[key] == "") {
         patchObject[key] = [];
-      } else if (key === 'colors') {
+      } else if (key === 'sizes' && patchObject[key].length > 1 && patchObject[key].indexOf("") != -1) {
+
+            patchObject[key].splice(patchObject[key].indexOf(""), 1);
+
+      }
+      else if (key === 'colors') {
 
         if (patchObject[key].length == 1 && patchObject[key][0][0] == "" && patchObject[key][0][1] == "") {
           patchObject[key] = [];
-        } else {
+        } else if (patchObject[key].length > 1 ) {
+          _.forEach(patchObject[key], function(item) {
+            if (item[0] == "" && item[1] == "") {
+              patchObject[key].splice(patchObject[key].indexOf(item), 1);
+            }
+          })
+        }
+
+        else {
           _.forEach(patchObject[key], function(item) {
             if (item[0] == "") {
               item[0] = " "
@@ -142,7 +153,6 @@ class List extends Component {
         patchObject[key] = " ";
       }
     }
-
     this.props.boundPatchProduct(patchObject);
 
     this.refs.priceBox.getInputDOMNode().value = '';
@@ -302,7 +312,10 @@ class List extends Component {
       if (item == " ") {
         item = ""
       }
-      selected.sizes[index] = [item, Math.random()];
+      if (typeof item == "string") {
+        selected.sizes[index] = [item, Math.random()];
+      }
+
     })
 
     this.setState({

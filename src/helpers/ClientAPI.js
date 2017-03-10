@@ -221,10 +221,10 @@ export function fetchAllViewpointsAPI() {
 
 
 function PatchAPI(data, table) {
+  const id = data.id;
+  delete (data.id);
+  data.secretKey = window.localStorage.getItem('secretKey');
   return new Promise((resolve, reject) => {
-    const id = data.id;
-    delete (data.id);
-    data.secretKey = window.localStorage.getItem('secretKey');
     request.patch(UrlAPI + table + '/' + id)
       .set('Content-Type', 'application/json')
       .send(data)
