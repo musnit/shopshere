@@ -126,8 +126,6 @@ class Add extends Component {
       }
     }
 
-    debugger;
-
     this.props.boundAddProduct(addObject);
 
     this.refs.nameBox.getInputDOMNode().value = '';
