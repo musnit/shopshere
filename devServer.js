@@ -7,8 +7,6 @@ var port = process.env.PORT || 3000;
 var app = express();
 var compiler = webpack(config);
 
-var port = process.env.PORT || 3000;
-
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath
