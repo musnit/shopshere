@@ -34,7 +34,7 @@ class List extends Component {
 
     var shortCircuit = 0;
 
-    var prodName = this.refs.nameBox.getValue();
+    var prodName = this.refs.nameBox.getValue().trim();
 
     if (prodName == "") {
       this.handleAlertNoNameShow();
