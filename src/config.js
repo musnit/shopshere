@@ -6,5 +6,5 @@ module.exports = {
   viewpointPreviewFolderURL: 'https://shopsphere.s3.amazonaws.com/viewpoint-preview-images/',
   productFolderURL: 'https://shopsphere.s3.amazonaws.com/product-images/',
   logoFolderURL: 'https://shopsphere.s3.amazonaws.com/logo-images/',
-  apiURL: 'https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/data/'
+  apiURL: 'https://4rv33ibj84.execute-api.us-west-2.amazonaws.com/dev/data/'
 };
