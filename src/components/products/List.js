@@ -266,12 +266,11 @@ class List extends Component {
   }
 
   open(name) {
-
     let selected = _.find(this.props.products, function(o) {
-      return o.name == name.target.innerText
+      return o.id == name.currentTarget.lastChild.innerText
     });
     let index = _.findIndex(this.props.products, function(o) {
-      return o.name == name.target.innerText
+      return o.id == name.currentTarget.lastChild.innerText
     });
 
     selected.index = index
@@ -614,8 +613,8 @@ class List extends Component {
     return (
       <div className="product-button">
         <DropdownButton bsStyle={ 'info' } title={ 'Select a product to View, Edit or Delete' } id="product-view-edit">
-          { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index } onClick={ this.open.bind(this) }>
-                                                        { product.name }
+          { this.props.products.map((product, index) => <MenuItem eventKey={ index } key={ index }  onSelect={ this.open.bind(this) }>
+                                                        { product.name }<div className="invisible">{product.id}</div>
                                                         </MenuItem>
             ) }
           { this.props.products.length == 0 ?
