@@ -5,7 +5,7 @@ export default () => {
   return new Promise((resolve, reject) => {
 
   	var getResult = (() => {
-			request.get('https://mt59tak7h6.execute-api.us-east-1.amazonaws.com/dev/data/shop/')
+			request.get('https://4rv33ibj84.execute-api.us-west-2.amazonaws.com/dev/data/shop/')
 			    .set('Content-Type', 'application/json')
 			    .end(function(err, res){
 				     if (err || !res.ok) {
